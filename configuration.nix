@@ -59,7 +59,7 @@ in {
     lazygit
     pavucontrol
     playerctl
-    inputs.prismlauncher."${pkgs.system}".prismlauncher
+    inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
     ripgrep
     rustup
     stow
