@@ -98,7 +98,6 @@ in {
       vimAlias = true;
       defaultEditor = true;
     };
-    starship.enable = true;
     sway.enable = true;
     tmux.enable = true;
     waybar.enable = true;

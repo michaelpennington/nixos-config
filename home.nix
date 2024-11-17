@@ -10,7 +10,7 @@
     settings = {
       time.disabled = false;
       time.use_12hr = true;
-      time.style = "'#cfae71'";
+      time.style = ''#cfae71'';
     };
   };
 
