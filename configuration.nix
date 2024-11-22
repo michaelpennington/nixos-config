@@ -53,8 +53,8 @@ in {
     fd
     gcc
     gh
-    gnome.file-roller
-    gnome.nautilus
+    file-roller
+    nautilus
     inkscape
     lazygit
     pavucontrol
@@ -80,7 +80,7 @@ in {
     fira-code
     fira-code-symbols
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     (nerdfonts.override { fonts = [ "FiraCode" ]; })
   ];
