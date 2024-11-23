@@ -1,21 +1,24 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, inputs, ... }:
-
-let libbluray = pkgs.libbluray.override {
-  withAACS = true;
-  withBDplus = true;
-  withJava = true;
-};
-vlc = pkgs.vlc.override { inherit libbluray; };
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: let
+  libbluray = pkgs.libbluray.override {
+    withAACS = true;
+    withBDplus = true;
+    withJava = true;
+  };
+  vlc = pkgs.vlc.override {inherit libbluray;};
 in {
-  imports =
-    [
-      ./hardware-configuration.nix
-      inputs.nixvim.nixosModules.nixvim
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    inputs.nixvim.nixosModules.nixvim
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -40,12 +43,13 @@ in {
 
   users.users.mpennington = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   environment.systemPackages = with pkgs; [
+    inputs.alejandra.defaultPackage.${system}
     alsa-utils
     bat
     eza
@@ -79,21 +83,146 @@ in {
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-emoji
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
+    (nerdfonts.override {fonts = ["FiraCode"];})
   ];
 
   programs = {
     firefox = {
       enable = true;
-      languagePacks = [ "en-US" ];
+      languagePacks = ["en-US"];
     };
     fish.enable = true;
     git.enable = true;
     nixvim = {
       enable = true;
       defaultEditor = true;
-      extraPlugins = [ pkgs.vimPlugins.zenburn ];
+      extraPlugins = [pkgs.vimPlugins.zenburn];
       colorscheme = "zenburn";
+      opts = {
+        autoindent = true;
+        expandtab = true;
+        tabstop = 2;
+        softtabstop = 2;
+        shiftwidth = 2;
+        number = true;
+        relativenumber = true;
+        mouse = "";
+        foldlevel = 20;
+        foldcolumn = "1";
+        foldmethod = "expr";
+        foldexpr = "nvim_treesitter#foldexpr()";
+        undofile = true;
+      };
+      globals.mapleader = " ";
+      plugins = {
+        treesitter.enable = true;
+        conform-nvim = {
+          enable = true;
+          settings = {
+            formatters_by_ft = {
+              nix = [
+                "alejandra"
+              ];
+            };
+            format_on_save =
+              # Lua
+              ''
+                function(bufnr)
+                  if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+                    return
+                  end
+
+                  local function on_format(err)
+                    if err and err:match("timeout$") then
+                      slow_format_filetypes[vim.bo[bufnr].filetype] = true
+                    end
+                  end
+
+                  return { timeout_ms = 200, lsp_fallback = true }, on_format
+                end
+              '';
+          };
+        };
+      };
+      keymaps = [
+        {
+          action = "<cmd>BufferPrevious<CR>";
+          key = "H";
+          mode = "n";
+          options = {
+            silent = true;
+            desc = "Switch to previous buffer";
+          };
+        }
+        {
+          action = "<cmd>BufferNext<CR>";
+          key = "L";
+          mode = "n";
+          options = {
+            silent = true;
+            desc = "Switch to next buffer";
+          };
+        }
+        {
+          action = "<cmd>BufferClose<CR>";
+          key = "<leader>c";
+          mode = "n";
+          options = {
+            silent = true;
+            desc = "Close current buffer";
+          };
+        }
+      ];
+      userCommands = {
+        "Format" = {
+          range = true;
+          desc = "Format the current buffer";
+          command =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''
+              function(args)
+                local range = nil
+                if args.count ~= -1 then
+                  local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+                  range = {
+                    start = { args.line1, 0 },
+                    ["end"] = { args.line2, end_line:len() },
+                  }
+                end
+                require("conform").format({ async = true, lsp_format = "fallback", range = range })
+              end
+            '';
+        };
+        "FormatDisable" = {
+          bang = true;
+          desc = "Disable autoformat on save";
+          command =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''
+              function(args)
+                if args.bang then
+                  vim.b.disable_autoformat = true
+                else
+                  vim.g.disable_autoformat = true
+                end
+              end
+            '';
+        };
+        "FormatEnable" = {
+          desc = "Re-enable autoformat on save";
+          command =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''
+              function()
+                vim.b.disable_autoformat = false
+                vim.g.disable_autoformat = false
+              end
+            '';
+        };
+      };
     };
     tmux.enable = true;
     waybar.enable = true;
@@ -107,9 +236,8 @@ in {
         default = [
           "gtk"
         ];
-
         "org.freedesktop.impl.portal.Secret" = [
-            "gnome-keyring"
+          "gnome-keyring"
         ];
         extraPortals = with pkgs; [
           xdg-desktop-portal-gtk
@@ -136,6 +264,4 @@ in {
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }
-

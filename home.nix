@@ -1,5 +1,9 @@
-{ config, pkgs, inputs, ... }:
 {
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";
 
@@ -21,8 +25,12 @@
 
   wayland.windowManager.sway = {
     enable = true;
+    checkConfig = true;
     extraConfig = builtins.readFile ./sway_config;
-    config.bars = [];
+    config = {
+      bars = [];
+      modifier = "Mod4";
+    };
   };
 
   programs.home-manager.enable = true;
