@@ -96,7 +96,6 @@ in {
       vimAlias = true;
       defaultEditor = true;
     };
-    sway.enable = true;
     tmux.enable = true;
     waybar.enable = true;
   };

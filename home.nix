@@ -19,5 +19,11 @@
     };
   };
 
+  wayland.windowManager.sway = {
+    enable = true;
+    extraConfig = builtins.readFile ./sway_config;
+    config.bars = [];
+  };
+
   programs.home-manager.enable = true;
 }
