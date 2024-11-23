@@ -7,6 +7,7 @@
 
   home.packages = with pkgs; [
     inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
+    inputs.wezterm.packages."${pkgs.system}".default
   ];
 
   programs.starship = {

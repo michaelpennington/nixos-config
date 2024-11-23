@@ -66,7 +66,6 @@ in {
     swaynotificationcenter
     vlc
     w3m
-    wezterm
     wget
     wlogout
     wob

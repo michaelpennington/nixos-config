@@ -3,9 +3,17 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    prismlauncher.url = "github:PrismLauncher/PrismLauncher/develop";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    prismlauncher = {
+      url = "github:PrismLauncher/PrismLauncher/develop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    wezterm = {
+      url = "github:wez/wezterm/main?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
