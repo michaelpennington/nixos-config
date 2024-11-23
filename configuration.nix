@@ -14,6 +14,7 @@ in {
   imports =
     [
       ./hardware-configuration.nix
+      inputs.nixvim.nixosModules.nixvim
     ];
 
   boot.loader.systemd-boot.enable = true;
@@ -30,7 +31,6 @@ in {
     useXkbConfig = true; # use xkb.options in tty.
   };
 
-  # Enable CUPS to print documents.
   services.printing.enable = true;
 
   services.pipewire = {
@@ -38,7 +38,6 @@ in {
     pulse.enable = true;
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mpennington = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
@@ -90,19 +89,41 @@ in {
     };
     fish.enable = true;
     git.enable = true;
-    neovim = {
+    nixvim = {
       enable = true;
-      viAlias = true;
-      vimAlias = true;
       defaultEditor = true;
+      extraPlugins = [ pkgs.vimPlugins.zenburn ];
+      colorscheme = "zenburn";
     };
     tmux.enable = true;
     waybar.enable = true;
   };
 
-  xdg.portal.wlr.enable = true;
+  xdg.portal = {
+    enable = true;
 
-  services.openssh.enable = true;
+    config = {
+      common = {
+        default = [
+          "gtk"
+        ];
+
+        "org.freedesktop.impl.portal.Secret" = [
+            "gnome-keyring"
+        ];
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-gtk
+        ];
+      };
+    };
+  };
+
+  security.polkit.enable = true;
+
+  services = {
+    openssh.enable = true;
+    gnome.gnome-keyring.enable = true;
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
