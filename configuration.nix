@@ -115,6 +115,17 @@ in {
       };
       globals.mapleader = " ";
       plugins = {
+        barbar = {
+          enable = true;
+          keymaps = {
+            close.key = "<leader>c";
+            next.key = "L";
+            previous.key = "H";
+            moveNext.key = "<A-L>";
+            movePrevious.key = "<A-H>";
+          };
+        };
+        neo-tree.enable = true;
         treesitter = {
           enable = true;
           settings = {
@@ -141,33 +152,16 @@ in {
           enable = true;
           settings.options.theme = "zenburn";
         };
+        comment.enable = true;
       };
       keymaps = [
         {
-          action = "<cmd>BufferPrevious<CR>";
-          key = "H";
+          action = ":Neotree filesystem toggle<CR>";
+          key = "<leader>e";
           mode = "n";
           options = {
             silent = true;
-            desc = "Switch to previous buffer";
-          };
-        }
-        {
-          action = "<cmd>BufferNext<CR>";
-          key = "L";
-          mode = "n";
-          options = {
-            silent = true;
-            desc = "Switch to next buffer";
-          };
-        }
-        {
-          action = "<cmd>BufferClose<CR>";
-          key = "<leader>c";
-          mode = "n";
-          options = {
-            silent = true;
-            desc = "Close current buffer";
+            desc = "Toggle neotree";
           };
         }
       ];
