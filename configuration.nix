@@ -50,30 +50,17 @@ in {
 
   environment.systemPackages = with pkgs; [
     inputs.alejandra.defaultPackage.${system}
-    alsa-utils
     bat
     eza
     fd
     gcc
     gh
-    file-roller
-    nautilus
-    inkscape
-    lazygit
-    pavucontrol
-    playerctl
     ripgrep
     rustup
     stow
-    sway-launcher-desktop
-    swaynotificationcenter
-    vlc
     w3m
     wget
-    wlogout
-    wob
     xdg-user-dirs
-    zathura
   ];
 
   fonts.packages = with pkgs; [
@@ -87,10 +74,6 @@ in {
   ];
 
   programs = {
-    firefox = {
-      enable = true;
-      languagePacks = ["en-US"];
-    };
     fish.enable = true;
     git.enable = true;
     nixvim = {
@@ -217,7 +200,6 @@ in {
       };
     };
     tmux.enable = true;
-    waybar.enable = true;
   };
 
   xdg.portal = {
