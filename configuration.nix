@@ -18,10 +18,13 @@ in {
   imports = [
     ./hardware-configuration.nix
     inputs.nixvim.nixosModules.nixvim
+    inputs.ucodenix.nixosModules.default
   ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  hardware.graphics.enable = true;
 
   networking.hostName = "poseidon";
   networking.networkmanager.enable = true;
@@ -39,6 +42,11 @@ in {
   services.pipewire = {
     enable = true;
     pulse.enable = true;
+  };
+
+  services.ucodenix = {
+    enable = true;
+    cpuModelId = "00A20F12";
   };
 
   users.users.mpennington = {

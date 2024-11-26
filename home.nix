@@ -26,6 +26,7 @@ in {
     sway-launcher-desktop
     wlogout
     alsa-utils
+    libreoffice-fresh
     zathura
     wob
     swaynotificationcenter
@@ -88,6 +89,7 @@ in {
         };
       window = {
         border = 0;
+        titlebar = false;
         commands = [
           {
             command = "floating enable, sticky enable, resize set 30ppt 60ppt, border pixel 5";
