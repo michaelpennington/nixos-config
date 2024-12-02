@@ -42,6 +42,7 @@ in {
   services.pipewire = {
     enable = true;
     pulse.enable = true;
+    alsa.enable = true;
   };
 
   services.ucodenix = {
@@ -78,7 +79,8 @@ in {
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-emoji
-    (nerdfonts.override {fonts = ["FiraCode"];})
+    nerd-fonts.fantasque-sans-mono
+    nerd-fonts.fira-code
   ];
 
   programs = {

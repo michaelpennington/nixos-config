@@ -26,7 +26,7 @@ in {
     sway-launcher-desktop
     wlogout
     alsa-utils
-    libreoffice-fresh
+    inputs.nixpkgs-stable.legacyPackages."${pkgs.system}".libreoffice-fresh
     zathura
     wob
     swaynotificationcenter
@@ -34,6 +34,7 @@ in {
     lazygit
     pavucontrol
     playerctl
+    spotify-player
   ];
 
   programs = {
