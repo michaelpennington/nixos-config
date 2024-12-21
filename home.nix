@@ -25,6 +25,7 @@ in {
     file-roller
     sway-launcher-desktop
     wlogout
+    freetube
     alsa-utils
     inputs.nixpkgs-stable.legacyPackages."${pkgs.system}".libreoffice-fresh
     zathura
