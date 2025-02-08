@@ -14,12 +14,22 @@
     withJava = true;
   };
   vlc = pkgs.vlc.override {inherit libbluray;};
+  packwiz = pkgs.buildGoModule {
+    name = "packwiz";
+    src = inputs.packwiz;
+    vendorHash = "sha256-krdrLQHM///dtdlfEhvSUDV2QljvxFc2ouMVQVhN7A0=";
+  };
 in {
   imports = [
     ./hardware-configuration.nix
     inputs.nixvim.nixosModules.nixvim
     inputs.ucodenix.nixosModules.default
+    inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
+
+  nixpkgs.overlays = [inputs.nix-minecraft.overlay];
+
+  nixpkgs.config.allowUnfree = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -37,17 +47,50 @@ in {
     useXkbConfig = true; # use xkb.options in tty.
   };
 
-  services.printing.enable = true;
+  services = {
+    printing.enable = true;
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+      alsa.enable = true;
+    };
+    ucodenix = {
+      enable = true;
+      cpuModelId = "00A20F12";
+    };
+    openssh.enable = true;
+    gnome.gnome-keyring.enable = true;
+    minecraft-servers = {
+      enable = true;
+      eula = true;
 
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-    alsa.enable = true;
-  };
-
-  services.ucodenix = {
-    enable = true;
-    cpuModelId = "00A20F12";
+      servers = {
+        solo_world = let
+          inherit (inputs.nix-minecraft.lib) collectFilesAt;
+          modpack = pkgs.fetchPackwizModpack {
+            url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
+            packHash = "sha256-nPkgkb7l0mYiPJmXR/HzIVBa1c9D3SOekBI2+J4DsU8=";
+          };
+          mcVersion = modpack.manifest.versions.minecraft;
+          fabricVersion = modpack.manifest.versions.fabric;
+          serverVersion = lib.replaceStrings ["."] ["_"] "fabric-${mcVersion}";
+        in {
+          enable = true;
+          package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = fabricVersion;};
+          autoStart = false;
+          symlinks = {
+            "mods" = "${modpack}/mods";
+          };
+          serverProperties = {
+            level-name = "Survival World";
+          };
+          files = {
+            "config" = "${modpack}/config";
+          };
+          jvmOpts = "-XX:+UnlockExperimentalVMOptions -XX:+UnlockDiagnosticVMOptions -XX:+AlwaysActAsServerClassMachine -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseNUMA -XX:NmethodSweepActivity=1 -XX:ReservedCodeCacheSize=400M -XX:NonNMethodCodeHeapSize=12M -XX:ProfiledCodeHeapSize=194M -XX:NonProfiledCodeHeapSize=194M -XX:-DontCompileHugeMethods -XX:MaxNodeLimit=240000 -XX:NodeLimitFudgeFactor=8000 -XX:+UseVectorCmov -XX:+PerfDisableSharedMem -XX:+UseFastUnorderedTimeStamps -XX:+UseCriticalJavaThreadPriority -XX:ThreadPriorityPolicy=1 -XX:+UseZGC -XX:AllocatePrefetchStyle=1 -XX:-ZProactive -Xms8G -Xmx8G -XX:+UseTransparentHugePages -XX:ConcGCThreads=10";
+        };
+      };
+    };
   };
 
   users.users.mpennington = {
@@ -64,6 +107,7 @@ in {
     fd
     gcc
     gh
+    packwiz
     ripgrep
     rustup
     stow
@@ -231,11 +275,6 @@ in {
   };
 
   security.polkit.enable = true;
-
-  services = {
-    openssh.enable = true;
-    gnome.gnome-keyring.enable = true;
-  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

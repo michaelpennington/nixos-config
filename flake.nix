@@ -25,6 +25,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ucodenix.url = "github:e-tho/ucodenix";
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    packwiz = {
+      url = "github:packwiz/packwiz";
+      flake = false;
+    };
   };
 
   outputs = {

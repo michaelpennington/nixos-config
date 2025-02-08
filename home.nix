@@ -17,25 +17,31 @@ in {
 
   home.stateVersion = "24.05";
 
+  nixpkgs.config.allowUnfree = true;
+
   home.packages = with pkgs; [
+    alsa-utils
+    file-roller
+    freetube
+    imv
+    inkscape
+    inputs.nixpkgs-stable.legacyPackages."${pkgs.system}".libreoffice-fresh
     inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
     inputs.wezterm.packages."${pkgs.system}".default
-    vlc
-    inkscape
-    file-roller
-    sway-launcher-desktop
-    wlogout
-    freetube
-    alsa-utils
-    inputs.nixpkgs-stable.legacyPackages."${pkgs.system}".libreoffice-fresh
-    zathura
-    wob
-    swaynotificationcenter
-    nautilus
+    jdk
+    krita
     lazygit
+    nautilus
     pavucontrol
     playerctl
     spotify-player
+    sway-launcher-desktop
+    swaynotificationcenter
+    vlc
+    wlogout
+    wob
+    zathura
+    zoom-us
   ];
 
   programs = {
@@ -47,6 +53,7 @@ in {
         time.style = ''#cfae71'';
       };
     };
+    ssh.enable = true;
     firefox = {
       enable = true;
       languagePacks = ["en-US"];
@@ -61,11 +68,14 @@ in {
     };
   };
 
+  services.ssh-agent.enable = true;
+
   wayland.windowManager.sway = {
     enable = true;
     checkConfig = false;
     extraConfig = builtins.readFile ./sway_config;
     systemd.enable = true;
+    wrapperFeatures.gtk = true;
     config = let
       wezterm = lib.meta.getExe inputs.wezterm.packages."${pkgs.system}".default;
       swayLauncherDesktop = lib.meta.getExe pkgs.sway-launcher-desktop;
@@ -114,4 +124,6 @@ in {
       };
     };
   };
+
+  xdg.enable = true;
 }
