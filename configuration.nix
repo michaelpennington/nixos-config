@@ -83,6 +83,7 @@ in {
           };
           serverProperties = {
             level-name = "Survival World";
+            difficulty = "hard";
           };
           files = {
             "config" = "${modpack}/config";
