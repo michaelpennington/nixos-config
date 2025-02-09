@@ -69,7 +69,7 @@ in {
           inherit (inputs.nix-minecraft.lib) collectFilesAt;
           modpack = pkgs.fetchPackwizModpack {
             url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-            packHash = "sha256-nPkgkb7l0mYiPJmXR/HzIVBa1c9D3SOekBI2+J4DsU8=";
+            packHash = "sha256-W+lfnPMVt6VsXn2ZPEtYzk7Mb3cavdjBI43JVn6nHTI=";
           };
           mcVersion = modpack.manifest.versions.minecraft;
           fabricVersion = modpack.manifest.versions.fabric;
