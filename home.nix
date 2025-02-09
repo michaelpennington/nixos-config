@@ -23,6 +23,8 @@ in {
     alsa-utils
     file-roller
     freetube
+    slurp
+    grim
     imv
     inkscape
     inputs.nixpkgs-stable.legacyPackages."${pkgs.system}".libreoffice-fresh
