@@ -8,12 +8,6 @@
   inputs,
   ...
 }: let
-  libbluray = pkgs.libbluray.override {
-    withAACS = true;
-    withBDplus = true;
-    withJava = true;
-  };
-  vlc = pkgs.vlc.override {inherit libbluray;};
   packwiz = pkgs.buildGoModule {
     name = "packwiz";
     src = inputs.packwiz;
@@ -66,7 +60,6 @@ in {
 
       servers = {
         solo_world = let
-          inherit (inputs.nix-minecraft.lib) collectFilesAt;
           modpack = pkgs.fetchPackwizModpack {
             url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
             packHash = "sha256-q+rBevqkmqzVwmOeWukPrplNg64aK62uuSaYuRXZjtg=";
@@ -103,6 +96,7 @@ in {
 
   environment.systemPackages = with pkgs; [
     inputs.alejandra.defaultPackage.${system}
+    inputs.nixd.packages.${system}.default
     bat
     eza
     fd
@@ -186,6 +180,48 @@ in {
         };
         web-devicons.enable = true;
         transparent.enable = true;
+        rustaceanvim.enable = true;
+        lsp = {
+          enable = true;
+          keymaps = {
+            diagnostic = {
+              "<leader>j" = "goto_next";
+              "<leader>k" = "goto_prev";
+            };
+            lspBuf = {
+              K = "hover";
+              gD = "references";
+              gd = "definition";
+              gi = "implementation";
+              gt = "type_definition";
+            };
+          };
+          servers = {
+            nixd = {
+              enable = true;
+              package = inputs.nixd.packages.${pkgs.system}.default;
+            };
+          };
+        };
+        cmp = {
+          enable = true;
+          settings = {
+            mapping = {
+              "<C-Space>" = "cmp.mapping.complete()";
+              "<C-d>" = "cmp.mapping.scroll_docs(-4)";
+              "<C-e>" = "cmp.mapping.close()";
+              "<C-f>" = "cmp.mapping.scroll_docs(4)";
+              "<CR>" = "cmp.mapping.confirm({ select = true })";
+              "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+              "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+            };
+            sources = [
+              {name = "nvim_lsp";}
+              {name = "path";}
+              {name = "buffer";}
+            ];
+          };
+        };
         lualine = {
           enable = true;
           settings.options.theme = "zenburn";

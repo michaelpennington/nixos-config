@@ -30,10 +30,12 @@
       url = "github:packwiz/packwiz";
       flake = false;
     };
+    nixd = {
+      url = "github:nix-community/nixd";
+    };
   };
 
   outputs = {
-    self,
     nixpkgs,
     home-manager,
     ...
