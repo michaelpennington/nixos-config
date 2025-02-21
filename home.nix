@@ -42,6 +42,7 @@ in {
     wob
     zathura
     zoom-us
+    zoxide
   ];
 
   programs = {

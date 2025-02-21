@@ -238,6 +238,18 @@ in {
             desc = "Toggle neotree";
           };
         }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''vim.lsp.buf.code_action'';
+          key = "<leader>ca";
+          mode = ["n" "v"];
+          options = {
+            silent = true;
+            desc = "Code action";
+          };
+        }
       ];
       userCommands = {
         "Format" = {
