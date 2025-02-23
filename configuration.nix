@@ -92,7 +92,10 @@ in {
     extraGroups = ["wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
   };
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    trusted-users = ["root" "mpennington"];
+    experimental-features = ["nix-command" "flakes"];
+  };
 
   environment.systemPackages = with pkgs; [
     inputs.alejandra.defaultPackage.${system}
