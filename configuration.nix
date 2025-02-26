@@ -6,13 +6,15 @@
   pkgs,
   inputs,
   ...
-}: let
-  packwiz = pkgs.buildGoModule {
-    name = "packwiz";
-    src = inputs.packwiz;
-    vendorHash = "sha256-krdrLQHM///dtdlfEhvSUDV2QljvxFc2ouMVQVhN7A0=";
-  };
-in {
+}:
+# let
+# packwiz = pkgs.buildGoModule {
+#   name = "packwiz";
+#   src = inputs.packwiz;
+#   vendorHash = "sha256-krdrLQHM///dtdlfEhvSUDV2QljvxFc2ouMVQVhN7A0=";
+# };
+# in
+{
   imports = [
     ./hardware-configuration.nix
     inputs.nixvim.nixosModules.nixvim
