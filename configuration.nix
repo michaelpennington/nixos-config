@@ -20,7 +20,7 @@ in {
     # inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
 
-  nixpkgs.overlays = [inputs.nix-minecraft.overlay];
+  # nixpkgs.overlays = [inputs.nix-minecraft.overlay];
 
   nixpkgs.config.allowUnfree = true;
 
