@@ -17,7 +17,7 @@ in {
     ./hardware-configuration.nix
     inputs.nixvim.nixosModules.nixvim
     inputs.ucodenix.nixosModules.default
-    inputs.nix-minecraft.nixosModules.minecraft-servers
+    # inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
 
   nixpkgs.overlays = [inputs.nix-minecraft.overlay];
