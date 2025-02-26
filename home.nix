@@ -26,7 +26,7 @@ in {
     imv
     inkscape
     inputs.nixpkgs-stable.legacyPackages."${pkgs.system}".libreoffice-fresh
-    inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
+    # inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
     inputs.wezterm.packages."${pkgs.system}".default
     jdk
     krita

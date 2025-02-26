@@ -4,10 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
-    prismlauncher = {
-      url = "github:PrismLauncher/PrismLauncher/develop";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # prismlauncher = {
+    #   url = "github:PrismLauncher/PrismLauncher/develop";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,11 +25,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ucodenix.url = "github:e-tho/ucodenix";
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
-    packwiz = {
-      url = "github:packwiz/packwiz";
-      flake = false;
-    };
+    # nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    # packwiz = {
+    #   url = "github:packwiz/packwiz";
+    #   flake = false;
+    # };
     nixd = {
       url = "github:nix-community/nixd";
     };
