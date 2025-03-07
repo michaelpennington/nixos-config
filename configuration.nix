@@ -109,6 +109,7 @@
     packwiz
     ripgrep
     rustup
+    gnumake
     stow
     w3m
     wget
