@@ -208,6 +208,7 @@
               enable = true;
               package = inputs.nixd.packages.${pkgs.system}.default;
             };
+            clangd.enable = true;
           };
         };
         cmp = {
