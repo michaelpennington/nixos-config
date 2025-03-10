@@ -38,6 +38,7 @@ in {
     spotify-player
     sway-launcher-desktop
     swaynotificationcenter
+    direnv
     vlc
     wlogout
     wob
@@ -70,7 +71,10 @@ in {
     };
   };
 
-  services.ssh-agent.enable = true;
+  services = {
+    lorri.enable = true;
+    ssh-agent.enable = true;
+  };
 
   wayland.windowManager.sway = {
     enable = true;
