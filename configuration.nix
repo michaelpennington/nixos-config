@@ -45,7 +45,13 @@
   };
 
   services = {
-    printing.enable = true;
+    printing = {
+      enable = true;
+      allowFrom = ["all"];
+      browsing = true;
+      defaultShared = true;
+      openFirewall = true;
+    };
     pipewire = {
       enable = true;
       pulse.enable = true;
@@ -54,6 +60,11 @@
     ucodenix = {
       enable = true;
       cpuModelId = "00A20F12";
+    };
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
     };
     openssh.enable = true;
     gnome.gnome-keyring.enable = true;
