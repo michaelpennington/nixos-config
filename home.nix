@@ -21,6 +21,7 @@ in {
     alsa-utils
     file-roller
     freetube
+    super-slicer
     gtklp
     slurp
     grim
