@@ -26,9 +26,11 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    kernelParams = ["microcode.amd_sha_check=off"];
+  };
   time.hardwareClockInLocalTime = true;
 
   hardware.graphics.enable = true;
