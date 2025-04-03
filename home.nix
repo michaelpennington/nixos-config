@@ -21,12 +21,14 @@ in {
     alsa-utils
     file-roller
     freetube
+    freecad
     super-slicer
     gtklp
     slurp
     grim
     imv
     inkscape
+    fstl
     lilypond-with-fonts
     inputs.nixpkgs-stable.legacyPackages."${pkgs.system}".libreoffice-fresh
     # inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
