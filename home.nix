@@ -24,7 +24,9 @@ in {
     freecad
     super-slicer
     gtklp
+    openscad
     slurp
+    blender
     grim
     imv
     inkscape

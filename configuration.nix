@@ -117,6 +117,8 @@
     inputs.alejandra.defaultPackage.${system}
     inputs.nixd.packages.${system}.default
     bat
+    unzip
+    bottom
     eza
     fd
     gcc
