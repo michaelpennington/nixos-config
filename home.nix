@@ -21,6 +21,7 @@ in {
     alsa-utils
     file-roller
     freetube
+    librecad
     freecad
     super-slicer
     gtklp
