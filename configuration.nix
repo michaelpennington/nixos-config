@@ -169,6 +169,7 @@
       };
       globals.mapleader = " ";
       plugins = {
+        gitgutter.enable = true;
         barbar = {
           enable = true;
           keymaps = {
