@@ -254,6 +254,10 @@
             ];
           };
         };
+        dap.enabled = true;
+        dap-lldb.enabled = true;
+        dap-ui.enabled = true;
+        dap-virtual-text.enabled = true;
         mini = {
           enable = true;
           modules = {
