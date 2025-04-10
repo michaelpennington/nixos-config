@@ -171,6 +171,11 @@
       plugins = {
         gitsigns.enable = true;
         lazygit.enable = true;
+        smart-splits = {
+          enable = true;
+          settings = {
+          };
+        };
         barbar = {
           enable = true;
           keymaps = {
@@ -327,6 +332,150 @@
           options = {
             silent = true;
             desc = "Code action";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').resize_left'';
+          key = "<A-h>";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Resize split left";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').resize_right'';
+          key = "<A-l>";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Resize split right";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').resize_up'';
+          key = "<A-k>";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Resize split up";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').resize_down'';
+          key = "<A-j>";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Resize split down";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').move_cursor_left'';
+          key = "<C-h>";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Move to window to the left";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').move_cursor_down'';
+          key = "<C-j>";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Move to window below";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').move_cursor_up'';
+          key = "<C-k>";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Move to window above";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').move_cursor_right'';
+          key = "<C-l>";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Move to window to the right";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').swap_buf_left'';
+          key = "<leader><leader>h";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Swap with window to the left";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').swap_buf_down'';
+          key = "<leader><leader>j";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Swap with window below";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').swap_buf_up'';
+          key = "<leader><leader>k";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Swap with window above";
+          };
+        }
+        {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''require('smart-splits').swap_buf_right'';
+          key = "<leader><leader>l";
+          mode = ["n"];
+          options = {
+            silent = true;
+            desc = "Swap with window to the right";
           };
         }
       ];
