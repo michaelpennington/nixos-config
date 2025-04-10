@@ -170,6 +170,7 @@
       globals.mapleader = " ";
       plugins = {
         gitsigns.enable = true;
+        lazygit.enable = true;
         barbar = {
           enable = true;
           keymaps = {
