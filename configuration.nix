@@ -314,6 +314,18 @@
       };
       keymaps = [
         {
+          action =
+            config.lib.nixvim.mkRaw
+            # Lua
+            ''vim.lsp.buf.rename'';
+          key = "grn";
+          mode = ["n" "v"];
+          options = {
+            silent = true;
+            desc = "Rename object";
+          };
+        }
+        {
           action = ":Neotree filesystem toggle<CR>";
           key = "<leader>e";
           mode = "n";
