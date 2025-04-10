@@ -128,6 +128,7 @@
     rustup
     gnumake
     stow
+    vscode-extensions.vadimcn.vscode-lldb
     w3m
     wget
     xdg-user-dirs
@@ -255,7 +256,10 @@
           };
         };
         dap.enable = true;
-        dap-lldb.enable = true;
+        dap-lldb = {
+          enable = true;
+          settings.codelldb_path = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb";
+        };
         dap-ui.enable = true;
         dap-virtual-text.enable = true;
         mini = {
