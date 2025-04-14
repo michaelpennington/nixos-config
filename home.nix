@@ -30,6 +30,7 @@ in {
     blender
     grim
     imv
+    kicad
     inkscape
     fstl
     lilypond-with-fonts

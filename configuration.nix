@@ -263,7 +263,6 @@
         dap-ui = {
           enable = true;
           luaConfig.post =
-            config.lib.nixvim.mkRaw
             # Lua
             ''
               local dap, dapui = require("dap"), require("dapui")
