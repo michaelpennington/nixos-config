@@ -250,22 +250,6 @@
         "type": "github"
       }
     },
-    "libnbtplusplus": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1744811532,
-        "narHash": "sha256-qhmjaRkt+O7A+gu6HjUkl7QzOEb4r8y8vWZMG2R/C6o=",
-        "owner": "PrismLauncher",
-        "repo": "libnbtplusplus",
-        "rev": "531449ba1c930c98e0bcf5d332b237a8566f9d78",
-        "type": "github"
-      },
-      "original": {
-        "owner": "PrismLauncher",
-        "repo": "libnbtplusplus",
-        "type": "github"
-      }
-    },
     "libpng": {
       "flake": false,
       "locked": {
@@ -408,45 +392,6 @@
         "type": "github"
       }
     },
-    "prismlauncher": {
-      "inputs": {
-        "libnbtplusplus": "libnbtplusplus",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "qt-qrcodegenerator": "qt-qrcodegenerator"
-      },
-      "locked": {
-        "lastModified": 1745786929,
-        "narHash": "sha256-Yd5Yydoy0210ZOqFaXJ8G3ayADU8mecDpHRgRCRgopA=",
-        "owner": "PrismLauncher",
-        "repo": "PrismLauncher",
-        "rev": "f58ee6af7aad560e97707b69b69b303a17314097",
-        "type": "github"
-      },
-      "original": {
-        "owner": "PrismLauncher",
-        "ref": "develop",
-        "repo": "PrismLauncher",
-        "type": "github"
-      }
-    },
-    "qt-qrcodegenerator": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1737616857,
-        "narHash": "sha256-6SugPt0lp1Gz7nV23FLmsmpfzgFItkSw7jpGftsDPWc=",
-        "owner": "nayuki",
-        "repo": "QR-Code-generator",
-        "rev": "2c9044de6b049ca25cb3cd1649ed7e27aa055138",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nayuki",
-        "repo": "QR-Code-generator",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "alejandra": "alejandra",
@@ -455,7 +400,6 @@
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixvim": "nixvim",
-        "prismlauncher": "prismlauncher",
         "ucodenix": "ucodenix",
         "wezterm": "wezterm"
       }
