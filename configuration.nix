@@ -25,9 +25,15 @@
   # nixpkgs.overlays = [inputs.nix-minecraft.overlay];
 
   nixpkgs.config.allowUnfree = true;
+  # boot.loader.grub.configurationLimit = 10;
+
+  # Perform garbage collection weekly to maintain low disk usage
 
   boot = {
-    loader.systemd-boot.enable = true;
+    loader.systemd-boot = {
+      enable = true;
+      configurationLimit = 10;
+    };
     loader.efi.canTouchEfiVariables = true;
     kernelParams = ["microcode.amd_sha_check=off"];
   };
@@ -108,9 +114,17 @@
     extraGroups = ["wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
   };
 
-  nix.settings = {
-    trusted-users = ["root" "mpennington"];
-    experimental-features = ["nix-command" "flakes"];
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 1w";
+    };
+    settings = {
+      auto-optimise-store = true;
+      trusted-users = ["root" "mpennington"];
+      experimental-features = ["nix-command" "flakes"];
+    };
   };
 
   environment.systemPackages = with pkgs; [
