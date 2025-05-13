@@ -141,6 +141,7 @@
     ripgrep
     rustup
     gnumake
+    usbutils
     stow
     vscode-extensions.vadimcn.vscode-lldb
     w3m
