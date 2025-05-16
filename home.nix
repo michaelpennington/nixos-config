@@ -64,6 +64,7 @@ in {
         time.style = ''#cfae71'';
       };
     };
+    steam.enable = true;
     ssh.enable = true;
     firefox = {
       enable = true;
