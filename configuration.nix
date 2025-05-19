@@ -143,6 +143,7 @@
     gnumake
     usbutils
     stow
+    mariadb
     vscode-extensions.vadimcn.vscode-lldb
     w3m
     wget
