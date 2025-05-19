@@ -53,6 +53,10 @@
   };
 
   services = {
+    mysql = {
+      enable = true;
+      package = pkgs.mariadb;
+    };
     printing = {
       enable = true;
       allowFrom = ["all"];
@@ -143,7 +147,6 @@
     gnumake
     usbutils
     stow
-    mariadb
     vscode-extensions.vadimcn.vscode-lldb
     w3m
     wget
