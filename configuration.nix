@@ -139,6 +139,7 @@
     bottom
     eza
     fd
+    zip
     gcc
     gh
     packwiz
