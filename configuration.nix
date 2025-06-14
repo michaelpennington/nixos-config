@@ -115,7 +115,7 @@
 
   users.users.mpennington = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel" "networkmanager" "dialout"]; # Enable ‘sudo’ for the user.
   };
 
   nix = {
@@ -139,7 +139,6 @@
     bottom
     eza
     fd
-    zip
     gcc
     gh
     packwiz
@@ -152,6 +151,31 @@
     w3m
     wget
     xdg-user-dirs
+    (let
+      base = pkgs.appimageTools.defaultFhsEnvArgs;
+    in
+      pkgs.buildFHSEnv (base
+        // {
+          name = "fhs";
+          targetPkgs = pkgs:
+          # pkgs.buildFHSUserEnv provides only a minimal FHS environment,
+          # lacking many basic packages needed by most software.
+          # Therefore, we need to add them manually.
+          #
+          # pkgs.appimageTools provides basic packages required by most software.
+            (base.targetPkgs pkgs)
+            ++ (
+              with pkgs; [
+                pkg-config
+                ncurses
+                nodejs
+                wineWowPackages.stable
+              ]
+            );
+          profile = "export FHS=1";
+          runScript = "bash";
+          extraOutputsToInstall = ["dev"];
+        }))
   ];
 
   fonts.packages = with pkgs; [
@@ -171,6 +195,12 @@
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+    };
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        squashfsTools
+      ];
     };
     fish.enable = true;
     git.enable = true;
