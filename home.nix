@@ -22,10 +22,12 @@ in {
     file-roller
     freetube
     librecad
+    ffmpeg
     freecad
     super-slicer
     gtklp
     openscad
+    spotdl
     slurp
     blender
     grim

@@ -249,6 +249,7 @@
     wineWowPackages.waylandFull
     winetricks
     bat
+    file
     unzip
     bottom
     eza
@@ -258,6 +259,7 @@
     packwiz
     ripgrep
     rustup
+    parallel
     gnumake
     usbutils
     stow
