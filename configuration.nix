@@ -347,6 +347,20 @@
       defaultEditor = true;
       extraPlugins = [pkgs.vimPlugins.phha-zenburn];
       colorscheme = "zenburn";
+      highlightOverride = let
+        opts = {
+          ctermbg = null;
+          guibg = null;
+        };
+      in {
+        LspInlayHint = {
+          fg = "#9DA9A0";
+        };
+        LineNr = opts;
+        FoldColumn = opts;
+        NonText = opts;
+        Normal = opts;
+      };
       opts = {
         autoindent = true;
         expandtab = true;
