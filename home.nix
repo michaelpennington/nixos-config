@@ -20,7 +20,9 @@ in {
   home.packages = with pkgs; [
     alsa-utils
     aha
+    chromium
     wkhtmltopdf
+    appimage-run
     file-roller
     freetube
     librecad
