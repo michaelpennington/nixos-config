@@ -25,8 +25,11 @@ in {
     appimage-run
     file-roller
     freetube
+    libmtp
     librecad
+    mtpfs
     ffmpeg
+    nodejs
     freecad
     super-slicer
     gtklp

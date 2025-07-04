@@ -75,7 +75,7 @@
         ATTRS{idVendor}=="054c", ATTRS{idProduct}=="017f", TAG+="uaccess"
         ATTRS{idVendor}=="054c", ATTRS{idProduct}=="021a", TAG+="uaccess"
         ATTRS{idVendor}=="054c", ATTRS{idProduct}=="021c", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0187", TAG+="uaccess"
+        SUBSYSTEM=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0187", MODE="0660", GROUP="plugdev", TAG+="uaccess"
         ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0231", TAG+="uaccess"
         ATTRS{idVendor}=="054c", ATTRS{idProduct}=="022d", TAG+="uaccess"
         ATTRS{idVendor}=="054c", ATTRS{idProduct}=="01ea", TAG+="uaccess"
