@@ -22,7 +22,7 @@ in {
     aha
     chromium
     wkhtmltopdf
-    kdenlive
+    kdePackages.kdenlive
     appimage-run
     file-roller
     freetube
