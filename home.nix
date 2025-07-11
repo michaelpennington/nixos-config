@@ -20,6 +20,7 @@ in {
   home.packages = with pkgs; [
     alsa-utils
     aha
+    haskell.compiler.ghc912
     chromium
     wkhtmltopdf
     kdePackages.kdenlive
