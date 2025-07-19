@@ -442,6 +442,7 @@
               package = inputs.nixd.packages.${pkgs.system}.default;
             };
             clangd.enable = true;
+            bashls.enable = true;
           };
         };
         cmp = {

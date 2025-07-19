@@ -18,6 +18,7 @@ in {
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
+    # extractpdfmark
     alsa-utils
     aha
     haskell.compiler.ghc912
@@ -44,7 +45,7 @@ in {
     kicad
     inkscape
     fstl
-    lilypond-with-fonts
+    # lilypond-with-fonts
     inputs.nixpkgs-stable.legacyPackages."${pkgs.system}".libreoffice-fresh
     # inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
     inputs.wezterm.packages."${pkgs.system}".default
