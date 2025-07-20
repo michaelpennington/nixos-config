@@ -20,6 +20,7 @@ in {
   home.packages = with pkgs; [
     # extractpdfmark
     alsa-utils
+    gimp
     aha
     haskell.compiler.ghc912
     chromium
