@@ -21,7 +21,10 @@ in {
     # extractpdfmark
     alsa-utils
     gimp
+    megasync
+    texlive.combined.scheme-full
     aha
+    megacli
     haskell.compiler.ghc912
     chromium
     wkhtmltopdf
@@ -35,6 +38,7 @@ in {
     ffmpeg
     nodejs
     freecad
+    baobab
     super-slicer
     gtklp
     openscad
