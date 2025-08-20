@@ -57,6 +57,7 @@ in {
     jdk
     krita
     lazygit
+    qbittorrent
     nautilus
     pavucontrol
     playerctl
