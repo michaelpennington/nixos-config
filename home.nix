@@ -25,6 +25,7 @@ in {
     texlive.combined.scheme-full
     aha
     megacli
+    yo
     haskell.compiler.ghc912
     chromium
     wkhtmltopdf
