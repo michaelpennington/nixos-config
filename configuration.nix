@@ -420,6 +420,7 @@
         };
         web-devicons.enable = true;
         transparent.enable = true;
+        typescript-tools.enable = true;
         rustaceanvim.enable = true;
         lsp = {
           enable = true;
@@ -441,6 +442,8 @@
               enable = true;
               package = inputs.nixd.packages.${pkgs.system}.default;
             };
+            html.enable = true;
+            ts_ls.enable = true;
             clangd.enable = true;
             bashls.enable = true;
           };
