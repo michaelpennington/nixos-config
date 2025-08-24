@@ -411,7 +411,7 @@
               ];
               c = ["clang_format"];
               cpp = ["clang_format"];
-              python = ["isort" "black"]
+              python = ["isort" "black"];
             };
             format_on_save = {
               lsp_format = "fallback";
