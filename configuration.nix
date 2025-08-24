@@ -192,37 +192,6 @@
     };
     openssh.enable = true;
     gnome.gnome-keyring.enable = true;
-    # minecraft-servers = {
-    #   enable = true;
-    #   eula = true;
-    #
-    #   servers = {
-    #     solo_world = let
-    #       modpack = pkgs.fetchPackwizModpack {
-    #         url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-    #         packHash = "sha256-q+rBevqkmqzVwmOeWukPrplNg64aK62uuSaYuRXZjtg=";
-    #       };
-    #       mcVersion = modpack.manifest.versions.minecraft;
-    #       fabricVersion = modpack.manifest.versions.fabric;
-    #       serverVersion = lib.replaceStrings ["."] ["_"] "fabric-${mcVersion}";
-    #     in {
-    #       enable = true;
-    #       package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = fabricVersion;};
-    #       autoStart = false;
-    #       symlinks = {
-    #         "mods" = "${modpack}/mods";
-    #       };
-    #       serverProperties = {
-    #         level-name = "Survival World";
-    #         difficulty = "hard";
-    #       };
-    #       files = {
-    #         "config" = "${modpack}/config";
-    #       };
-    #       jvmOpts = "-XX:+UnlockExperimentalVMOptions -XX:+UnlockDiagnosticVMOptions -XX:+AlwaysActAsServerClassMachine -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseNUMA -XX:NmethodSweepActivity=1 -XX:ReservedCodeCacheSize=400M -XX:NonNMethodCodeHeapSize=12M -XX:ProfiledCodeHeapSize=194M -XX:NonProfiledCodeHeapSize=194M -XX:-DontCompileHugeMethods -XX:MaxNodeLimit=240000 -XX:NodeLimitFudgeFactor=8000 -XX:+UseVectorCmov -XX:+PerfDisableSharedMem -XX:+UseFastUnorderedTimeStamps -XX:+UseCriticalJavaThreadPriority -XX:ThreadPriorityPolicy=1 -XX:+UseZGC -XX:AllocatePrefetchStyle=1 -XX:-ZProactive -Xms8G -Xmx8G -XX:+UseTransparentHugePages -XX:ConcGCThreads=10";
-    #     };
-    #   };
-    # };
   };
 
   users.users.mpennington = {
@@ -412,6 +381,7 @@
               c = ["clang_format"];
               cpp = ["clang_format"];
               python = ["isort" "black"];
+              html = ["htmlbeautifier"];
             };
             format_on_save = {
               lsp_format = "fallback";
