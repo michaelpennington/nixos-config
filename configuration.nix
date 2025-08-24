@@ -227,7 +227,7 @@
 
   users.users.mpennington = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "dialout"]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video"]; # Enable ‘sudo’ for the user.
   };
 
   nix = {
@@ -411,6 +411,7 @@
               ];
               c = ["clang_format"];
               cpp = ["clang_format"];
+              python = ["isort" "black"]
             };
             format_on_save = {
               lsp_format = "fallback";
@@ -444,6 +445,7 @@
             };
             html.enable = true;
             ts_ls.enable = true;
+            pylsp.enable = true;
             clangd.enable = true;
             bashls.enable = true;
           };
