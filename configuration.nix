@@ -219,6 +219,7 @@
     winetricks
     bat
     file
+    rubyPackages.htmlbeautifier
     unzip
     bottom
     eza
@@ -227,6 +228,8 @@
     gh
     packwiz
     ripgrep
+    black
+    isort
     rustup
     parallel
     gnumake
@@ -381,7 +384,7 @@
               c = ["clang_format"];
               cpp = ["clang_format"];
               python = ["isort" "black"];
-              html = ["htmlbeautifier"];
+              html = ["html_beautify" "htmlbeautifier"];
             };
             format_on_save = {
               lsp_format = "fallback";
