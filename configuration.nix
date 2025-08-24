@@ -384,7 +384,7 @@
               c = ["clang_format"];
               cpp = ["clang_format"];
               python = ["isort" "black"];
-              html = ["html_beautify" "htmlbeautifier"];
+              html = ["htmlbeautifier"];
             };
             format_on_save = {
               lsp_format = "fallback";
