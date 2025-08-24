@@ -21,6 +21,7 @@ in {
     # extractpdfmark
     alsa-utils
     gimp
+    musescore
     megasync
     texlive.combined.scheme-full
     aha
