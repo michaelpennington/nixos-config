@@ -219,7 +219,7 @@
     winetricks
     bat
     file
-    rubyPackages.htmlbeautifier
+    nodePackages.js-beautify
     unzip
     bottom
     eza
@@ -384,7 +384,10 @@
               c = ["clang_format"];
               cpp = ["clang_format"];
               python = ["isort" "black"];
-              html = ["htmlbeautifier"];
+              html = ["html_beautify"];
+            };
+            formatters.html_beautify = {
+              prepend_args = ["-w" "80" "-s" "2"];
             };
             format_on_save = {
               lsp_format = "fallback";
@@ -417,6 +420,7 @@
               package = inputs.nixd.packages.${pkgs.system}.default;
             };
             html.enable = true;
+            cssls.enable = true;
             ts_ls.enable = true;
             pylsp.enable = true;
             clangd.enable = true;
