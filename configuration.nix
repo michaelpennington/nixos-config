@@ -385,6 +385,7 @@
               cpp = ["clang_format"];
               python = ["isort" "black"];
               html = ["html_beautify"];
+              css = ["css_beautify"];
             };
             formatters.html_beautify = {
               prepend_args = ["-w" "80" "-s" "2"];
