@@ -5,6 +5,7 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }:
 # let
@@ -387,10 +388,17 @@
               python = ["isort" "black"];
               html = ["html_beautify"];
               css = ["css_beautify"];
-              ts = ["prettier"];
+              typescript = ["prettier"];
             };
             formatters.html_beautify = {
-              prepend_args = ["-w" "80" "-s" "2"];
+              prepend_args = ["-w" "100" "-s" "2"];
+            };
+            formatters.prettier = {
+              command = lib.getExe pkgs.prettier;
+              prepend_args = ["--print-width" "100"];
+            };
+            formatters.css_beautify = {
+              prepend_args = ["-w" "100" "-s" "2"];
             };
             format_on_save = {
               lsp_format = "fallback";
