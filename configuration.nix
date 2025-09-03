@@ -232,6 +232,7 @@
     isort
     rustup
     parallel
+    prettier
     gnumake
     usbutils
     stow
@@ -386,6 +387,7 @@
               python = ["isort" "black"];
               html = ["html_beautify"];
               css = ["css_beautify"];
+              ts = ["prettier"];
             };
             formatters.html_beautify = {
               prepend_args = ["-w" "80" "-s" "2"];
