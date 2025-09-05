@@ -395,7 +395,7 @@
             };
             formatters.prettier = {
               command = lib.getExe pkgs.prettier;
-              prepend_args = ["--print-width" "100"];
+              prepend_args = ["--print-width" "100" "--experimental-ternaries" "--trailing-comma=all"];
             };
             formatters.css_beautify = {
               prepend_args = ["-w" "100" "-s" "2"];
