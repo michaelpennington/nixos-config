@@ -222,6 +222,7 @@
     file
     nodePackages.js-beautify
     unzip
+    xmlstarlet
     bottom
     eza
     fd
@@ -389,13 +390,14 @@
               html = ["html_beautify"];
               css = ["css_beautify"];
               typescript = ["prettier"];
+              xml = ["xmlstarlet"];
             };
             formatters.html_beautify = {
               prepend_args = ["-w" "100" "-s" "2"];
             };
             formatters.prettier = {
               command = lib.getExe pkgs.prettier;
-              prepend_args = ["--print-width" "100" "--experimental-ternaries" "--trailing-comma=all"];
+              prepend_args = ["--print-width" "100" "--experimental-ternaries" "--trailing-comma=es5"];
             };
             formatters.css_beautify = {
               prepend_args = ["-w" "100" "-s" "2"];
