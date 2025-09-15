@@ -7,23 +7,21 @@
   inputs,
   lib,
   ...
-}:
-# let
-# packwiz = pkgs.buildGoModule {
-#   name = "packwiz";
-#   src = inputs.packwiz;
-#   vendorHash = "sha256-krdrLQHM///dtdlfEhvSUDV2QljvxFc2ouMVQVhN7A0=";
-# };
-# in
-{
+}: let
+  packwiz = pkgs.buildGoModule {
+    name = "packwiz";
+    src = inputs.packwiz;
+    vendorHash = "sha256-krdrLQHM///dtdlfEhvSUDV2QljvxFc2ouMVQVhN7A0=";
+  };
+in {
   imports = [
     ./hardware-configuration.nix
     inputs.nixvim.nixosModules.nixvim
     inputs.ucodenix.nixosModules.default
-    # inputs.nix-minecraft.nixosModules.minecraft-servers
+    inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
 
-  # nixpkgs.overlays = [inputs.nix-minecraft.overlay];
+  nixpkgs.overlays = [inputs.nix-minecraft.overlay];
 
   nixpkgs.config.allowUnfree = true;
   # boot.loader.grub.configurationLimit = 10;
@@ -193,6 +191,37 @@
     };
     openssh.enable = true;
     gnome.gnome-keyring.enable = true;
+    minecraft-servers = {
+      enable = true;
+      eula = true;
+
+      servers = {
+        solo_world = let
+          modpack = pkgs.fetchPackwizModpack {
+            url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
+            packHash = "sha256-xidUwAnPEbzeQB8v1nD8M0zk3hdztRs7Yn47SdP2zvw=";
+          };
+          mcVersion = modpack.manifest.versions.minecraft;
+          fabricVersion = modpack.manifest.versions.fabric;
+          serverVersion = lib.replaceStrings ["."] ["_"] "fabric-${mcVersion}";
+        in {
+          enable = true;
+          package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = fabricVersion;};
+          autoStart = false;
+          symlinks = {
+            "mods" = "${modpack}/mods";
+          };
+          serverProperties = {
+            level-name = "Survival World";
+            difficulty = "hard";
+          };
+          files = {
+            "config" = "${modpack}/config";
+          };
+          jvmOpts = "-XX:+UnlockExperimentalVMOptions -XX:+UnlockDiagnosticVMOptions -XX:+AlwaysActAsServerClassMachine -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseNUMA -XX:NmethodSweepActivity=1 -XX:ReservedCodeCacheSize=400M -XX:NonNMethodCodeHeapSize=12M -XX:ProfiledCodeHeapSize=194M -XX:NonProfiledCodeHeapSize=194M -XX:-DontCompileHugeMethods -XX:MaxNodeLimit=240000 -XX:NodeLimitFudgeFactor=8000 -XX:+UseVectorCmov -XX:+PerfDisableSharedMem -XX:+UseFastUnorderedTimeStamps -XX:+UseCriticalJavaThreadPriority -XX:ThreadPriorityPolicy=1 -XX:+UseZGC -XX:AllocatePrefetchStyle=1 -XX:-ZProactive -Xms8G -Xmx8G -XX:+UseTransparentHugePages -XX:ConcGCThreads=10";
+        };
+      };
+    };
   };
 
   users.users.mpennington = {
@@ -466,23 +495,21 @@
         };
         dap-ui = {
           enable = true;
-          luaConfig.post =
-            # Lua
-            ''
-              local dap, dapui = require("dap"), require("dapui")
-              dap.listeners.before.attach.dapui_config = function()
-                dapui.open()
-              end
-              dap.listeners.before.launch.dapui_config = function()
-                dapui.open()
-              end
-              dap.listeners.before.event_terminated.dapui_config = function()
-                dapui.close()
-              end
-              dap.listeners.before.event_exited.dapui_config = function()
-                dapui.close()
-              end
-            '';
+          luaConfig.post = ''
+            local dap, dapui = require("dap"), require("dapui")
+            dap.listeners.before.attach.dapui_config = function()
+              dapui.open()
+            end
+            dap.listeners.before.launch.dapui_config = function()
+              dapui.open()
+            end
+            dap.listeners.before.event_terminated.dapui_config = function()
+              dapui.close()
+            end
+            dap.listeners.before.event_exited.dapui_config = function()
+              dapui.close()
+            end
+          '';
         };
         dap-virtual-text.enable = true;
         mini = {
@@ -547,7 +574,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''vim.lsp.buf.rename'';
           key = "grn";
           mode = ["n" "v"];
@@ -568,7 +594,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''vim.lsp.buf.code_action'';
           key = "<leader>ca";
           mode = ["n" "v"];
@@ -580,7 +605,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').resize_left'';
           key = "<A-h>";
           mode = ["n"];
@@ -592,7 +616,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').resize_right'';
           key = "<A-l>";
           mode = ["n"];
@@ -604,7 +627,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').resize_up'';
           key = "<A-k>";
           mode = ["n"];
@@ -616,7 +638,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').resize_down'';
           key = "<A-j>";
           mode = ["n"];
@@ -628,7 +649,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').move_cursor_left'';
           key = "<C-h>";
           mode = ["n"];
@@ -640,7 +660,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').move_cursor_down'';
           key = "<C-j>";
           mode = ["n"];
@@ -652,7 +671,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').move_cursor_up'';
           key = "<C-k>";
           mode = ["n"];
@@ -664,7 +682,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').move_cursor_right'';
           key = "<C-l>";
           mode = ["n"];
@@ -676,7 +693,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').swap_buf_left'';
           key = "<leader><leader>h";
           mode = ["n"];
@@ -688,7 +704,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').swap_buf_down'';
           key = "<leader><leader>j";
           mode = ["n"];
@@ -700,7 +715,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').swap_buf_up'';
           key = "<leader><leader>k";
           mode = ["n"];
@@ -712,7 +726,6 @@
         {
           action =
             config.lib.nixvim.mkRaw
-            # Lua
             ''require('smart-splits').swap_buf_right'';
           key = "<leader><leader>l";
           mode = ["n"];
@@ -827,7 +840,6 @@
           desc = "Format the current buffer";
           command =
             config.lib.nixvim.mkRaw
-            # Lua
             ''
               function(args)
                 local range = nil
@@ -847,7 +859,6 @@
           desc = "Disable autoformat on save";
           command =
             config.lib.nixvim.mkRaw
-            # Lua
             ''
               function(args)
                 if args.bang then
@@ -862,7 +873,6 @@
           desc = "Re-enable autoformat on save";
           command =
             config.lib.nixvim.mkRaw
-            # Lua
             ''
               function()
                 vim.b.disable_autoformat = false
