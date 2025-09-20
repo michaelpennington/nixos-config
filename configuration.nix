@@ -11,7 +11,7 @@
   packwiz = pkgs.buildGoModule {
     name = "packwiz";
     src = inputs.packwiz;
-    vendorHash = "sha256-krdrLQHM///dtdlfEhvSUDV2QljvxFc2ouMVQVhN7A0=";
+    vendorHash = "sha256-P1SsvHTYKUoPve9m1rloBfMxUNcDKr/YYU4dr4vZbTE=";
   };
 in {
   imports = [
@@ -32,6 +32,13 @@ in {
     loader.systemd-boot = {
       enable = true;
       configurationLimit = 10;
+      extraEntries = {
+        "lfs.conf" = ''
+          title LFS
+          linux /EFI/lfs/vmlinuz-6.16.7-lfs-ml-12.4-28-systemd
+          options root=PARTUUID=e415e6a5-6756-473d-bed4-ce8d41fbb929 rw
+        '';
+      };
     };
     loader.efi.canTouchEfiVariables = true;
     kernelParams = ["microcode.amd_sha_check=off"];
@@ -199,7 +206,7 @@ in {
         solo_world = let
           modpack = pkgs.fetchPackwizModpack {
             url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-            packHash = "sha256-xidUwAnPEbzeQB8v1nD8M0zk3hdztRs7Yn47SdP2zvw=";
+            packHash = "sha256-vlaQmoZe6xRlTt3FQ2IAm5CaoA4JgxNl7bLQDv9QIRA=";
           };
           mcVersion = modpack.manifest.versions.minecraft;
           fabricVersion = modpack.manifest.versions.fabric;
@@ -212,7 +219,7 @@ in {
             "mods" = "${modpack}/mods";
           };
           serverProperties = {
-            level-name = "Survival World";
+            # level-name = "Survival World";
             difficulty = "hard";
           };
           files = {
@@ -224,9 +231,23 @@ in {
     };
   };
 
-  users.users.mpennington = {
-    isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video"]; # Enable ‘sudo’ for the user.
+  users = {
+    users = {
+      mpennington = {
+        isNormalUser = true;
+        extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video"]; # Enable ‘sudo’ for the user.
+      };
+      lfs = {
+        isNormalUser = true;
+        extraGroups = ["wheel" "networkmanager" "lfs"];
+      };
+    };
+    groups = {
+      lfs = {
+        name = "lfs";
+        members = ["lfs"];
+      };
+    };
   };
 
   nix = {
@@ -249,6 +270,7 @@ in {
     winetricks
     bat
     file
+    zip
     nodePackages.js-beautify
     unzip
     xmlstarlet
@@ -288,8 +310,13 @@ in {
               with pkgs; [
                 pkg-config
                 ncurses
-                nodejs
-                wineWowPackages.stable
+                bison
+                python3
+                gnumake
+                gcc
+                texinfo
+                m4
+                patch
               ]
             );
           profile = "export FHS=1";
