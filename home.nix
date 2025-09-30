@@ -25,6 +25,7 @@ in {
     megasync
     texlive.combined.scheme-full
     aha
+    runescape
     runelite
     megacli
     yo
