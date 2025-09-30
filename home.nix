@@ -25,6 +25,7 @@ in {
     megasync
     texlive.combined.scheme-full
     aha
+    runelite
     megacli
     yo
     haskell.compiler.ghc912
