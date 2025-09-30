@@ -58,6 +58,10 @@ in {
     useXkbConfig = true; # use xkb.options in tty.
   };
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "openssl-1.1.1w"
+  ];
+
   services = {
     udev = {
       enable = true;
