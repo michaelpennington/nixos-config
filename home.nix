@@ -21,9 +21,13 @@ in {
     # extractpdfmark
     alsa-utils
     gimp
+    bolt-launcher
+    aoc-cli
     musescore
     megasync
     texlive.combined.scheme-full
+    flatpak
+    lutris
     aha
     runescape
     runelite
