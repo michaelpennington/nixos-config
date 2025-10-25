@@ -21,16 +21,13 @@ in {
     # extractpdfmark
     alsa-utils
     gimp
-    bolt-launcher
     aoc-cli
     musescore
-    megasync
+    yt-dlp
+    # megasync
     texlive.combined.scheme-full
     flatpak
-    lutris
     aha
-    runescape
-    runelite
     megacli
     yo
     haskell.compiler.ghc912
