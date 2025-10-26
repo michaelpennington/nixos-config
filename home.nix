@@ -22,7 +22,7 @@ in {
     alsa-utils
     gimp
     aoc-cli
-    musescore
+    # musescore
     yt-dlp
     # megasync
     texlive.combined.scheme-full
