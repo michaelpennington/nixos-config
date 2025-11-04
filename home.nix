@@ -24,7 +24,7 @@ in {
     aoc-cli
     # musescore
     yt-dlp
-    # megasync
+    megasync
     texlive.combined.scheme-full
     flatpak
     aha
