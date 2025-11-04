@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    rust-overlay.url = "github:oxalica/rust-overlay";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     prismlauncher = {
       url = "github:PrismLauncher/PrismLauncher/develop";
@@ -15,6 +16,7 @@
     wezterm = {
       url = "github:wez/wezterm/main?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
     nixvim = {
       url = "github:nix-community/nixvim";
