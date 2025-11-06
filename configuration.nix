@@ -221,6 +221,7 @@ in {
           serverProperties = {
             # level-name = "Survival World";
             difficulty = "hard";
+            pause-when-empty-seconds = -1;
           };
           files = {
             "config" = "${modpack}/config";
