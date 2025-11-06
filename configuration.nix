@@ -17,7 +17,7 @@ in {
   imports = [
     ./hardware-configuration.nix
     inputs.nixvim.nixosModules.nixvim
-    inputs.ucodenix.nixosModules.default
+    # inputs.ucodenix.nixosModules.default
     inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
 
@@ -187,10 +187,10 @@ in {
       pulse.enable = true;
       alsa.enable = true;
     };
-    ucodenix = {
-      enable = true;
-      cpuModelId = "00A20F12";
-    };
+    # ucodenix = {
+    #   enable = true;
+    #   cpuModelId = "00A20F12";
+    # };
     avahi = {
       enable = true;
       nssmdns4 = true;
