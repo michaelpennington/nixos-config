@@ -28,6 +28,13 @@ in {
 
   # Perform garbage collection weekly to maintain low disk usage
 
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16 * 1024;
+    }
+  ];
+
   boot = {
     loader.systemd-boot = {
       enable = true;
@@ -41,8 +48,14 @@ in {
       };
     };
     loader.efi.canTouchEfiVariables = true;
-    kernelParams = ["microcode.amd_sha_check=off"];
+    kernelParams = ["amd_pstate=guided"];
+    kernel.sysctl = {
+      "vm.swappiness" = 10;
+
+      "vm.vfa_cache_pressure" = 50;
+    };
   };
+  powerManagement.cpuFreqGovernor = "schedutil";
   time.hardwareClockInLocalTime = true;
 
   hardware.graphics.enable = true;
@@ -59,116 +72,15 @@ in {
   };
 
   services = {
+    fstrim.enable = true;
     udev = {
       enable = true;
       extraRules = ''
-              ## Rules file for NetMD devices and HiMD devices in NetMD mode
-        ## source: https://usb-ids.gowdy.us/read/UD/054c
-        ## last changed: 2025-05-05
-        ## updated to 'uaccess' by SammysHP
-        ## updated to support HiMD devices in mass storage mode by asivery
+        # Set 'none' (noop) scheduler for all NVMe devices
+        ACTION=="add|change", KERNEL=="nvme[0-9]*n[0-9]*", ATTR{queue/scheduler}="none"
 
-        ## HiMD
-
-        ATTRS{idVendor}=="5341", ATTRS{idProduct}=="5256", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="017e", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0219", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="021b", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0186", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0230", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="022c", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="01e9", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="017f", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="021a", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="021c", TAG+="uaccess"
-        SUBSYSTEM=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0187", MODE="0660", GROUP="plugdev", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0231", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="022d", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="01ea", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0180", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0182", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0184", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="023c", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0286", TAG+="uaccess"
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0287", TAG+="uaccess"
-
-
-        ## NetMD
-
-        # Aiwa AM-NX1
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0113", TAG+="uaccess"
-
-        # Aiwa AM-NX9
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="014c", TAG+="uaccess"
-
-        # Sharp IM-MT880H/MT899H
-        ATTRS{idVendor}=="04dd", ATTRS{idProduct}=="7202", TAG+="uaccess"
-
-        # Sharp IM-DR400/DR410
-        ATTRS{idVendor}=="04dd", ATTRS{idProduct}=="9013", TAG+="uaccess"
-
-        # Sharp IM-DR420/DR80/DR580 - Kenwood DMC-S9NET
-        ATTRS{idVendor}=="04dd", ATTRS{idProduct}=="9014", TAG+="uaccess"
-
-        # Sony NetMD (unknown model)
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0036", TAG+="uaccess"
-
-        # Sony NetMD MZ-N1
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0075", TAG+="uaccess"
-
-        # Sony NetMD (unknown model)
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="007c", TAG+="uaccess"
-
-        # Sony NetMD LAM-1
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0080", TAG+="uaccess"
-
-        # Sony NetMD MDS-JE780/JB980
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0081", TAG+="uaccess"
-
-        # Sony MZ-N505
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0084", TAG+="uaccess"
-
-        # Sony NetMD MZ-S1
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0085", TAG+="uaccess"
-
-        # Sony NetMD MZ-N707
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0086", TAG+="uaccess"
-
-        # Sony MZ-N10
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="00c6", TAG+="uaccess"
-
-        # Sony NetMD MZ-N910
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="00c7", TAG+="uaccess"
-
-        # Sony NetMD MZ-N710/NF810/NE810
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="00c8", TAG+="uaccess"
-
-        # Sony NetMD MZ-N510/NF610
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="00c9", TAG+="uaccess"
-
-        # Sony MZ-N410/NF520D
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="00ca", TAG+="uaccess"
-
-        # Sony NetMD MZ-NE810/NE910/DN430
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="00eb", TAG+="uaccess"
-
-        # Sony NetMD LAM-10
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0101", TAG+="uaccess"
-
-        # Sony MZ-N920
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0188", TAG+="uaccess"
-
-        # Sony NetMD LAM-3
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="018a", TAG+="uaccess"
-
-        # Sony NetMD CMT-AH10
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="021d", TAG+="uaccess"
-
-        # Panasonic NetMD SJ-MR250
-        ATTRS{idVendor}=="04da", ATTRS{idProduct}=="23b3", TAG+="uaccess"
-
-        # Sony CMT-M333NT
-        ATTRS{idVendor}=="054c", ATTRS{idProduct}=="00e7", TAG+="uaccess"
+        # Optional: Do the same for any non-rotational SATA devices (SSDs)
+        ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="none"
       '';
     };
     mysql = {
@@ -267,6 +179,7 @@ in {
   environment.systemPackages = with pkgs; [
     inputs.alejandra.defaultPackage.${system}
     inputs.nixd.packages.${system}.default
+    lm_sensors
     wineWowPackages.waylandFull
     winetricks
     bat
@@ -338,6 +251,10 @@ in {
   ];
 
   programs = {
+    corectl = {
+      enable = true;
+      gpuOverclock.enable = true;
+    };
     steam = {
       enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
