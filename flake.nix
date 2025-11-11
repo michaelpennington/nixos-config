@@ -55,6 +55,7 @@
 
           home-manager.users.mpennington = import ./home.nix;
         }
+        ./vfio.nix
       ];
     };
 

@@ -29,6 +29,8 @@ in {
     flatpak
     aha
     megacli
+    mesa-demos
+    vulkan-tools
     yo
     haskell.compiler.ghc912
     chromium

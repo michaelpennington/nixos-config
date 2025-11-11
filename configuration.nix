@@ -35,6 +35,22 @@ in {
     }
   ];
 
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+  };
+
   boot = {
     loader.systemd-boot = {
       enable = true;
@@ -52,13 +68,16 @@ in {
     kernel.sysctl = {
       "vm.swappiness" = 10;
 
-      "vm.vfa_cache_pressure" = 50;
+      "vm.vfs_cache_pressure" = 50;
     };
   };
   powerManagement.cpuFreqGovernor = "schedutil";
   time.hardwareClockInLocalTime = true;
 
-  hardware.graphics.enable = true;
+  hardware = {
+    graphics.enable = true;
+    amdgpu.overdrive.enable = true;
+  };
 
   networking.hostName = "poseidon";
   networking.networkmanager.enable = true;
@@ -108,7 +127,9 @@ in {
       nssmdns4 = true;
       openFirewall = true;
     };
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+    };
     gnome.gnome-keyring.enable = true;
     minecraft-servers = {
       enable = true;
@@ -180,6 +201,10 @@ in {
     inputs.alejandra.defaultPackage.${system}
     inputs.nixd.packages.${system}.default
     lm_sensors
+    amdgpu_top
+    linuxPackages.zenpower
+    radeontop
+    pciutils
     wineWowPackages.waylandFull
     winetricks
     bat
@@ -251,9 +276,8 @@ in {
   ];
 
   programs = {
-    corectl = {
+    corectrl = {
       enable = true;
-      gpuOverclock.enable = true;
     };
     steam = {
       enable = true;
