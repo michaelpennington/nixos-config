@@ -16,7 +16,7 @@
     wezterm = {
       url = "github:wez/wezterm/main?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
+      # inputs.rust-overlay.follows = "rust-overlay";
     };
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -55,7 +55,6 @@
 
           home-manager.users.mpennington = import ./home.nix;
         }
-        ./vfio.nix
       ];
     };
 

@@ -24,6 +24,9 @@ in {
   nixpkgs.overlays = [inputs.nix-minecraft.overlay];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "ventoy-1.1.07"
+  ];
   # boot.loader.grub.configurationLimit = 10;
 
   # Perform garbage collection weekly to maintain low disk usage
@@ -64,7 +67,12 @@ in {
       };
     };
     loader.efi.canTouchEfiVariables = true;
-    kernelParams = ["amd_pstate=guided"];
+    kernelParams = [
+      "amd_pstate=guided"
+      #       "amd_iommu=on"
+      # "iommu=pt"
+      # "vfio-pci.ids=1002:73bf"
+    ];
     kernel.sysctl = {
       "vm.swappiness" = 10;
 
@@ -73,6 +81,21 @@ in {
   };
   powerManagement.cpuFreqGovernor = "schedutil";
   time.hardwareClockInLocalTime = true;
+
+  # virtualisation = {
+  #   libvirtd = {
+  #     enable = true;
+  #     qemu.runAsRoot = true;
+  #     # qemuOvmf = pkgs.OVMFFull.fd;
+  #   };
+  #   # qemu = {
+  #   #   enable = true;
+  #   #   # Allow QEMU to access USB devices, etc.
+  #   #   runAsRoot = true;
+  #   # };
+  #   # Enable UEFI (OVMF) support for the VM
+  #   # efi.OVMF = pkgs.OVMF.fd;
+  # };
 
   hardware = {
     graphics.enable = true;
@@ -169,7 +192,7 @@ in {
     users = {
       mpennington = {
         isNormalUser = true;
-        extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video"]; # Enable ‘sudo’ for the user.
+        extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video" "libvirtd"]; # Enable ‘sudo’ for the user.
       };
       lfs = {
         isNormalUser = true;
@@ -207,6 +230,8 @@ in {
     pciutils
     wineWowPackages.waylandFull
     winetricks
+    virt-manager
+    virtio-win
     bat
     file
     zip

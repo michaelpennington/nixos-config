@@ -22,6 +22,8 @@ in {
     alsa-utils
     gimp
     aoc-cli
+    aria2
+    ventoy
     # musescore
     yt-dlp
     megasync

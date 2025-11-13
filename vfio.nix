@@ -20,16 +20,15 @@
   # boot.blacklistedKernelModules = ["nvidia" "nouveau" "amdgpu"];
 
   # 5. Enable Libvirt & QEMU
-  virtualisation.libvirtd = {
-    enable = true;
+  virtualisation = {
+    libvirtd.enable = true;
     qemu = {
       enable = true;
-      # Enable UEFI (OVMF) support for the VM
-      ovmf.enable = true;
-      ovmf.packages = [pkgs.OVMFFull.fd];
       # Allow QEMU to access USB devices, etc.
       runAsRoot = true;
     };
+    # Enable UEFI (OVMF) support for the VM
+    # efi.OVMF = pkgs.OVMF.fd;
   };
 
   # 6. Add your user to the 'libvirtd' group
