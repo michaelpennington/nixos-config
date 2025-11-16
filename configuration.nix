@@ -162,7 +162,7 @@ in {
         solo_world = let
           modpack = pkgs.fetchPackwizModpack {
             url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-            packHash = "sha256-4at/pkaT4KLl7U+DfyvcO6WByx30DWAMTVyMd1109o8=";
+            packHash = "sha256-wTsTRRM8JwOaOyRqE6+uhvnSSFM4NU38iIpbtGK/Ozo=";
           };
           mcVersion = modpack.manifest.versions.minecraft;
           fabricVersion = modpack.manifest.versions.fabric;
