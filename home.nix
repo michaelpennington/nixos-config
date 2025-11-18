@@ -109,6 +109,46 @@ in {
   services = {
     lorri.enable = true;
     ssh-agent.enable = true;
+    swayidle = let
+      lock = "${pkgs.swaylock}/bin/swaylock --daemonize";
+      display = status: "swaymsg 'output * power ${status}'";
+    in {
+      enable = true;
+      timeouts = [
+        {
+          timeout = 300;
+          command = display "off";
+          resumeCommand = display "on";
+        }
+        {
+          timeout = 600;
+          command = lock;
+        }
+        {
+          timeout = 1800;
+          command = "${pkgs.systemd}/bin/systemctl suspend";
+        }
+      ];
+      events = [
+        {
+          event = "before-sleep";
+          # adding duplicated entries for the same event may not work
+          command = (display "off") + "; " + lock;
+        }
+        {
+          event = "after-resume";
+          command = display "on";
+        }
+        {
+          event = "lock";
+          command = (display "off") + "; " + lock;
+        }
+        {
+          event = "unlock";
+          command = display "on";
+        }
+      ];
+    };
   };
 
   wayland.windowManager.sway = {
