@@ -69,6 +69,7 @@ in {
     loader.efi.canTouchEfiVariables = true;
     kernelParams = [
       "amd_pstate=guided"
+      "microcode.amd_sha_check=off"
       #       "amd_iommu=on"
       # "iommu=pt"
       # "vfio-pci.ids=1002:73bf"
