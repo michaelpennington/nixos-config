@@ -14,7 +14,7 @@
 
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "uas" "sd_mod" "vfio" "vfio_pci" "vfio_iommu_type1"];
   boot.initrd.kernelModules = ["amdgpu" "vfio_pci"];
-  boot.kernelModules = ["kvm-amd"];
+  boot.kernelModules = ["kvm-amd" "it87"];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {

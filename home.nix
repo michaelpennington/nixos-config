@@ -110,8 +110,7 @@ in {
     lorri.enable = true;
     ssh-agent.enable = true;
     swayidle = let
-      lock = "${pkgs.swaylock}/bin/swaylock --daemonize";
-      display = status: "swaymsg 'output * power ${status}'";
+      display = status: "${pkgs.sway}/bin/swaymsg 'output * power ${status}'";
     in {
       enable = true;
       timeouts = [
@@ -119,10 +118,6 @@ in {
           timeout = 300;
           command = display "off";
           resumeCommand = display "on";
-        }
-        {
-          timeout = 600;
-          command = lock;
         }
         {
           timeout = 1800;
@@ -133,7 +128,7 @@ in {
         {
           event = "before-sleep";
           # adding duplicated entries for the same event may not work
-          command = (display "off") + "; " + lock;
+          command = display "off";
         }
         {
           event = "after-resume";
@@ -141,7 +136,7 @@ in {
         }
         {
           event = "lock";
-          command = (display "off") + "; " + lock;
+          command = display "off";
         }
         {
           event = "unlock";

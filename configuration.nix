@@ -70,10 +70,14 @@ in {
     kernelParams = [
       "amd_pstate=guided"
       "microcode.amd_sha_check=off"
+      "acpi_enforce_resources=lax"
       #       "amd_iommu=on"
       # "iommu=pt"
       # "vfio-pci.ids=1002:73bf"
     ];
+    extraModprobeConfig = ''
+      options it87 force_id=0x8628 ignore_resource_conflict=1
+    '';
     kernel.sysctl = {
       "vm.swappiness" = 10;
 
