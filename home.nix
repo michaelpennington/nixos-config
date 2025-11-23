@@ -21,12 +21,15 @@ in {
     # extractpdfmark
     alsa-utils
     gimp
+    wl-clipboard
+    sov
     aoc-cli
     aria2
     ventoy
     # musescore
     yt-dlp
     megasync
+    polkit_gnome
     texlive.combined.scheme-full
     flatpak
     aha
@@ -150,6 +153,7 @@ in {
     enable = true;
     checkConfig = false;
     extraConfig = builtins.readFile ./sway_config;
+    package = null;
     systemd.enable = true;
     wrapperFeatures.gtk = true;
     config = let
@@ -160,6 +164,9 @@ in {
       modifier = "Mod4";
       terminal = "${wezterm}";
       menu = "${wezterm} start --class \"launcher\" -- ${swayLauncherDesktop}";
+      startup = [
+        {command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
+      ];
       keybindings = let
         modifier = config.wayland.windowManager.sway.config.modifier;
         playerctl = lib.meta.getExe pkgs.playerctl;

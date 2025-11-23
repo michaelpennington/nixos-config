@@ -13,7 +13,7 @@ for_window [app_id="roco"] floating enable
 for_window [class="roco"] floating enable
 
 seat seat0 hide_cursor 10000
-seat seat0 xcursor_theme phinger-cursors 24
+# seat seat0 xcursor_theme phinger-cursors 24
 #
 # exec "/usr/libexec/polkit-gnome-authentication-agent-1"
 
@@ -78,7 +78,10 @@ output HEADLESS-1 {
     mode 1920x1080@60Hz
 }
 
-focus output DP-3
+focus output DP-8
+
+workspace 1 output DP-8
+workspace 2 output DP-7
 
 bindsym Mod4+Shift+o output DP-3 toggle
 

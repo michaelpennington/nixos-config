@@ -38,21 +38,21 @@ in {
     }
   ];
 
-  systemd = {
-    user.services.polkit-gnome-authentication-agent-1 = {
-      description = "polkit-gnome-authentication-agent-1";
-      wantedBy = ["graphical-session.target"];
-      wants = ["graphical-session.target"];
-      after = ["graphical-session.target"];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
-  };
+  # systemd = {
+  #   user.services.polkit-gnome-authentication-agent-1 = {
+  #     description = "polkit-gnome-authentication-agent-1";
+  #     wantedBy = ["graphical-session.target"];
+  #     wants = ["graphical-session.target"];
+  #     after = ["graphical-session.target"];
+  #     serviceConfig = {
+  #       Type = "simple";
+  #       ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+  #       Restart = "on-failure";
+  #       RestartSec = 1;
+  #       TimeoutStopSec = 10;
+  #     };
+  #   };
+  # };
 
   boot = {
     loader.systemd-boot = {
@@ -134,6 +134,15 @@ in {
   };
 
   services = {
+    displayManager = {
+      lemurs = {
+        enable = true;
+        settings = {
+          environment_switcher.include_tty_shell = true;
+        };
+      };
+      sessionPackages = [pkgs.sway];
+    };
     fstrim.enable = true;
     udev = {
       enable = true;
@@ -212,7 +221,7 @@ in {
     users = {
       mpennington = {
         isNormalUser = true;
-        extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video" "libvirtd"]; # Enable ‘sudo’ for the user.
+        extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video" "libvirtd" "seat" "input"]; # Enable ‘sudo’ for the user.
       };
       lfs = {
         isNormalUser = true;
@@ -322,6 +331,9 @@ in {
 
   programs = {
     corectrl = {
+      enable = true;
+    };
+    sway = {
       enable = true;
     };
     steam = {
@@ -917,7 +929,24 @@ in {
     };
   };
 
-  security.polkit.enable = true;
+  security.polkit = {
+    enable = true;
+    extraConfig = ''
+        polkit.addRule(function (action, subject) {
+        if (
+          subject.isInGroup("users") &&
+          [
+            "org.freedesktop.login1.reboot",
+            "org.freedesktop.login1.reboot-multiple-sessions",
+            "org.freedesktop.login1.power-off",
+            "org.freedesktop.login1.power-off-multiple-sessions",
+          ].indexOf(action.id) !== -1
+        ) {
+          return polkit.Result.YES;
+        }
+      });
+    '';
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
