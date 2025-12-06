@@ -19,6 +19,7 @@ in {
     inputs.nixvim.nixosModules.nixvim
     inputs.ucodenix.nixosModules.default
     inputs.nix-minecraft.nixosModules.minecraft-servers
+    inputs.probe-rs-rules.nixosModules.x86_64-linux.default
   ];
 
   nixpkgs.overlays = [inputs.nix-minecraft.overlay];
@@ -105,6 +106,7 @@ in {
   hardware = {
     graphics.enable = true;
     amdgpu.overdrive.enable = true;
+    probe-rs.enable = true;
     # fancontrol = {
     #   enable = true;
     #   config = ''
