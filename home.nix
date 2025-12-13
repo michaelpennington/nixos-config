@@ -21,6 +21,8 @@ in {
     # extractpdfmark
     alsa-utils
     gimp
+    azure-cli
+    azure-storage-azcopy
     wl-clipboard
     sov
     aoc-cli

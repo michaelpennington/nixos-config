@@ -88,6 +88,7 @@ in {
   powerManagement.cpuFreqGovernor = "schedutil";
   time.hardwareClockInLocalTime = true;
 
+  virtualisation.docker.enable = true;
   # virtualisation = {
   #   libvirtd = {
   #     enable = true;
@@ -154,6 +155,8 @@ in {
 
         # Optional: Do the same for any non-rotational SATA devices (SSDs)
         ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="none"
+
+        SUBSYSTEM=="usb", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", MODE="0660", GROUP="dialout", TAG+="uaccess"
       '';
     };
     mysql = {
@@ -223,7 +226,7 @@ in {
     users = {
       mpennington = {
         isNormalUser = true;
-        extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video" "libvirtd" "seat" "input" "kvm" "adbuser"]; # Enable ‘sudo’ for the user.
+        extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video" "libvirtd" "seat" "input" "kvm" "adbuser" "plugdev" "docker"]; # Enable ‘sudo’ for the user.
       };
       lfs = {
         isNormalUser = true;
@@ -231,6 +234,7 @@ in {
       };
     };
     groups = {
+      plugdev = {members = ["mpennington"];};
       lfs = {
         name = "lfs";
         members = ["lfs"];
@@ -258,6 +262,7 @@ in {
     amdgpu_top
     linuxPackages.zenpower
     radeontop
+    lz4
     pciutils
     wineWowPackages.waylandFull
     winetricks
@@ -272,6 +277,7 @@ in {
     bottom
     eza
     fd
+    podman
     gcc
     gh
     packwiz
