@@ -8,21 +8,21 @@
   lib,
   ...
 }: let
-  packwiz = pkgs.buildGoModule {
-    name = "packwiz";
-    src = inputs.packwiz;
-    vendorHash = "sha256-P1SsvHTYKUoPve9m1rloBfMxUNcDKr/YYU4dr4vZbTE=";
-  };
+  # packwiz = pkgs.buildGoModule {
+  #   name = "packwiz";
+  #   src = inputs.packwiz;
+  #   vendorHash = "sha256-P1SsvHTYKUoPve9m1rloBfMxUNcDKr/YYU4dr4vZbTE=";
+  # };
 in {
   imports = [
     ./hardware-configuration.nix
     inputs.nixvim.nixosModules.nixvim
     inputs.ucodenix.nixosModules.default
-    inputs.nix-minecraft.nixosModules.minecraft-servers
+    # inputs.nix-minecraft.nixosModules.minecraft-servers
     inputs.probe-rs-rules.nixosModules.x86_64-linux.default
   ];
 
-  nixpkgs.overlays = [inputs.nix-minecraft.overlay];
+  # nixpkgs.overlays = [inputs.nix-minecraft.overlay];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
@@ -56,6 +56,23 @@ in {
   # };
 
   boot = {
+    binfmt = {
+      preferStaticEmulators = true;
+      registrations.riscv64 = {
+        # We use the static qemu-user binary
+        interpreter = "${pkgs.pkgsStatic.qemu-user}/bin/qemu-riscv64";
+
+        # Magic bytes for RISC-V 64-bit
+        magicOrExtension = "\\x7fELF\\x02\\x01\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x02\\x00\\xf3\\x00";
+
+        # Mask to ignore insignificant bytes
+        mask = "\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\x00\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\xff\\xff\\xff";
+
+        fixBinary = true;
+
+        wrapInterpreterInShell = false;
+      };
+    };
     loader.systemd-boot = {
       enable = true;
       configurationLimit = 10;
@@ -188,38 +205,38 @@ in {
       enable = true;
     };
     gnome.gnome-keyring.enable = true;
-    minecraft-servers = {
-      enable = true;
-      eula = true;
-
-      servers = {
-        solo_world = let
-          modpack = pkgs.fetchPackwizModpack {
-            url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-            packHash = "sha256-wTsTRRM8JwOaOyRqE6+uhvnSSFM4NU38iIpbtGK/Ozo=";
-          };
-          mcVersion = modpack.manifest.versions.minecraft;
-          fabricVersion = modpack.manifest.versions.fabric;
-          serverVersion = lib.replaceStrings ["."] ["_"] "fabric-${mcVersion}";
-        in {
-          enable = true;
-          package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = fabricVersion;};
-          autoStart = false;
-          symlinks = {
-            "mods" = "${modpack}/mods";
-          };
-          serverProperties = {
-            # level-name = "Survival World";
-            difficulty = "hard";
-            pause-when-empty-seconds = -1;
-          };
-          files = {
-            "config" = "${modpack}/config";
-          };
-          jvmOpts = "-Xms8G -Xmx12G -XX:+UseZGC -XX:+ZGenerational -XX:SoftMaxHeapSize=10g -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:+PerfDisableSharedMem -XX:+UseDynamicNumberOfGCThreads";
-        };
-      };
-    };
+    # minecraft-servers = {
+    #   enable = true;
+    #   eula = true;
+    #
+    #   servers = {
+    #     solo_world = let
+    #       modpack = pkgs.fetchPackwizModpack {
+    #         url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
+    #         packHash = "sha256-wTsTRRM8JwOaOyRqE6+uhvnSSFM4NU38iIpbtGK/Ozo=";
+    #       };
+    #       mcVersion = modpack.manifest.versions.minecraft;
+    #       fabricVersion = modpack.manifest.versions.fabric;
+    #       serverVersion = lib.replaceStrings ["."] ["_"] "fabric-${mcVersion}";
+    #     in {
+    #       enable = true;
+    #       package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = fabricVersion;};
+    #       autoStart = false;
+    #       symlinks = {
+    #         "mods" = "${modpack}/mods";
+    #       };
+    #       serverProperties = {
+    #         # level-name = "Survival World";
+    #         difficulty = "hard";
+    #         pause-when-empty-seconds = -1;
+    #       };
+    #       files = {
+    #         "config" = "${modpack}/config";
+    #       };
+    #       jvmOpts = "-Xms8G -Xmx12G -XX:+UseZGC -XX:+ZGenerational -XX:SoftMaxHeapSize=10g -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:+PerfDisableSharedMem -XX:+UseDynamicNumberOfGCThreads";
+    #     };
+    #   };
+    # };
   };
 
   users = {
@@ -280,7 +297,7 @@ in {
     podman
     gcc
     gh
-    packwiz
+    # packwiz
     ripgrep
     black
     isort
@@ -384,7 +401,18 @@ in {
     nixvim = {
       enable = true;
       defaultEditor = true;
-      extraPlugins = [pkgs.vimPlugins.phha-zenburn];
+      extraPlugins = [
+        pkgs.vimPlugins.phha-zenburn
+        (pkgs.vimUtils.buildVimPlugin {
+          name = "cargo.nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "nwiizo";
+            repo = "cargo.nvim";
+            rev = "2b470e72a5bcf9e5b4185944cf76b9a24fb093ec";
+            hash = "sha256-uue1z9neCvBZpp0nqiG1LQZBrJn8QZHqkYZfiRbnavg=";
+          };
+        })
+      ];
       colorscheme = "zenburn";
       highlightOverride = let
         opts = {

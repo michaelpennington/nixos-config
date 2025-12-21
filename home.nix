@@ -20,6 +20,7 @@ in {
   home.packages = with pkgs; [
     # extractpdfmark
     alsa-utils
+    arduino-ide
     gimp
     azure-cli
     azure-storage-azcopy
@@ -30,15 +31,16 @@ in {
     ventoy
     # musescore
     yt-dlp
-    megasync
+    # megasync
     polkit_gnome
     texlive.combined.scheme-full
     flatpak
     aha
-    megacli
+    # megacli
     mesa-demos
     vulkan-tools
     yo
+    nodePackages."@google/jules"
     haskell.compiler.ghc912
     chromium
     wkhtmltopdf
@@ -65,8 +67,8 @@ in {
     inkscape
     fstl
     lilypond-with-fonts
-    inputs.nixpkgs-stable.legacyPackages."${pkgs.system}".libreoffice-fresh
-    inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
+    libreoffice-fresh
+    # inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
     inputs.wezterm.packages."${pkgs.system}".default
     jdk
     krita
