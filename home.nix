@@ -40,7 +40,6 @@ in {
     mesa-demos
     vulkan-tools
     yo
-    nodePackages."@google/jules"
     haskell.compiler.ghc912
     chromium
     wkhtmltopdf
