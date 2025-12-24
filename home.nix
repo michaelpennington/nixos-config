@@ -67,8 +67,8 @@ in {
     fstl
     lilypond-with-fonts
     libreoffice-fresh
-    # inputs.prismlauncher.packages."${pkgs.system}".prismlauncher
-    inputs.wezterm.packages."${pkgs.system}".default
+    # inputs.prismlauncher.packages."${pkgs.stdenv.hostPlatform.system}".prismlauncher
+    inputs.wezterm.packages."${pkgs.stdenv.hostPlatform.system}".default
     jdk
     krita
     lazygit
@@ -97,7 +97,22 @@ in {
         time.style = ''#cfae71'';
       };
     };
-    ssh.enable = true;
+    ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      matchBlocks."*" = {
+        forwardAgent = false;
+        addKeysToAgent = "no";
+        compression = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+        hashKnownHosts = false;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
+      };
+    };
     firefox = {
       enable = true;
       languagePacks = ["en-US"];
@@ -130,25 +145,12 @@ in {
           command = "${pkgs.systemd}/bin/systemctl suspend";
         }
       ];
-      events = [
-        {
-          event = "before-sleep";
-          # adding duplicated entries for the same event may not work
-          command = display "off";
-        }
-        {
-          event = "after-resume";
-          command = display "on";
-        }
-        {
-          event = "lock";
-          command = display "off";
-        }
-        {
-          event = "unlock";
-          command = display "on";
-        }
-      ];
+      events = {
+        "before-sleep" = display "off";
+        "after-resume" = display "on";
+        "lock" = display "off";
+        "unlock" = display "on";
+      };
     };
   };
 
@@ -160,7 +162,7 @@ in {
     systemd.enable = true;
     wrapperFeatures.gtk = true;
     config = let
-      wezterm = lib.meta.getExe inputs.wezterm.packages."${pkgs.system}".default;
+      wezterm = lib.meta.getExe inputs.wezterm.packages."${pkgs.stdenv.hostPlatform.system}".default;
       swayLauncherDesktop = lib.meta.getExe pkgs.sway-launcher-desktop;
     in {
       bars = [];

@@ -273,8 +273,8 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    inputs.alejandra.defaultPackage.${system}
-    inputs.nixd.packages.${system}.default
+    inputs.alejandra.defaultPackage.${stdenv.hostPlatform.system}
+    inputs.nixd.packages.${stdenv.hostPlatform.system}.default
     lm_sensors
     amdgpu_top
     linuxPackages.zenpower
@@ -522,7 +522,7 @@ in {
           servers = {
             nixd = {
               enable = true;
-              package = inputs.nixd.packages.${pkgs.system}.default;
+              package = inputs.nixd.packages.${pkgs.stdenv.hostPlatform.system}.default;
             };
             html.enable = true;
             cssls.enable = true;
