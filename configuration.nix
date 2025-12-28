@@ -294,6 +294,7 @@ in {
     bottom
     eza
     fd
+    screen
     podman
     gcc
     gh
