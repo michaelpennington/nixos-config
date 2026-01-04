@@ -49,7 +49,6 @@ in {
     freetube
     libmtp
     librecad
-    mtpfs
     ffmpeg
     nodejs
     freecad
