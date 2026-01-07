@@ -356,7 +356,6 @@ in {
   ];
 
   programs = {
-    adb.enable = true;
     corectrl = {
       enable = true;
     };
