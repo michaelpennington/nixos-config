@@ -4,14 +4,7 @@
   inputs,
   lib,
   ...
-}: let
-  libbluray-full = pkgs.libbluray-full.override {
-    withAACS = true;
-    withBDplus = true;
-    withJava = true;
-  };
-  vlc = pkgs.vlc.override {inherit libbluray-full;};
-in {
+}: {
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";
 
