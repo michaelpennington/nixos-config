@@ -626,6 +626,8 @@ in {
               search_method = "cover_or_next";
             };
             pairs = {};
+            pick = {};
+            extra = {};
           };
         };
         lualine = {
@@ -634,6 +636,15 @@ in {
         };
       };
       keymaps = [
+        {
+          mode = "n";
+          key = "<leader>fe"; # "Find Emoji"
+          action = "<cmd>lua MiniExtra.pickers.emoji()<CR>";
+          options = {
+            desc = "Pick Emoji";
+            silent = true;
+          };
+        }
         {
           action =
             config.lib.nixvim.mkRaw
