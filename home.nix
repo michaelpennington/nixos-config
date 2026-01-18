@@ -24,7 +24,7 @@
     ventoy
     # musescore
     yt-dlp
-    # megasync
+    megasync
     polkit_gnome
     texlive.combined.scheme-full
     flatpak
