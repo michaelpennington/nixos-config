@@ -44,7 +44,7 @@
     librecad
     ffmpeg
     nodejs
-    freecad
+    # freecad
     baobab
     super-slicer
     gtklp
