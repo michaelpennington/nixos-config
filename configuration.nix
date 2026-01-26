@@ -277,6 +277,8 @@ in {
     inputs.nixd.packages.${stdenv.hostPlatform.system}.default
     lm_sensors
     amdgpu_top
+    taplo
+    taskwarrior3
     linuxPackages.zenpower
     radeontop
     lz4
@@ -401,16 +403,61 @@ in {
     nixvim = {
       enable = true;
       defaultEditor = true;
+      extraConfigLua = ''
+        require("cargo").setup({
+          float_window = true,
+          window_width = 0.8,
+          window_height = 0.8,
+        })
+      '';
+      autoGroups = {
+        norg_settings = {
+          clear = true;
+        };
+      };
+      autoCmd = [
+        {
+          event = ["FileType"];
+          pattern = ["norg"];
+          group = "norg_settings";
+          callback = {
+            __raw = ''
+              function()
+                vim.opt_local.conceallevel = 3
+              end
+            '';
+          };
+        }
+      ];
       extraPlugins = [
         pkgs.vimPlugins.phha-zenburn
-        (pkgs.vimUtils.buildVimPlugin {
-          name = "cargo.nvim";
+        (pkgs.rustPlatform.buildRustPackage {
+          pname = "cargo.nvim";
+          version = "2b470e7";
+
           src = pkgs.fetchFromGitHub {
-            owner = "nwiizo";
+            owner = "michaelpennington";
             repo = "cargo.nvim";
-            rev = "2b470e72a5bcf9e5b4185944cf76b9a24fb093ec";
-            hash = "sha256-uue1z9neCvBZpp0nqiG1LQZBrJn8QZHqkYZfiRbnavg=";
+            rev = "c33abc861a87152f0887bc343811a5f9203a9237";
+            hash = "sha256-w/nyQShDDAOci9UjEG6n+XYTs5pEXeOZVOHQvotmFVg=";
           };
+
+          cargoHash = "sha256-eBSmhaU/ycci2lmGIwwocJGLkmBjfMXQyh18AEqDjx4=";
+
+          doCheck = false;
+          nativeBuildInputs = [pkgs.pkg-config];
+          buildInputs = [pkgs.luajit];
+
+          installPhase = ''
+            mkdir -p $out/target/release
+            mkdir -p $out/lua
+
+            cp target/*/release/libcargo_nvim.so $out/target/release/
+
+            cp -r lua/* $out/lua/
+            cp -r plugin $out/ || true
+            cp -r doc $out/ || true
+          '';
         })
       ];
       colorscheme = "zenburn";
@@ -452,6 +499,13 @@ in {
           settings = {
           };
         };
+        crates = {
+          enable = true;
+          settings = {
+            completion.crates.enabled = true;
+            lsp.enabled = true;
+          };
+        };
         barbar = {
           enable = true;
           keymaps = {
@@ -469,6 +523,61 @@ in {
             highlight.enable = true;
           };
         };
+        telescope = {
+          enable = true;
+          settings = {
+            defaults = {
+              file_ignore_patterns = [
+                "^.git/"
+                "^.mypy_cache/"
+                "^__pycache__/"
+                "^output/"
+                "^data/"
+                "%.ipynb"
+              ];
+              layout_config = {
+                prompt_position = "top";
+              };
+              mappings = {
+                i = {
+                  "<A-j>" = {
+                    __raw = "require('telescope.actions').move_selection_next";
+                  };
+                  "<A-k>" = {
+                    __raw = "require('telescope.actions').move_selection_previous";
+                  };
+                };
+              };
+              selection_caret = "> ";
+              set_env = {
+                COLORTERM = "truecolor";
+              };
+              sorting_strategy = "ascending";
+            };
+          };
+        };
+        neorg = {
+          telescopeIntegration.enable = true;
+          enable = true;
+          settings.load = {
+            "core.concealer" = {
+              config = {
+                icon_preset = "varied";
+              };
+            };
+            "core.defaults" = {
+              __empty = null;
+            };
+            "core.dirman" = {
+              config = {
+                workspaces = {
+                  home = "~/notes/home";
+                  work = "~/notes/work";
+                };
+              };
+            };
+          };
+        };
         conform-nvim = {
           enable = true;
           settings = {
@@ -477,6 +586,7 @@ in {
                 "alejandra"
               ];
               c = ["clang_format"];
+              toml = ["taplo"];
               cpp = ["clang_format"];
               python = ["isort" "black"];
               html = ["html_beautify"];
@@ -530,6 +640,7 @@ in {
             pylsp.enable = true;
             clangd.enable = true;
             bashls.enable = true;
+            taplo.enable = true;
           };
         };
         cmp = {
@@ -548,6 +659,7 @@ in {
               {name = "nvim_lsp";}
               {name = "path";}
               {name = "buffer";}
+              {name = "crates";}
             ];
           };
         };

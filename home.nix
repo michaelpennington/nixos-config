@@ -36,7 +36,7 @@
     haskell.compiler.ghc912
     chromium
     wkhtmltopdf
-    kdePackages.kdenlive
+    # kdePackages.kdenlive
     appimage-run
     file-roller
     freetube
