@@ -16,6 +16,7 @@
     arduino-ide
     gimp
     azure-cli
+    protonup-rs
     azure-storage-azcopy
     wl-clipboard
     sov

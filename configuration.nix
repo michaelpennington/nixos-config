@@ -490,7 +490,10 @@ in {
         foldexpr = "nvim_treesitter#foldexpr()";
         undofile = true;
       };
-      globals.mapleader = " ";
+      globals = {
+        maplocalleader = ",";
+        mapleader = " ";
+      };
       plugins = {
         gitsigns.enable = true;
         lazygit.enable = true;
@@ -574,6 +577,7 @@ in {
                   home = "~/notes/home";
                   work = "~/notes/work";
                 };
+                default_workspace = "home";
               };
             };
           };
