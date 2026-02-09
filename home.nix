@@ -1,5 +1,5 @@
-{
-  config,
+
+i
   pkgs,
   inputs,
   lib,
@@ -7,8 +7,11 @@
 }: let
   nvimPath = "${config.home.homeDirectory}/nixos-config/nvim";
 in {
+  imports = [./nvim.nix];
+
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";
+  home.shell.enableFishIntegration = true;
 
   home.stateVersion = "24.05";
 
@@ -121,6 +124,10 @@ in {
         target = "sway-session.target";
       };
     };
+    fish = {
+    enable = true;
+    shellAliases = "";
+    }
   };
 
   services = {
