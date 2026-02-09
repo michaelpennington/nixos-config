@@ -4,9 +4,10 @@
   inputs,
   lib,
   ...
-}: let
-  nvimPath = "${config.home.homeDirectory}/nixos-config/nvim";
-in {
+}:
+{
+  imports = [ inputs.lazyvim.homeManagerModules.default ];
+
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";
 
@@ -120,6 +121,10 @@ in {
         enable = true;
         target = "sway-session.target";
       };
+    };
+    lazyvim = {
+      enable = true;
+      configFiles = ./nvim;
     };
   };
 
