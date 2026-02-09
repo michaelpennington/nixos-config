@@ -44,14 +44,6 @@ let
     extraPrefix = "/lib/nvim-depends/pkgconfig";
     ignoreCollisions = true;
   };
-  buildEnv = [
-    "CPATH=${config.home.profileDirectory}/lib/nvim-depends/include"
-    "CPLUS_INCLUDE_PATH=${config.home.profileDirectory}/lib/nvim-depends/include/c++/v1"
-    "LD_LIBRARY_PATH=${config.home.profileDirectory}/lib/nvim-depends/lib"
-    "LIBRARY_PATH=${config.home.profileDirectory}/lib/nvim-depends/lib"
-    "NIX_LD_LIBRARY_PATH=${config.home.profileDirectory}/lib/nvim-depends/lib"
-    "PKG_CONFIG_PATH=${config.home.profileDirectory}/lib/nvim-depends/pkgconfig"
-  ];
   nvimConfigPath = "${config.home.homeDirectory}/nixos-config/nvim";
 in {
   home.packages = with pkgs; [
@@ -72,7 +64,7 @@ in {
     withRuby = true;
 
     initLua = ''
-      vim.opt.rtp:prepend(${nvimConfigPath})
+      vim.opt.rtp:prepend("${nvimConfigPath}")
 
       dofile("${nvimConfigPath}/init.lua")
     '';
