@@ -1,5 +1,5 @@
-
-i
+{
+  config,
   pkgs,
   inputs,
   lib,
@@ -11,7 +11,6 @@ in {
 
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";
-  home.shell.enableFishIntegration = true;
 
   home.stateVersion = "24.05";
 
@@ -123,10 +122,6 @@ in {
         target = "sway-session.target";
       };
     };
-    fish = {
-    enable = true;
-    shellAliases = "";
-    }
   };
 
   services = {
@@ -217,6 +212,9 @@ in {
 
   xdg = {
     enable = true;
-    configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink nvimPath;
+    configFile."nvim" = {
+      recursive = false;
+      source = config.lib.file.mkOutOfStoreSymlink nvimPath;
+    };
   };
 }

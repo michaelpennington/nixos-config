@@ -60,32 +60,62 @@ in {
     nvim-depends-pkgconfig
     ripgrep
   ];
-  home.extraOutputsToInstall = "nvim-depends";
-  programs.fish.shellAliases.nvim = (concatStringsSep " " buildEnv)
-    + " SQLITE_CLIB_PATH=${pkgs.sqlite.out}/lib/libsqlite3.so " + "nvim";
+  home.extraOutputsToInstall = ["nvim-depends"];
 
   programs.neovim = {
     enable = true;
-    package = pkgs.neovim;
+    # package = pkgs.neovim;
 
     withNodeJs = true;
     withPython3 = true;
     withRuby = true;
 
-    extraPackages = with pkgs;
-      [
-        doq
-        sqlite
-        cargo
-        clang
-        cmake
-        gcc
-        gnumake
-        ninja
-        pkg-config
-        yarn
-      ];
+    extraWrapperArgs = [
+      "--suffix"
+      "CPATH"
+      "${config.home.profileDirectory}/lib/nvim-depends/include"
+      ":"
+      "--suffix"
+      "CPLUS_INCLUDE_PATH"
+      "${config.home.profileDirectory}/lib/nvim-depends/include/c++/v1"
+      ":"
+      "--suffix"
+      "LD_LIBRARY_PATH"
+      "${config.home.profileDirectory}/lib/nvim-depends/lib"
+      ":"
+      "--suffix"
+      "LIBRARY_PATH"
+      "${config.home.profileDirectory}/lib/nvim-depends/lib"
+      ":"
+      "--suffix"
+      "NIX_LD_LIBRARY_PATH"
+      "${config.home.profileDirectory}/lib/nvim-depends/lib"
+      ":"
+      "--suffix"
+      "PKG_CONFIG_PATH"
+      "${config.home.profileDirectory}/lib/nvim-depends/pkgconfig"
+      ":"
+      "--suffix"
+      "SQLITE_CLIB_PATH"
+      "${pkgs.sqlite.out}/lib/libsqlite3.so"
+      ":"
+    ];
+
+#     extraPackages = with pkgs;
+#       [
+#         doq
+#         sqlite
+#         cargo
+#         clang
+#         cmake
+#         gcc
+#         gnumake
+#         ninja
+#         pkg-config
+#         yarn
+#       ];
+    defaultEditor = true;
 
     extraLuaPackages = ls: with ls; [ luarocks ];
   };
-};
+}
