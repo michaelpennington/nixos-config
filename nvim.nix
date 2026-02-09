@@ -52,6 +52,7 @@ let
     "NIX_LD_LIBRARY_PATH=${config.home.profileDirectory}/lib/nvim-depends/lib"
     "PKG_CONFIG_PATH=${config.home.profileDirectory}/lib/nvim-depends/pkgconfig"
   ];
+  nvimConfigPath = "${config.home.homeDirectory}/nixos-config/nvim";
 in {
   home.packages = with pkgs; [
     patchelf
@@ -71,7 +72,9 @@ in {
     withRuby = true;
 
     initLua = ''
-      dofile("${config.home.homeDirectory}/nixos-config/nvim/init.lua")
+      vim.opt.rtp:prepend(${nvimConfigPath})
+
+      dofile("${nvimConfigPath}/init.lua")
     '';
 
     extraWrapperArgs = [
