@@ -19,7 +19,6 @@ in {
     # extractpdfmark
     alsa-utils
     arduino-ide
-    neovim
     gimp
     azure-cli
     protonup-rs
