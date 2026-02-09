@@ -4,9 +4,8 @@
   inputs,
   lib,
   ...
-}: let
-  nvimPath = "${config.home.homeDirectory}/nixos-config/nvim";
-in {
+}:
+{
   imports = [./nvim.nix];
 
   home.username = "mpennington";
@@ -210,11 +209,5 @@ in {
     };
   };
 
-  xdg = {
-    enable = true;
-    configFile."nvim" = {
-      recursive = false;
-      source = config.lib.file.mkOutOfStoreSymlink nvimPath;
-    };
-  };
+  xdg.enable = true;
 }

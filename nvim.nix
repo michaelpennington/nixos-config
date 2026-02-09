@@ -70,6 +70,10 @@ in {
     withPython3 = true;
     withRuby = true;
 
+    initLua = ''
+      dofile("${config.home.homeDirectory}/nixos-config/nvim/init.lua")
+    '';
+
     extraWrapperArgs = [
       "--suffix"
       "CPATH"
@@ -101,19 +105,19 @@ in {
       ":"
     ];
 
-#     extraPackages = with pkgs;
-#       [
-#         doq
-#         sqlite
-#         cargo
-#         clang
-#         cmake
-#         gcc
-#         gnumake
-#         ninja
-#         pkg-config
-#         yarn
-#       ];
+    extraPackages = with pkgs;
+      [
+        doq
+        sqlite
+        cargo
+        clang
+        cmake
+        gcc
+        gnumake
+        ninja
+        pkg-config
+        yarn
+      ];
     defaultEditor = true;
 
     extraLuaPackages = ls: with ls; [ luarocks ];
