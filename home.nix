@@ -4,7 +4,9 @@
   inputs,
   lib,
   ...
-}: {
+}: let
+  nvimPath = "${config.home.homeDirectory}/nixos-config/nvim";
+in {
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";
 
@@ -14,6 +16,7 @@
     # extractpdfmark
     alsa-utils
     arduino-ide
+    neovim
     gimp
     azure-cli
     protonup-rs
@@ -206,5 +209,8 @@
     };
   };
 
-  xdg.enable = true;
+  xdg = {
+    enable = true;
+    configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink nvimPath;
+  };
 }
