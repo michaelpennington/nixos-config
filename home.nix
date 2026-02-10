@@ -6,7 +6,7 @@
   ...
 }:
 {
-  imports = [./nvim.nix];
+  imports = [./neovim.nix];
 
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";
