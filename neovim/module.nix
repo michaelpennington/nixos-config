@@ -18,7 +18,7 @@ inputs:
   };
 
   # choose a directory for your config.
-  config.settings.config_directory = "./config";
+  config.settings.config_directory = "/home/mpennington/nixos-config/neovim/config";
   # you can also use an impure path!
   # config.settings.config_directory = lib.generators.mkLuaInline "vim.fn.stdpath('config')";
   # config.settings.config_directory = "/home/<USER>/.config/nvim";

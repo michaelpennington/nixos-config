@@ -220,9 +220,6 @@
     },
     "my-nvim": {
       "inputs": {
-        "home-manager": [
-          "home-manager"
-        ],
         "nixpkgs": [
           "nixpkgs"
         ],
