@@ -6,7 +6,10 @@
   ...
 }:
 {
-  imports = [./neovim.nix];
+  # imports = [./neovim.nix];
+  imports = [ inputs.my-nvim.homeModules.neovim ];
+
+  wrappers.neovim.enable = true;
 
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";

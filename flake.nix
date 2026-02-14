@@ -5,10 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     rust-overlay.url = "github:oxalica/rust-overlay";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
-    # prismlauncher = {
-    #   url = "github:PrismLauncher/PrismLauncher/develop";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    wrappers.url = "github:BirdeeHub/nix-wrapper-modules";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,6 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };
+    my-nvim.url = "./neovim";
     # nixvim = {
     #   url = "github:nix-community/nixvim";
     #   inputs.nixpkgs.follows = "nixpkgs";

@@ -22,4 +22,7 @@ vim.opt.ignorecase = true
 
 vim.opt.termguicolors = true
 
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+
 vim.g.mapleader = " "

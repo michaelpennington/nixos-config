@@ -1,5 +1,4 @@
 { config, lib, pkgs, ... }:
-
 with lib;
 let
   build-dependent-pkgs = with pkgs;
@@ -103,9 +102,11 @@ in {
     extraPackages = with pkgs;
       [
         doq
+        tree-sitter
         sqlite
         cargo
         clang
+        clang-tools
         cmake
         gcc
         gnumake
