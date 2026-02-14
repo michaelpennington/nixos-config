@@ -21,7 +21,6 @@
     my-nvim = {
       url = "./neovim";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
     # nixvim = {
     #   url = "github:nix-community/nixvim";
