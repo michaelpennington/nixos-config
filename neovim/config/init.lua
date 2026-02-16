@@ -152,18 +152,95 @@ vim.keymap.set({'n', 'v', 'x'}, '<leader>p', '"+p', { noremap = true, silent = t
 vim.keymap.set('i', '<C-p>', '<C-r><C-p>+', { noremap = true, silent = true, desc = 'Paste from clipboard from within insert mode' })
 vim.keymap.set("x", "<leader>P", '"_dP', { noremap = true, silent = true, desc = 'Paste over selection without erasing unnamed register' })
 
-vim.cmd.colorscheme("kanagawa-lotus")
-
 nixInfo.lze.load {
   {
     "kanagawa.nvim",
-    colorscheme = {"kanawaga-lotus"},
-    after = function(kanagawa)
-      kanagawa.load("lotus")
+    colorscheme = {"kanagawa-lotus"},
+    after = function()
+      require("kanagawa").load("lotus")
     end,
   },
   {
     "nvim-treesitter",
     lazy = false,
   },
+  {
+    "nvim-treesitter-textobjects",
+    lazy = false,
+    after = function()
+      require("nvim-treesitter-textobjects").setup({
+        select = {
+          enable = true,
+          lookahead = true,
+          selection_modes = {
+            ['@parameter.outer'] = 'v',
+            ['@function.outer'] = 'V',
+            ['@class.outer'] = '<c-v>',
+          },
+          include_surrounding_whitespace = true,
+        }
+      })
+      
+      local select = require("nvim-treesitter-textobjects.select").select_textobject
+      vim.keymap.set(
+        { "x", "o" },
+        "af",
+        function() select("@function.outer", "textobjects") end,
+        { desc = "Around Function (TxtObj)" }
+      )
+      vim.keymap.set(
+        { "x", "o" },
+        "if",
+        function() select("@function.inner", "textobjects") end,
+        { desc = "Inside Function (TxtObj)" }
+      )
+      vim.keymap.set(
+        { "x", "o" },
+        "ac",
+        function() select("@class.outer", "textobjects") end,
+        { desc = "Around Class (TxtObj)" }
+      )
+      vim.keymap.set(
+        { "x", "o" },
+        "ic",
+        function() select("@class.inner", "textobjects") end,
+        { desc = "Inside Class (TxtObj)" }
+      )
+      vim.keymap.set(
+        { "x", "o" },
+        "as",
+        function() select("@local.scope", "locals") end,
+        { desc = "Around local Scope (TxtObj)" }
+      )
+    end,
+  },
+  {
+    "treesitter-modules.nvim",
+    lazy = false,
+    after = function()
+      local ts = require("treesitter-modules")
+      ts.setup({
+        sync_install = false,
+        auto_install = false,
+        highlight = { enable = true },
+        fold = { enable = true },
+        indent = { enable = true},
+      })
+      vim.keymap.set("n", "<Leader>ss", ts.init_selection, {
+        desc = "Start selecting nodes with treesitter-modules"
+      })
+      vim.keymap.set("x", "<Leader>si", ts.node_incremental, {
+        desc = "Increment selection to named node"
+      })
+      vim.keymap.set("x", "<Leader>sc", ts.scope_incremental, {
+        desc = "Increment selection to surrounding scope"
+      })
+      vim.keymap.set("x", "<Leader>sd", ts.node_decremental, {
+        desc = "Shrink selection to previous named node"
+      })
+
+    end,
+  },
 }
+
+vim.cmd.colorscheme("kanagawa-lotus")

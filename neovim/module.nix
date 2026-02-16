@@ -26,15 +26,21 @@ inputs:
       name = "lzextras";
     }
   ];
-  
   config.specs.general = {
     data = with pkgs.vimPlugins; [
-      kanagawa-nvim
       nvim-treesitter
       treesitter-modules-nvim
-      nvim-lspconfig
       nvim-treesitter-textobjects
+      nvim-lspconfig
+      nvim-treesitter.withAllGrammars
     ];
+  };
+  
+  config.specs.colorscheme = {
+    data = with pkgs.vimPlugins; [
+      kanagawa-nvim
+    ];
+    lazy = true;
   };
 
   # build plugins from inputs set
