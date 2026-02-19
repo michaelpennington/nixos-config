@@ -17,7 +17,7 @@ inputs:
     default = config.nvim-lib.pluginsFromPrefix "plugins-" inputs;
   };
 
-  config.settings.config_directory = "/home/mpennington/nixos-config/neovim/config";
+  config.settings.config_directory = "/home/mpennington/nixos-config/nvim";
 
   config.specs.lze = [
     config.nvim-lib.neovimPlugins.lze

@@ -6,7 +6,7 @@
   ...
 }:
 let
-  module = inputs.nixpkgs.lib.modules.importApply ./neovim/module.nix inputs;
+  module = inputs.nixpkgs.lib.modules.importApply ./neovim.nix inputs;
 in
 {
   imports = [

@@ -283,7 +283,7 @@ in {
     radeontop
     lz4
     pciutils
-    wineWowPackages.waylandFull
+    wineWow64Packages.waylandFull
     winetricks
     virt-manager
     virtio-win
