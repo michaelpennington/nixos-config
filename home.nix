@@ -5,19 +5,30 @@
   lib,
   ...
 }:
+let
+  module = inputs.nixpkgs.lib.modules.importApply ./neovim/module.nix inputs;
+in
 {
-  # imports = [./neovim.nix];
-  imports = [ inputs.my-nvim.homeModules.neovim ];
-
-  wrappers.neovim.enable = true;
+  imports = [
+    (inputs.nix-wrapper-modules.lib.mkInstallModule {
+      name = "neovim";
+      loc = [ "home" "packages" ];
+      value = module;
+    })
+  ];
 
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";
 
   home.stateVersion = "24.05";
 
+  wrappers.neovim.enable = true;
+
   home.packages = with pkgs; [
     # extractpdfmark
+    (mpv.override { scripts = [
+      mpvScripts.eisa01.simplebookmark
+    ]; })
     alsa-utils
     arduino-ide
     gimp
@@ -32,6 +43,7 @@
     # musescore
     yt-dlp
     megasync
+    # neovim
     polkit_gnome
     texlive.combined.scheme-full
     flatpak
@@ -66,7 +78,6 @@
     fstl
     lilypond-with-fonts
     libreoffice-fresh
-    # inputs.prismlauncher.packages."${pkgs.stdenv.hostPlatform.system}".prismlauncher
     inputs.wezterm.packages."${pkgs.stdenv.hostPlatform.system}".default
     jdk
     krita

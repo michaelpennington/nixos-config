@@ -27,6 +27,13 @@ inputs:
     }
   ];
   config.specs.general = {
+    after = [ "lze" ];
+
+    extraPackages = with pkgs; [
+      lazygit
+      tree-sitter
+    ];
+
     data = with pkgs.vimPlugins; [
       nvim-treesitter
       treesitter-modules-nvim
@@ -41,6 +48,45 @@ inputs:
       kanagawa-nvim
     ];
     lazy = true;
+  };
+
+  config.specMods =
+    {
+      # When this module is ran in an inner list,
+      # this will contain `config` of the parent spec
+      parentSpec ? null,
+      # and this will contain `options`
+      # otherwise they will be `null`
+      parentOpts ? null,
+      parentName ? null,
+      # and then config from this one, as normal
+      config,
+      # and the other module arguments.
+      ...
+    }:
+    {
+      # you could use this to change defaults for the specs
+      # config.collateGrammars = lib.mkDefault (parentSpec.collateGrammars or false);
+      # config.autoconfig = lib.mkDefault (parentSpec.autoconfig or false);
+      # config.runtimeDeps = lib.mkDefault (parentSpec.runtimeDeps or false);
+      # config.pluginDeps = lib.mkDefault (parentSpec.pluginDeps or false);
+      # or something more interesting like:
+      # add an extraPackages field to the specs themselves
+      options.extraPackages = lib.mkOption {
+        type = lib.types.listOf wlib.types.stringable;
+        default = [ ];
+        description = "a extraPackages spec field to put packages to suffix to the PATH";
+      };
+      # You could do this too
+      # config.before = lib.mkDefault [ "INIT_MAIN" ];
+    };
+  config.extraPackages = config.specCollect (acc: v: acc ++ (v.extraPackages or [ ])) [ ];
+
+  # Inform our lua of which top level specs are enabled
+  options.settings.cats = lib.mkOption {
+    readOnly = true;
+    type = lib.types.attrsOf lib.types.bool;
+    default = builtins.mapAttrs (_: v: v.enable) config.specs;
   };
 
   # build plugins from inputs set
