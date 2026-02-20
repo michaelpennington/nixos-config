@@ -43,7 +43,6 @@ in
     # musescore
     yt-dlp
     megasync
-    # neovim
     polkit_gnome
     texlive.combined.scheme-full
     flatpak

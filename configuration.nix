@@ -28,8 +28,6 @@ in {
   nixpkgs.config.permittedInsecurePackages = [
     "ventoy-1.1.10"
   ];
-  # boot.loader.grub.configurationLimit = 10;
-
   # Perform garbage collection weekly to maintain low disk usage
 
   swapDevices = [

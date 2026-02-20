@@ -26,8 +26,30 @@ inputs:
       name = "lzextras";
     }
   ];
+
+  config.specs.nix = {
+    data = null;
+    extraPackages = with pkgs; [
+      nixd
+      nixfmt
+    ];
+  };
+
+  config.specs.lua = {
+    after = [ "general" ];
+    lazy = true;
+    data = with pkgs.vimPlugins; [
+      lazydev-nvim
+    ];
+    extraPackages = with pkgs; [
+      lua-language-server
+      stylua
+    ];
+  };
+
   config.specs.general = {
     after = [ "lze" ];
+    lazy = true;
 
     extraPackages = with pkgs; [
       lazygit
@@ -37,8 +59,10 @@ inputs:
     data = with pkgs.vimPlugins; [
       nvim-treesitter
       treesitter-modules-nvim
+      blink-cmp
       nvim-treesitter-textobjects
       nvim-lspconfig
+      friendly-snippets
       nvim-treesitter.withAllGrammars
     ];
   };
