@@ -66,7 +66,7 @@ inputs:
       nvim-treesitter.withAllGrammars
     ];
   };
-  
+
   config.specs.colorscheme = {
     data = with pkgs.vimPlugins; [
       kanagawa-nvim

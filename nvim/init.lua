@@ -316,14 +316,18 @@ nixInfo.lze.load {
     -- It also gives us a nice way to correlate globals we create with files.
     "lazydev.nvim",
     auto_enable = true,
-    cmd = { "LazyDev" },
-    ft = "lua",
     after = function(_)
+      local lze_path = nixInfo.get_nix_plugin_path("lze")
+      local lzextras_path = nixInfo.get_nix_plugin_path("lzextras")
+      local lib_paths = {}
+      if lze_path then
+        table.insert(lib_paths, { words = { "nixInfo%.lze" }, path = lze_path .. '/lua' })
+      end
+      if lzextras_path then
+        table.insert(lib_paths, { words = { "nixInfo%.lze" }, path = lzextras_path .. '/lua' })
+      end
       require('lazydev').setup({
-        library = {
-          { words = { "nixInfo%.lze" }, path = nixInfo("lze", "plugins", "start", "lze") .. '/lua', },
-          { words = { "nixInfo%.lze" }, path = nixInfo("lzextras", "plugins", "start", "lzextras") .. '/lua' },
-        },
+        library = lib_paths,
       })
     end,
   },
