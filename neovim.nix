@@ -62,6 +62,7 @@ inputs:
       blink-cmp
       nvim-treesitter-textobjects
       nvim-lspconfig
+      gitsigns-nvim
       friendly-snippets
       nvim-treesitter.withAllGrammars
     ];

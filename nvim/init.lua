@@ -85,7 +85,6 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
 vim.o.exrc = false -- can be toggled off in that file to stop it from searching further
-
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.opt.hlsearch = true
@@ -266,7 +265,13 @@ nixInfo.lze.load {
     -- and it will run for all specs with type(plugin.lsp) == table
     -- when their filetype trigger loads them
     lsp = function(plugin)
-      vim.lsp.config(plugin.name, plugin.lsp or {})
+      local current = type(vim.lsp.config) == "table" and vim.lsp.config[plugin.name] or {}
+      local merged_opts = vim.tbl_deep_extend("force", current, plugin.lsp or {})
+      if type(vim.lsp.config) == "table" then
+        vim.lsp.config[plugin.name] = merged_opts
+      else
+        vim.lsp.config(plugin.name, merged_opts)
+      end
       vim.lsp.enable(plugin.name)
     end,
     -- set up our on_attach function once before the spec loads
@@ -315,8 +320,8 @@ nixInfo.lze.load {
     -- lazydev makes your lua lsp load only the relevant definitions for a file.
     -- It also gives us a nice way to correlate globals we create with files.
     "lazydev.nvim",
+    ft = "lua",
     dep_of = { "lua_ls" },
-    auto_enable = true,
     after = function(_)
       local lze_path = nixInfo.get_nix_plugin_path("lze")
       local lzextras_path = nixInfo.get_nix_plugin_path("lzextras")
@@ -346,9 +351,15 @@ nixInfo.lze.load {
       filetypes = { 'lua' },
       settings = {
         Lua = {
+          runtime = {
+            version = "LuaJIT",
+            pathStrict = false,
+          },
+          workspace = {
+            checkThirdParty = false,
+          },
           signatureHelp = { enabled = true },
           diagnostics = {
-            globals = { "nixInfo", "vim", },
             disable = { 'missing-fields' },
           },
         },
@@ -397,7 +408,10 @@ nixInfo.lze.load {
         completion = { documentation = { auto_show = true } },
 
         sources = {
-          default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+          default = { "lsp", "path", "snippets", "buffer" },
+          per_filetype = {
+            lua = { inherit_defaults = true, "lazydev" },
+          },
           providers = {
             lazydev = {
               name = "LazyDev",
@@ -409,6 +423,78 @@ nixInfo.lze.load {
 
         fuzzy = { implementation = "prefer_rust_with_warning" }
       })
+    end,
+  },
+  {
+    "gitsigns.nvim",
+    auto_enable = true,
+    lazy = false,
+    after = function(_)
+      require('gitsigns').setup({
+        on_attach = function(bufnr)
+          local gs = package.loaded.gitsigns
+
+          local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+
+          -- Navigation
+          map({ 'n', 'v' }, ']c', function()
+            if vim.wo.diff then
+              return ']c'
+            end
+            vim.schedule(function()
+              gs.next_hunk()
+            end)
+            return '<Ignore>'
+          end, { expr = true, desc = 'Jump to next hunk' })
+
+          map({ 'n', 'v' }, '[c', function()
+            if vim.wo.diff then
+              return '[c'
+            end
+            vim.schedule(function()
+              gs.prev_hunk()
+            end)
+            return '<Ignore>'
+          end, { expr = true, desc = 'Jump to previous hunk' })
+
+          -- Actions
+          -- visual mode
+          map('v', '<leader>hs', function()
+            gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+          end, { desc = 'stage git hunk' })
+          map('v', '<leader>hr', function()
+            gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+          end, { desc = 'reset git hunk' })
+          -- normal mode
+          map('n', '<leader>gs', gs.stage_hunk, { desc = 'git stage hunk' })
+          map('n', '<leader>gr', gs.reset_hunk, { desc = 'git reset hunk' })
+          map('n', '<leader>gS', gs.stage_buffer, { desc = 'git Stage buffer' })
+          map('n', '<leader>gu', gs.undo_stage_hunk, { desc = 'undo stage hunk' })
+          map('n', '<leader>gR', gs.reset_buffer, { desc = 'git Reset buffer' })
+          map('n', '<leader>gp', gs.preview_hunk, { desc = 'preview git hunk' })
+          map('n', '<leader>gb', function()
+            gs.blame_line { full = false }
+          end, { desc = 'git blame line' })
+          map('n', '<leader>gd', gs.diffthis, { desc = 'git diff against index' })
+          map('n', '<leader>gD', function()
+            gs.diffthis '~'
+          end, { desc = 'git diff against last commit' })
+
+          -- Toggles
+          map('n', '<leader>gtb', gs.toggle_current_line_blame, { desc = 'toggle git blame line' })
+          map('n', '<leader>gtd', gs.toggle_deleted, { desc = 'toggle git show deleted' })
+
+          -- Text object
+          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = 'select git hunk' })
+        end,
+      })
+      vim.cmd([[hi GitSignsAdd guifg=#04de21]])
+      vim.cmd([[hi GitSignsChange guifg=#83fce6]])
+      vim.cmd([[hi GitSignsDelete guifg=#fa2525]])
     end,
   },
 }
