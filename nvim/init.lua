@@ -399,13 +399,26 @@ nixInfo.lze.load {
     after = function(_)
       require("blink.cmp").setup({
         keymap = {
-          preset = 'super-tab'
+          preset = 'none',
+          ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
+          ['<S-Tab>'] = { 'snippet_backward', 'select_prev', 'fallback' },
+          ['<CR>'] = { 'accept', 'fallback' },
+          ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+          ['<C-e>'] = { 'hide', 'fallback' },
         },
         appearance = {
           nerd_font_variant = "normal"
         },
 
-        completion = { documentation = { auto_show = true } },
+        completion = {
+          documentation = { auto_show = true },
+          list = {
+            selection = {
+              preselect = true,
+              auto_insert = true,
+            },
+          },
+        },
 
         sources = {
           default = { "lsp", "path", "snippets", "buffer" },
