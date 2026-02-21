@@ -6,35 +6,6 @@ inputs:
   pkgs,
   ...
 }:
-let
-  myTreeSitter = (pkgs.tree-sitter.override { webUISupport = true; }).overrideAttrs (oldAttrs: rec {
-    version = "0.26.5";
-    src = pkgs.fetchFromGitHub {
-      owner = "tree-sitter";
-      repo = "tree-sitter";
-      rev = "v0.26.5";
-      fetchSubmodules = true;
-      sha256 = "sha256-tnZ8VllRRYPL8UhNmrda7IjKSeFmmOnW/2/VqgJFLgU=";
-    };
-    cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-      inherit src;
-      hash = "sha256-EU8kdG2NT3NvrZ1AqvaJPLpDQQwUhYG3Gj5TAjPYRsY=";
-    };
-    nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [
-      pkgs.rustPlatform.bindgenHook
-    ];
-    postPatch = ''
-      substituteInPlace crates/xtask/src/build_wasm.rs \
-        --replace-fail 'let emcc_name = if cfg!(windows) { "emcc.bat" } else { "emcc" };' 'let emcc_name = "${lib.getExe' pkgs.emscripten "emcc"}";' \
-        --replace-fail '"-gsource-map=inline",' ""
-    '';
-    preBuild = ''
-      mkdir -p .emscriptencache
-      export EM_CACHE=$(pwd)/.emscriptencache
-      cargo run --package xtask -- build-wasm
-    '';
-  });
-in
 {
   imports = [ wlib.wrapperModules.neovim ];
   # NOTE: see the tips and tricks section or the bottom of this file + flake inputs to understand this value
@@ -82,7 +53,7 @@ in
 
     extraPackages = with pkgs; [
       lazygit
-      myTreeSitter
+      tree-sitter
     ];
 
     data = with pkgs.vimPlugins; [
@@ -90,6 +61,9 @@ in
       blink-cmp
       friendly-snippets
       gitsigns-nvim
+      oil-nvim
+      oil-git-nvim
+      oil-lsp-diagnostics-nvim
       nvim-lspconfig
       nvim-treesitter
       nvim-treesitter-textobjects
