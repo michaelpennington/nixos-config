@@ -7,13 +7,8 @@
   inputs,
   lib,
   ...
-}: let
-  # packwiz = pkgs.buildGoModule {
-  #   name = "packwiz";
-  #   src = inputs.packwiz;
-  #   vendorHash = "sha256-P1SsvHTYKUoPve9m1rloBfMxUNcDKr/YYU4dr4vZbTE=";
-  # };
-in {
+}:
+{
   imports = [
     ./hardware-configuration.nix
     # inputs.nixvim.nixosModules.nixvim
@@ -159,7 +154,7 @@ in {
           environment_switcher.include_tty_shell = true;
         };
       };
-      sessionPackages = [pkgs.sway];
+      sessionPackages = [ pkgs.sway ];
     };
     fstrim.enable = true;
     udev = {
@@ -180,7 +175,7 @@ in {
     };
     printing = {
       enable = true;
-      allowFrom = ["all"];
+      allowFrom = [ "all" ];
       browsing = true;
       defaultShared = true;
       openFirewall = true;
@@ -241,18 +236,37 @@ in {
     users = {
       mpennington = {
         isNormalUser = true;
-        extraGroups = ["wheel" "networkmanager" "dialout" "audio" "video" "libvirtd" "seat" "input" "kvm" "adbuser" "plugdev" "docker"]; # Enable ‘sudo’ for the user.
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+          "dialout"
+          "audio"
+          "video"
+          "libvirtd"
+          "seat"
+          "input"
+          "kvm"
+          "adbuser"
+          "plugdev"
+          "docker"
+        ]; # Enable ‘sudo’ for the user.
       };
       lfs = {
         isNormalUser = true;
-        extraGroups = ["wheel" "networkmanager" "lfs"];
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+          "lfs"
+        ];
       };
     };
     groups = {
-      plugdev = {members = ["mpennington"];};
+      plugdev = {
+        members = [ "mpennington" ];
+      };
       lfs = {
         name = "lfs";
-        members = ["lfs"];
+        members = [ "lfs" ];
       };
     };
   };
@@ -265,8 +279,14 @@ in {
     };
     settings = {
       auto-optimise-store = true;
-      trusted-users = ["root" "mpennington"];
-      experimental-features = ["nix-command" "flakes"];
+      trusted-users = [
+        "root"
+        "mpennington"
+      ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
   };
 
@@ -312,36 +332,39 @@ in {
     w3m
     wget
     xdg-user-dirs
-    (let
-      base = pkgs.appimageTools.defaultFhsEnvArgs;
-    in
-      pkgs.buildFHSEnv (base
+    (
+      let
+        base = pkgs.appimageTools.defaultFhsEnvArgs;
+      in
+      pkgs.buildFHSEnv (
+        base
         // {
           name = "fhs";
-          targetPkgs = pkgs:
-          # pkgs.buildFHSUserEnv provides only a minimal FHS environment,
-          # lacking many basic packages needed by most software.
-          # Therefore, we need to add them manually.
-          #
-          # pkgs.appimageTools provides basic packages required by most software.
+          targetPkgs =
+            pkgs:
+            # pkgs.buildFHSUserEnv provides only a minimal FHS environment,
+            # lacking many basic packages needed by most software.
+            # Therefore, we need to add them manually.
+            #
+            # pkgs.appimageTools provides basic packages required by most software.
             (base.targetPkgs pkgs)
-            ++ (
-              with pkgs; [
-                pkg-config
-                ncurses
-                bison
-                python3
-                gnumake
-                gcc
-                texinfo
-                m4
-                patch
-              ]
-            );
+            ++ (with pkgs; [
+              pkg-config
+              ncurses
+              bison
+              python3
+              gnumake
+              gcc
+              texinfo
+              m4
+              patch
+            ]);
           profile = "export FHS=1";
           runScript = "bash";
-          extraOutputsToInstall = ["dev"];
-        }))
+          extraOutputsToInstall = [ "dev" ];
+        }
+      )
+    )
   ];
 
   fonts.packages = with pkgs; [

@@ -321,22 +321,6 @@
         "type": "github"
       }
     },
-    "packwiz": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1771455222,
-        "narHash": "sha256-QK8sY7e6QHhg+GH8NiiePGFlsQBI0jjUlsgBuq1Yopc=",
-        "owner": "packwiz",
-        "repo": "packwiz",
-        "rev": "dfd8b68a4796c763e25bad50265ea1f1233e24f1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "packwiz",
-        "repo": "packwiz",
-        "type": "github"
-      }
-    },
     "plugins-lze": {
       "flake": false,
       "locked": {
@@ -398,7 +382,6 @@
         "nixd": "nixd",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
-        "packwiz": "packwiz",
         "plugins-lze": "plugins-lze",
         "plugins-lzextras": "plugins-lzextras",
         "probe-rs-rules": "probe-rs-rules",
