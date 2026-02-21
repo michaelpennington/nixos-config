@@ -508,9 +508,12 @@ nixInfo.lze.load {
           config = {
             os = {
               editPreset = "nvim-remote",
-              edit = vim.v.progpath .. [=[ --server "$NVIM" --remote-send '<cmd>lua nixInfo.lazygit_fix({{filename}})<CR>']=],
-              editAtLine = vim.v.progpath .. [=[ --server "$NVIM" --remote-send '<cmd>lua nixInfo.lazygit_fix({{filename}}, {{line}})<CR>']=],
-              openDirInEditor = vim.v.progpath .. [=[ --server "$NVIM" --remote-send '<cmd>lua nixInfo.lazygit_fix({{dir}})<CR>']=],
+              edit = vim.v.progpath ..
+                  [=[ --server "$NVIM" --remote-send '<cmd>lua nixInfo.lazygit_fix({{filename}})<CR>']=],
+              editAtLine = vim.v.progpath ..
+                  [=[ --server "$NVIM" --remote-send '<cmd>lua nixInfo.lazygit_fix({{filename}}, {{line}})<CR>']=],
+              openDirInEditor = vim.v.progpath ..
+                  [=[ --server "$NVIM" --remote-send '<cmd>lua nixInfo.lazygit_fix({{dir}})<CR>']=],
               -- this one isnt a remote command, make sure it gets our config regardless of if we name it nvim or not
               editAtLineAndWait = nixInfo(vim.v.progpath, "progpath") .. " +{{line}} {{filename}}",
             },
@@ -530,7 +533,7 @@ nixInfo.lze.load {
             vim.schedule(function()
               if buf then
                 vim.api.nvim_win_set_buf(prev_win, buf)
-                vim.api.nvim_win_set_cursor(0, { line or 0, 0})
+                vim.api.nvim_win_set_cursor(0, { line or 0, 0 })
               end
             end)
           end)
