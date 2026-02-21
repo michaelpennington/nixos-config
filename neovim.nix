@@ -60,6 +60,7 @@ inputs:
       nvim-treesitter
       treesitter-modules-nvim
       blink-cmp
+      nvim-web-devicons
       smart-splits-nvim
       nvim-treesitter-textobjects
       nvim-lspconfig

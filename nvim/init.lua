@@ -576,6 +576,14 @@ nixInfo.lze.load {
       vim.keymap.set('n', '<leader><leader>l', ss.swap_buf_right, { desc = "Swap with window to the right", silent = true })
     end,
   },
+  {
+    "nvim-web-devicons",
+    auto_enable = true,
+    lazy = false,
+    after = function(_)
+      require('nvim-web-devicons').setup({})
+    end,
+  },
 }
 
 vim.cmd.colorscheme("kanagawa-lotus")
