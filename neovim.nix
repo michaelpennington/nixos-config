@@ -57,17 +57,18 @@ inputs:
     ];
 
     data = with pkgs.vimPlugins; [
-      nvim-treesitter
-      treesitter-modules-nvim
+      barbar-nvim
       blink-cmp
+      friendly-snippets
+      gitsigns-nvim
+      nvim-lspconfig
+      nvim-treesitter
+      nvim-treesitter-textobjects
+      nvim-treesitter.withAllGrammars
       nvim-web-devicons
       smart-splits-nvim
-      nvim-treesitter-textobjects
-      nvim-lspconfig
       snacks-nvim
-      gitsigns-nvim
-      friendly-snippets
-      nvim-treesitter.withAllGrammars
+      treesitter-modules-nvim
     ];
   };
 
