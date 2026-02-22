@@ -156,7 +156,7 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+-- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 vim.keymap.set({ "v", "x", "n" }, '<leader>y', '"+y', { noremap = true, silent = true, desc = 'Yank to clipboard' })
@@ -594,10 +594,17 @@ nixInfo.lze.load {
   {
     "nvim-web-devicons",
     auto_enable = true,
-    dep_of = { "barbar.nvim" },
-    lazy = false,
+    dep_of = { "barbar.nvim", "oil.nvim" },
     after = function(_)
       require('nvim-web-devicons').setup({})
+    end,
+  },
+  {
+    "mini.icons",
+    auto_enable = true,
+    dep_of = { "oil.nvim" },
+    after = function(_)
+      require('mini.icons').setup({})
     end,
   },
   {
@@ -657,7 +664,48 @@ nixInfo.lze.load {
       })
     end,
   },
+  {
+    "oil.nvim",
+    dep_of = { "oil-lsp-diagnostics.nvim", "oil-git-status.nvim" },
+    auto_enable = true,
+    lazy = true,
+    after = function(_)
+      local oil = require("oil")
+      oil.setup({
+        watch_for_changes = true,
+        keymaps = {
+          ["<leader>e"] = { "actions.close", mode = "n" },
+        },
+        win_options = {
+          signcolumn = "yes:2",
+        },
+        float = {
+          padding = 4,
+          win_options = {
+            signcolumn = "yes:2",
+          },
+        },
+      })
+
+      vim.keymap.set("n", "<leader>e", oil.open_float, { desc = "Open oil (file browser)", silent = true })
+    end,
+  },
+  {
+    "oil-lsp-diagnostics.nvim",
+    auto_enable = true,
+    after = function(_)
+      require('oil-lsp-diagnostics').setup({})
+    end,
+  },
+  {
+    "oil-git-status.nvim",
+    auto_enable = true,
+    after = function(_)
+      require('oil-git-status').setup({})
+    end,
+  },
 }
+
 
 vim.cmd.colorscheme("kanagawa-lotus")
 vim.diagnostic.config({

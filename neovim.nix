@@ -61,14 +61,15 @@ inputs:
       blink-cmp
       friendly-snippets
       gitsigns-nvim
-      oil-nvim
-      oil-git-nvim
-      oil-lsp-diagnostics-nvim
+      mini-icons
       nvim-lspconfig
       nvim-treesitter
       nvim-treesitter-textobjects
       nvim-treesitter.withAllGrammars
       nvim-web-devicons
+      oil-git-status-nvim
+      oil-lsp-diagnostics-nvim
+      oil-nvim
       smart-splits-nvim
       snacks-nvim
       treesitter-modules-nvim
