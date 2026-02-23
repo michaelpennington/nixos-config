@@ -41,29 +41,27 @@
     };
   };
 
-  outputs =
-    {
-      nixpkgs,
-      home-manager,
-      ...
-    }@inputs:
-    {
-      nixosConfigurations.poseidon = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; };
+  outputs = {
+    nixpkgs,
+    home-manager,
+    ...
+  } @ inputs: {
+    nixosConfigurations.poseidon = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
+      modules = [
+        ./configuration.nix
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = {inherit inputs;};
 
-            home-manager.users.mpennington = import ./home.nix;
-          }
-        ];
-      };
-
-      formatter.x86_64-linux = inputs.alejandra.defaultPackage."x86_64-linux";
+          home-manager.users.mpennington = import ./home.nix;
+        }
+      ];
     };
+
+    formatter.x86_64-linux = inputs.alejandra.defaultPackage."x86_64-linux";
+  };
 }

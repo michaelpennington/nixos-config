@@ -1,13 +1,11 @@
-inputs:
-{
+inputs: {
   config,
   wlib,
   lib,
   pkgs,
   ...
-}:
-{
-  imports = [ wlib.wrapperModules.neovim ];
+}: {
+  imports = [wlib.wrapperModules.neovim];
   # NOTE: see the tips and tricks section or the bottom of this file + flake inputs to understand this value
   options.nvim-lib.neovimPlugins = lib.mkOption {
     readOnly = true;
@@ -30,13 +28,13 @@ inputs:
   config.specs.nix = {
     data = null;
     extraPackages = with pkgs; [
+      alejandra
       nixd
-      nixfmt
     ];
   };
 
   config.specs.lua = {
-    after = [ "general" ];
+    after = ["general"];
     lazy = true;
     data = with pkgs.vimPlugins; [
       lazydev-nvim
@@ -48,7 +46,7 @@ inputs:
   };
 
   config.specs.general = {
-    after = [ "lze" ];
+    after = ["lze"];
     lazy = true;
 
     extraPackages = with pkgs; [
@@ -59,6 +57,7 @@ inputs:
     data = with pkgs.vimPlugins; [
       barbar-nvim
       blink-cmp
+      conform-nvim
       friendly-snippets
       gitsigns-nvim
       mini-icons
@@ -83,37 +82,35 @@ inputs:
     lazy = true;
   };
 
-  config.specMods =
-    {
-      # When this module is ran in an inner list,
-      # this will contain `config` of the parent spec
-      parentSpec ? null,
-      # and this will contain `options`
-      # otherwise they will be `null`
-      parentOpts ? null,
-      parentName ? null,
-      # and then config from this one, as normal
-      config,
-      # and the other module arguments.
-      ...
-    }:
-    {
-      # you could use this to change defaults for the specs
-      # config.collateGrammars = lib.mkDefault (parentSpec.collateGrammars or false);
-      # config.autoconfig = lib.mkDefault (parentSpec.autoconfig or false);
-      # config.runtimeDeps = lib.mkDefault (parentSpec.runtimeDeps or false);
-      # config.pluginDeps = lib.mkDefault (parentSpec.pluginDeps or false);
-      # or something more interesting like:
-      # add an extraPackages field to the specs themselves
-      options.extraPackages = lib.mkOption {
-        type = lib.types.listOf wlib.types.stringable;
-        default = [ ];
-        description = "a extraPackages spec field to put packages to suffix to the PATH";
-      };
-      # You could do this too
-      # config.before = lib.mkDefault [ "INIT_MAIN" ];
+  config.specMods = {
+    # When this module is ran in an inner list,
+    # this will contain `config` of the parent spec
+    parentSpec ? null,
+    # and this will contain `options`
+    # otherwise they will be `null`
+    parentOpts ? null,
+    parentName ? null,
+    # and then config from this one, as normal
+    config,
+    # and the other module arguments.
+    ...
+  }: {
+    # you could use this to change defaults for the specs
+    # config.collateGrammars = lib.mkDefault (parentSpec.collateGrammars or false);
+    # config.autoconfig = lib.mkDefault (parentSpec.autoconfig or false);
+    # config.runtimeDeps = lib.mkDefault (parentSpec.runtimeDeps or false);
+    # config.pluginDeps = lib.mkDefault (parentSpec.pluginDeps or false);
+    # or something more interesting like:
+    # add an extraPackages field to the specs themselves
+    options.extraPackages = lib.mkOption {
+      type = lib.types.listOf wlib.types.stringable;
+      default = [];
+      description = "a extraPackages spec field to put packages to suffix to the PATH";
     };
-  config.extraPackages = config.specCollect (acc: v: acc ++ (v.extraPackages or [ ])) [ ];
+    # You could do this too
+    # config.before = lib.mkDefault [ "INIT_MAIN" ];
+  };
+  config.extraPackages = config.specCollect (acc: v: acc ++ (v.extraPackages or [])) [];
 
   # Inform our lua of which top level specs are enabled
   options.settings.cats = lib.mkOption {
@@ -126,17 +123,14 @@ inputs:
   options.nvim-lib.pluginsFromPrefix = lib.mkOption {
     type = lib.types.raw;
     readOnly = true;
-    default =
-      prefix: inputs:
+    default = prefix: inputs:
       lib.pipe inputs [
         builtins.attrNames
         (builtins.filter (s: lib.hasPrefix prefix s))
         (map (
-          input:
-          let
+          input: let
             name = lib.removePrefix prefix input;
-          in
-          {
+          in {
             inherit name;
             value = config.nvim-lib.mkPlugin name inputs.${input};
           }

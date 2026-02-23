@@ -7,8 +7,7 @@
   inputs,
   lib,
   ...
-}:
-{
+}: {
   imports = [
     ./hardware-configuration.nix
     # inputs.nixvim.nixosModules.nixvim
@@ -154,7 +153,7 @@
           environment_switcher.include_tty_shell = true;
         };
       };
-      sessionPackages = [ pkgs.sway ];
+      sessionPackages = [pkgs.sway];
     };
     fstrim.enable = true;
     udev = {
@@ -175,7 +174,7 @@
     };
     printing = {
       enable = true;
-      allowFrom = [ "all" ];
+      allowFrom = ["all"];
       browsing = true;
       defaultShared = true;
       openFirewall = true;
@@ -262,11 +261,11 @@
     };
     groups = {
       plugdev = {
-        members = [ "mpennington" ];
+        members = ["mpennington"];
       };
       lfs = {
         name = "lfs";
-        members = [ "lfs" ];
+        members = ["lfs"];
       };
     };
   };
@@ -336,34 +335,33 @@
       let
         base = pkgs.appimageTools.defaultFhsEnvArgs;
       in
-      pkgs.buildFHSEnv (
-        base
-        // {
-          name = "fhs";
-          targetPkgs =
-            pkgs:
+        pkgs.buildFHSEnv (
+          base
+          // {
+            name = "fhs";
+            targetPkgs = pkgs:
             # pkgs.buildFHSUserEnv provides only a minimal FHS environment,
             # lacking many basic packages needed by most software.
             # Therefore, we need to add them manually.
             #
             # pkgs.appimageTools provides basic packages required by most software.
-            (base.targetPkgs pkgs)
-            ++ (with pkgs; [
-              pkg-config
-              ncurses
-              bison
-              python3
-              gnumake
-              gcc
-              texinfo
-              m4
-              patch
-            ]);
-          profile = "export FHS=1";
-          runScript = "bash";
-          extraOutputsToInstall = [ "dev" ];
-        }
-      )
+              (base.targetPkgs pkgs)
+              ++ (with pkgs; [
+                pkg-config
+                ncurses
+                bison
+                python3
+                gnumake
+                gcc
+                texinfo
+                m4
+                patch
+              ]);
+            profile = "export FHS=1";
+            runScript = "bash";
+            extraOutputsToInstall = ["dev"];
+          }
+        )
     )
   ];
 

@@ -4,15 +4,13 @@
   inputs,
   lib,
   ...
-}:
-let
+}: let
   module = inputs.nixpkgs.lib.modules.importApply ./neovim.nix inputs;
-in
-{
+in {
   imports = [
     (inputs.nix-wrapper-modules.lib.mkInstallModule {
       name = "neovim";
-      loc = [ "home" "packages" ];
+      loc = ["home" "packages"];
       value = module;
     })
   ];
@@ -26,9 +24,11 @@ in
 
   home.packages = with pkgs; [
     # extractpdfmark
-    (mpv.override { scripts = [
-      mpvScripts.eisa01.simplebookmark
-    ]; })
+    (mpv.override {
+      scripts = [
+        mpvScripts.eisa01.simplebookmark
+      ];
+    })
     alsa-utils
     arduino-ide
     gimp
