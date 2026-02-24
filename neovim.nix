@@ -60,7 +60,14 @@ inputs: {
       conform-nvim
       friendly-snippets
       gitsigns-nvim
+      mini-ai
+      mini-clue
+      mini-comment
+      mini-extra
+      mini-hipatterns
       mini-icons
+      mini-pairs
+      neorg
       nvim-lspconfig
       nvim-treesitter
       nvim-treesitter-textobjects

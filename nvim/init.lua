@@ -95,6 +95,7 @@ vim.opt.inccommand = "split"
 vim.opt.scrolloff = 20
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+vim.opt.confirm = true
 vim.opt.virtualedit = "block"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
@@ -123,6 +124,44 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     vim.opt.formatoptions:remove({ "r", "o" })
   end,
+})
+vim.api.nvim_create_user_command("SuperReplace", function(opts)
+  if #opts.fargs ~= 2 then
+    vim.notify(
+      "SuperReplace needs exactly 2 arguments: <Target> <Replacement>",
+      vim.log.levels.ERROR
+    )
+    return
+  end
+
+  local target = string.lower(opts.fargs[1])
+  local replacement = string.lower(opts.fargs[2])
+
+  local function to_title(str)
+    return str:sub(1, 1):upper() .. str:sub(2)
+  end
+
+  local t_title = to_title(target)
+  local t_upper = string.upper(target)
+  local t_lower = target
+
+  local r_title = to_title(replacement)
+  local r_upper = string.upper(replacement)
+  local r_lower = replacement
+
+  local search_pattern = string.format([[\v<(%s)|(%s)|(%s)>]], t_title, t_upper, t_lower)
+  local replace_expr =
+    string.format([[\=submatch(1)!=''?'%s':submatch(2)!=''?'%s':'%s']], r_title, r_upper, r_lower)
+
+  local cmd =
+    string.format([[%d,%ds/%s/%s/ge]], opts.line1, opts.line2, search_pattern, replace_expr)
+
+  -- 7. Execute!
+  vim.cmd(cmd)
+end, {
+  nargs = "+",
+  range = "%",
+  desc = "Case-preserving substitution: SuperReplace <target> <replacement>",
 })
 
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
@@ -254,17 +293,17 @@ nixInfo.lze.load({
         fold = { enable = true },
         indent = { enable = true },
       })
-      vim.keymap.set("n", "<Leader>ss", ts.init_selection, {
+      vim.keymap.set("n", "<Leader>v", ts.init_selection, {
         desc = "Start selecting nodes with treesitter-modules",
       })
-      vim.keymap.set("x", "<Leader>si", ts.node_incremental, {
-        desc = "Increment selection to named node",
+      vim.keymap.set("x", "<Leader>vi", ts.node_incremental, {
+        desc = "[I]ncrement selection to named node",
       })
-      vim.keymap.set("x", "<Leader>sc", ts.scope_incremental, {
-        desc = "Increment selection to surrounding scope",
+      vim.keymap.set("x", "<Leader>vs", ts.scope_incremental, {
+        desc = "Increment selection to surrounding [S]cope",
       })
-      vim.keymap.set("x", "<Leader>sd", ts.node_decremental, {
-        desc = "Shrink selection to previous named node",
+      vim.keymap.set("x", "<Leader>vd", ts.node_decremental, {
+        desc = "[D]ecrement selection to previous named node",
       })
     end,
   },
@@ -292,31 +331,31 @@ nixInfo.lze.load({
           -- for LSP related items. It sets the mode, buffer and description for us each time.
           local nmap = function(keys, func, desc)
             if desc then
-              desc = "LSP: " .. desc
+              desc = "[L]SP: " .. desc
             end
             vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
           end
 
-          nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-          nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+          nmap("<leader>lr", vim.lsp.buf.rename, "[R]ename")
+          nmap("<leader>lc", vim.lsp.buf.code_action, "[C]ode Action")
           nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-          nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
+          nmap("<leader>ld", vim.lsp.buf.type_definition, "Type [D]efinition")
           nmap("gr", function()
             Snacks.picker.lsp_references()
           end, "[G]oto [R]eferences")
           nmap("gI", function()
             Snacks.picker.lsp_implementations()
           end, "[G]oto [I]mplementation")
-          nmap("<leader>ds", function()
+          nmap("<leader>ls", function()
             Snacks.picker.lsp_symbols()
-          end, "[D]ocument [S]ymbols")
-          nmap("<leader>ws", function()
+          end, "Document [S]ymbols")
+          nmap("<leader>lw", function()
             Snacks.picker.lsp_workspace_symbols()
-          end, "[W]orkspace [S]ymbols")
+          end, "[W]orkspace Symbols")
 
           -- See `:help K` for why this keymap
           nmap("K", vim.lsp.buf.hover, "Hover Documentation")
-          nmap("<leader>td", vim.lsp.buf.signature_help, "Signature Documentation")
+          nmap("<leader>lt", vim.lsp.buf.signature_help, "Signature Documentation")
 
           -- Lesser used LSP functionality
           nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
@@ -431,7 +470,7 @@ nixInfo.lze.load({
           documentation = { auto_show = true },
           list = {
             selection = {
-              preselect = true,
+              preselect = false,
               auto_insert = true,
             },
           },
@@ -1002,6 +1041,152 @@ nixInfo.lze.load({
       )
 
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end,
+  },
+  {
+    "neorg",
+    lazy = false,
+    after = function(_)
+      require("neorg").setup({
+        load = {
+          ["core.defaults"] = {},
+          ["core.concealer"] = {
+            config = {
+              icon_preset = "varied",
+            },
+          },
+          ["core.dirman"] = {
+            config = {
+              workspaces = {
+                notes = "~/notes",
+              },
+              default_workspace = "notes",
+            },
+          },
+        },
+      })
+    end,
+  },
+  {
+    "mini.ai",
+    auto_enable = true,
+    lazy = false,
+    after = function(_)
+      require("mini.ai").setup({})
+    end,
+  },
+  {
+    "mini.comment",
+    auto_enable = true,
+    lazy = false,
+    after = function(_)
+      require("mini.comment").setup({
+        mappings = {
+          comment = "<leader>/",
+          comment_line = "<leader>/",
+          comment_visual = "<leader>/",
+          textobject = "<leader>/",
+        },
+      })
+    end,
+  },
+  {
+    "mini.pairs",
+    auto_enable = true,
+    lazy = false,
+    after = function(_)
+      require("mini.pairs").setup({})
+    end,
+  },
+  {
+    "mini.extra",
+    dep_of = { "mini.hipatterns" },
+    auto_enable = true,
+    after = function(_)
+      require("mini.extra").setup({})
+    end,
+  },
+  {
+    "mini.hipatterns",
+    auto_enable = true,
+    lazy = false,
+    after = function(_)
+      local hi_words = MiniExtra.gen_highlighter.words
+      require("mini.hipatterns").setup({
+        fixme = hi_words({ "FIXME", "Fixme", "fixme" }, "MiniHipatternsFixme"),
+        hack = hi_words({ "HACK", "Hack", "hack" }, "MiniHipatternsHack"),
+        todo = hi_words({ "TODO", "Todo", "todo" }, "MiniHipatternsTodo"),
+        note = hi_words({ "NOTE", "Note", "note" }, "MiniHipatternsNote"),
+      })
+    end,
+  },
+  {
+    "mini.clue",
+    auto_enable = true,
+    lazy = false,
+    after = function(_)
+      local miniclue = require("mini.clue")
+      miniclue.setup({
+        triggers = {
+          -- Leader triggers
+          { mode = { "n", "x" }, keys = "<Leader>" },
+
+          -- `[` and `]` keys
+          { mode = "n", keys = "[" },
+          { mode = "n", keys = "]" },
+
+          -- Built-in completion
+          { mode = "i", keys = "<C-x>" },
+
+          -- `g` key
+          { mode = { "n", "x" }, keys = "g" },
+
+          -- Marks
+          { mode = { "n", "x" }, keys = "'" },
+          { mode = { "n", "x" }, keys = "`" },
+
+          -- Registers
+          { mode = { "n", "x" }, keys = '"' },
+          { mode = { "i", "c" }, keys = "<C-r>" },
+
+          -- Window commands
+          { mode = "n", keys = "<C-w>" },
+
+          -- `z` key
+          { mode = { "n", "x" }, keys = "z" },
+        },
+
+        clues = {
+          -- Enhance this by adding descriptions for <Leader> mapping groups
+          miniclue.gen_clues.square_brackets(),
+          miniclue.gen_clues.builtin_completion(),
+          miniclue.gen_clues.g(),
+          miniclue.gen_clues.marks(),
+          miniclue.gen_clues.registers(),
+          miniclue.gen_clues.windows(),
+          miniclue.gen_clues.z(),
+          { mode = "n", keys = "<Leader>g", desc = "+Git" },
+          { mode = "x", keys = "<Leader>h", desc = "+Git" },
+          { mode = { "n", "x" }, keys = "<Leader>F", desc = "+Format" },
+          { mode = "n", keys = "<Leader>f", desc = "+Find" },
+          { mode = "n", keys = "<Leader>gt", desc = "+Toggle Options" },
+          { mode = { "n", "x" }, keys = "<Leader>s", desc = "+Search" },
+          { mode = "n", keys = "<Leader>w", desc = "+Workspace" },
+          { mode = "n", keys = "<Leader>l", desc = "+LSP" },
+          { mode = "n", keys = "<Leader><Leader>", desc = "+Buffer Options" },
+          { mode = { "n", "x" }, keys = "<Leader>v", desc = "+Select" },
+        },
+
+        window = {
+          config = {
+            row = "auto",
+            col = "auto",
+            width = 50,
+            anchor = "NE",
+          },
+          delay = 250,
+        },
+      })
     end,
   },
 })
