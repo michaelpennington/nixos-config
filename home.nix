@@ -79,7 +79,7 @@ in {
     libreoffice-fresh
     inputs.wezterm.packages."${pkgs.stdenv.hostPlatform.system}".default
     jdk
-    krita
+    # krita
     lazygit
     qbittorrent
     nautilus
