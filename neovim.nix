@@ -61,6 +61,7 @@ inputs: {
       fidget-nvim
       friendly-snippets
       gitsigns-nvim
+      lualine-nvim
       mini-ai
       mini-clue
       mini-comment
@@ -79,6 +80,7 @@ inputs: {
       oil-nvim
       smart-splits-nvim
       snacks-nvim
+      statusline
       treesitter-modules-nvim
     ];
   };

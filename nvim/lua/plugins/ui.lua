@@ -232,4 +232,12 @@ nixInfo.lze.load({
       require("fidget").setup({})
     end,
   },
+  {
+    "lualine.nvim",
+    auto_enable = true,
+    lazy = false,
+    after = function(_)
+      require("lualine").setup({})
+    end,
+  },
 })
