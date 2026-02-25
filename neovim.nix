@@ -80,7 +80,6 @@ inputs: {
       oil-nvim
       smart-splits-nvim
       snacks-nvim
-      statusline
       treesitter-modules-nvim
     ];
   };
