@@ -1,4 +1,4 @@
-return {
+nixInfo.lze.load({
   {
     "mini.ai",
     auto_enable = true,
@@ -121,4 +121,4 @@ return {
       })
     end,
   },
-}
+})

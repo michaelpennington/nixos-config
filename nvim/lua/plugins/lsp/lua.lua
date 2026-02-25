@@ -1,4 +1,4 @@
-return {
+nixInfo.lze.load({
   {
     -- lazydev makes your lua lsp load only the relevant definitions for a file.
     -- It also gives us a nice way to correlate globals we create with files.
@@ -50,4 +50,4 @@ return {
     },
     -- also these are regular specs and you can use before and after and all the other normal fields
   },
-}
+})

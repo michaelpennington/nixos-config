@@ -1,4 +1,4 @@
-return {
+nixInfo.lze.load({
   {
     "snacks.nvim",
     auto_enable = true,
@@ -357,4 +357,4 @@ return {
       })
     end,
   },
-}
+})

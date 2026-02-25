@@ -8,6 +8,9 @@ nixInfo.lze.h.lsp.set_ft_fallback(function(name)
   end
 end)
 
+require("plugins.lsp.lua")
+require("plugins.lsp.nix")
+
 nixInfo.lze.load({
   {
     "nvim-lspconfig",
@@ -122,9 +125,3 @@ nixInfo.lze.load({
     end,
   },
 })
-
-local lua = require("plugins.lsp.lua")
-local nix = require("plugins.lsp.nix")
-
-nixInfo.lze.load(lua)
-nixInfo.lze.load(nix)
