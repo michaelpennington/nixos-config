@@ -32,9 +32,9 @@ in {
     alsa-utils
     arduino-ide
     gimp
-    azure-cli
+    # azure-cli
     protonup-rs
-    azure-storage-azcopy
+    # azure-storage-azcopy
     wl-clipboard
     sov
     aoc-cli
