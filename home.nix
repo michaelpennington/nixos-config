@@ -66,7 +66,7 @@ in {
     baobab
     super-slicer
     gtklp
-    openscad
+    # openscad
     spotdl
     slurp
     blender
