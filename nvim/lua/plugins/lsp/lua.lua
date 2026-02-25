@@ -44,6 +44,7 @@ nixInfo.lze.load({
           signatureHelp = { enabled = true },
           diagnostics = {
             disable = { "missing-fields" },
+            globals = { "Snacks", "vim", "MiniExtra", "nixInfo" },
           },
         },
       },
