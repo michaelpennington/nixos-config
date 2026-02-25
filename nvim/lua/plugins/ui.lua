@@ -224,4 +224,12 @@ nixInfo.lze.load({
       vim.cmd([[hi GitSignsDelete guifg=#fa2525]])
     end,
   },
+  {
+    "fidget.nvim",
+    auto_enable = true,
+    lazy = false,
+    after = function(_)
+      require("fidget").setup({})
+    end,
+  },
 })

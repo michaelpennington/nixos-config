@@ -58,6 +58,7 @@ inputs: {
       barbar-nvim
       blink-cmp
       conform-nvim
+      fidget-nvim
       friendly-snippets
       gitsigns-nvim
       mini-ai
