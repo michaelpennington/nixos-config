@@ -1,5 +1,5 @@
 vim.g.mapleader = " "
-vim.g.maplocalleader = ","
+vim.g.maplocalleader = " "
 
 vim.o.exrc = false -- can be toggled off in that file to stop it from searching further
 vim.opt.list = true
