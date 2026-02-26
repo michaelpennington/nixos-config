@@ -357,4 +357,11 @@ nixInfo.lze.load({
       })
     end,
   },
+  {
+    "nvim-surround",
+    lazy = false,
+    after = function(_)
+      require("nvim-surround").setup({})
+    end,
+  },
 })

@@ -241,6 +241,7 @@ nixInfo.lze.load({
       require("lualine").setup({
         sections = {
           lualine_c = {
+            "filename",
             {
               function()
                 return navic.get_location()
@@ -249,7 +250,6 @@ nixInfo.lze.load({
                 return navic.is_available()
               end,
             },
-            "filename",
           },
         },
       })

@@ -72,6 +72,7 @@ inputs: {
       neorg
       nvim-lspconfig
       nvim-navic
+      nvim-surround
       nvim-treesitter
       nvim-treesitter-textobjects
       nvim-treesitter.withAllGrammars
