@@ -237,7 +237,27 @@ nixInfo.lze.load({
     auto_enable = true,
     lazy = false,
     after = function(_)
-      require("lualine").setup({})
+      local navic = require("nvim-navic")
+      require("lualine").setup({
+        sections = {
+          lualine_c = {
+            {
+              function()
+                return navic.get_location()
+              end,
+              cond = function()
+                return navic.is_available()
+              end,
+            },
+            "filename",
+          },
+        },
+      })
     end,
+  },
+  {
+    "nvim-navic",
+    auto_enable = true,
+    dep_of = { "lualine.nvim", "nvim-lspconfig" },
   },
 })

@@ -71,6 +71,7 @@ inputs: {
       mini-pairs
       neorg
       nvim-lspconfig
+      nvim-navic
       nvim-treesitter
       nvim-treesitter-textobjects
       nvim-treesitter.withAllGrammars

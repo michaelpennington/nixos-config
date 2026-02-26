@@ -31,7 +31,7 @@ nixInfo.lze.load({
     -- set up our on_attach function once before the spec loads
     before = function(_)
       vim.lsp.config("*", {
-        on_attach = function(_, bufnr)
+        on_attach = function(client, bufnr)
           -- we create a function that lets us more easily define mappings specific
           -- for LSP related items. It sets the mode, buffer and description for us each time.
           local nmap = function(keys, func, desc)
@@ -74,6 +74,12 @@ nixInfo.lze.load({
           vim.api.nvim_buf_create_user_command(bufnr, "LSPFormat", function(_)
             vim.lsp.buf.format()
           end, { desc = "Format current buffer with LSP" })
+
+          local navic = require("nvim-navic")
+
+          if client.server_capabilities.documentSymbolProvider then
+            navic.attach(client, bufnr)
+          end
         end,
       })
     end,
