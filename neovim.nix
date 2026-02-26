@@ -58,6 +58,8 @@ inputs: {
     data = with pkgs.vimPlugins; [
       barbar-nvim
       blink-cmp
+      blink-compat
+      cmp-cmdline
       colorful-menu-nvim
       conform-nvim
       fidget-nvim

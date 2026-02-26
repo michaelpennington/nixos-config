@@ -10,5 +10,5 @@ require("plugins.lsp")
 require("plugins.tools")
 require("plugins.mini")
 
-vim.cmd.colorscheme("kanagawa-paper-canvas")
-vim.o.background = "light"
+vim.cmd.colorscheme("kanagawa-paper")
+-- vim.o.background = "dark"

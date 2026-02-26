@@ -98,6 +98,26 @@ nixInfo.lze.load({
           ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
           ["<C-e>"] = { "hide", "fallback" },
         },
+        cmdline = {
+          enabled = true,
+          completion = {
+            menu = {
+              auto_show = true,
+            },
+          },
+          sources = function()
+            local type = vim.fn.getcmdtype()
+            -- Search forward and backward
+            if type == "/" or type == "?" then
+              return { "buffer" }
+            end
+            -- Commands
+            if type == ":" or type == "@" then
+              return { "cmdline", "cmp_cmdline" }
+            end
+            return {}
+          end,
+        },
         appearance = {
           nerd_font_variant = "normal",
         },
@@ -112,6 +132,7 @@ nixInfo.lze.load({
           },
           menu = {
             draw = {
+              treesitter = { "lsp" },
               columns = { { "kind_icon" }, { "label", gap = 1 } },
               components = {
                 label = {
@@ -138,10 +159,37 @@ nixInfo.lze.load({
               module = "lazydev.integrations.blink",
               score_offset = 100,
             },
+            path = {
+              score_offset = 50,
+            },
+            lsp = {
+              score_offset = 40,
+            },
+            cmp_cmdline = {
+              name = "cmp_cmdline",
+              module = "blink.compat.source",
+              score_offset = -100,
+              opts = {
+                cmp_name = "cmdline",
+              },
+            },
           },
         },
-
-        fuzzy = { implementation = "prefer_rust_with_warning" },
+        signature = {
+          enabled = true,
+          window = {
+            show_documentation = true,
+          },
+        },
+        fuzzy = {
+          implementation = "prefer_rust_with_warning",
+          sorts = {
+            "exact",
+            -- defaults
+            "score",
+            "sort_text",
+          },
+        },
       })
     end,
   },
@@ -156,5 +204,16 @@ nixInfo.lze.load({
         end,
       })
     end,
+  },
+  {
+    "cmp-cmdline",
+    auto_enable = true,
+    on_plugin = { "blink.cmp" },
+    load = nixInfo.lze.loaders.with_after,
+  },
+  {
+    "blink.compat",
+    auto_enable = true,
+    dep_of = { "cmp-cmdline" },
   },
 })
