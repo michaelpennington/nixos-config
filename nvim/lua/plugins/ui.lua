@@ -1,9 +1,21 @@
 nixInfo.lze.load({
   {
-    "kanagawa.nvim",
-    colorscheme = { "kanagawa-lotus" },
+    "kanagawa-paper.nvim",
+    dep_of = { "lualine.nvim" },
+    colorscheme = { "kanagawa-paper-canvas", "kanagawa-paper", "kanagawa-paper-ink" },
     after = function()
-      require("kanagawa").load("lotus")
+      require("kanagawa-paper").setup({
+        undercurl = false,
+        auto_plugins = false,
+        plugins = {
+          barbar = true,
+          blink = true,
+          gitsigns = true,
+          mini = true,
+          nvim_navic = true,
+          snacks = true,
+        },
+      })
     end,
   },
   {
@@ -239,6 +251,24 @@ nixInfo.lze.load({
     after = function(_)
       local navic = require("nvim-navic")
       require("lualine").setup({
+        options = {
+          theme = function()
+            -- pcall and fallback theme is to handle the case of theme switching/previewing
+            local theme
+            local ok, t = pcall(
+              require,
+              "lualine.themes."
+                .. (vim.o.background == "light" and "kanagawa-paper-canvas" or "kanagawa-paper-ink")
+            )
+            if ok then
+              theme = t
+            else
+              theme = require("some other fallback theme")
+            end
+            return theme
+          end,
+          -- ... your lualine config
+        },
         sections = {
           lualine_c = {
             "filename",
@@ -259,5 +289,14 @@ nixInfo.lze.load({
     "nvim-navic",
     auto_enable = true,
     dep_of = { "lualine.nvim", "nvim-lspconfig" },
+  },
+  {
+    "colorful-menu.nvim",
+    auto_enable = true,
+    dep_of = { "blink.cmp" },
+    lazy = false,
+    after = function()
+      require("colorful-menu").setup({})
+    end,
   },
 })

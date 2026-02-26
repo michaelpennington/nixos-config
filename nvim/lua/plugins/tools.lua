@@ -335,6 +335,7 @@ nixInfo.lze.load({
   },
   {
     "neorg",
+    auto_enable = true,
     lazy = false,
     after = function(_)
       require("neorg").setup({
@@ -359,9 +360,20 @@ nixInfo.lze.load({
   },
   {
     "nvim-surround",
+    auto_enable = true,
     lazy = false,
     after = function(_)
       require("nvim-surround").setup({})
+    end,
+  },
+  {
+    "vim-startuptime",
+    auto_enable = true,
+    cmd = { "StartupTime" },
+    before = function(_)
+      vim.g.startuptime_event_width = 0
+      vim.g.startuptime_tries = 10
+      vim.g.startuptime_exe_path = nixInfo(vim.v.progpath, "progpath")
     end,
   },
 })

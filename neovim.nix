@@ -52,11 +52,13 @@ inputs: {
     extraPackages = with pkgs; [
       lazygit
       tree-sitter
+      codespell
     ];
 
     data = with pkgs.vimPlugins; [
       barbar-nvim
       blink-cmp
+      colorful-menu-nvim
       conform-nvim
       fidget-nvim
       friendly-snippets
@@ -70,6 +72,7 @@ inputs: {
       mini-icons
       mini-pairs
       neorg
+      nvim-lint
       nvim-lspconfig
       nvim-navic
       nvim-surround
@@ -83,12 +86,13 @@ inputs: {
       smart-splits-nvim
       snacks-nvim
       treesitter-modules-nvim
+      vim-startuptime
     ];
   };
 
   config.specs.colorscheme = {
     data = with pkgs.vimPlugins; [
-      kanagawa-nvim
+      kanagawa-paper-nvim
     ];
     lazy = true;
   };

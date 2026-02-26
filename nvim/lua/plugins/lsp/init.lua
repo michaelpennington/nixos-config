@@ -36,39 +36,39 @@ nixInfo.lze.load({
           -- for LSP related items. It sets the mode, buffer and description for us each time.
           local nmap = function(keys, func, desc)
             if desc then
-              desc = "[L]SP: " .. desc
+              desc = "LSP: " .. desc
             end
             vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
           end
 
-          nmap("<leader>lr", vim.lsp.buf.rename, "[R]ename")
-          nmap("<leader>lc", vim.lsp.buf.code_action, "[C]ode Action")
-          nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-          nmap("<leader>ld", vim.lsp.buf.type_definition, "Type [D]efinition")
+          nmap("<leader>lr", vim.lsp.buf.rename, "Rename")
+          nmap("<leader>lc", vim.lsp.buf.code_action, "Code Action")
+          nmap("gd", vim.lsp.buf.definition, "Goto Definition")
+          nmap("<leader>ld", vim.lsp.buf.type_definition, "Type Definition")
           nmap("gr", function()
             Snacks.picker.lsp_references()
-          end, "[G]oto [R]eferences")
+          end, "Goto References")
           nmap("gI", function()
             Snacks.picker.lsp_implementations()
-          end, "[G]oto [I]mplementation")
+          end, "Goto Implementation")
           nmap("<leader>ls", function()
             Snacks.picker.lsp_symbols()
-          end, "Document [S]ymbols")
+          end, "Document Symbols")
           nmap("<leader>lw", function()
             Snacks.picker.lsp_workspace_symbols()
-          end, "[W]orkspace Symbols")
+          end, "Workspace Symbols")
 
           -- See `:help K` for why this keymap
           nmap("K", vim.lsp.buf.hover, "Hover Documentation")
           nmap("<leader>lt", vim.lsp.buf.signature_help, "Signature Documentation")
 
           -- Lesser used LSP functionality
-          nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-          nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
-          nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
+          nmap("gD", vim.lsp.buf.declaration, "Goto Declaration")
+          nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "Workspace Add Folder")
+          nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, "Workspace Remove Folder")
           nmap("<leader>wl", function()
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, "[W]orkspace [L]ist Folders")
+          end, "Workspace List Folders")
 
           -- Create a command `:Format` local to the LSP buffer
           vim.api.nvim_buf_create_user_command(bufnr, "LSPFormat", function(_)
@@ -110,6 +110,21 @@ nixInfo.lze.load({
               auto_insert = true,
             },
           },
+          menu = {
+            draw = {
+              columns = { { "kind_icon" }, { "label", gap = 1 } },
+              components = {
+                label = {
+                  text = function(ctx)
+                    return require("colorful-menu").blink_components_text(ctx)
+                  end,
+                  highlight = function(ctx)
+                    return require("colorful-menu").blink_components_highlight(ctx)
+                  end,
+                },
+              },
+            },
+          },
         },
 
         sources = {
@@ -127,6 +142,18 @@ nixInfo.lze.load({
         },
 
         fuzzy = { implementation = "prefer_rust_with_warning" },
+      })
+    end,
+  },
+  {
+    "nvim-lint",
+    auto_enable = true,
+    event = "FileType",
+    after = function(_)
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          require("lint").try_lint("codespell")
+        end,
       })
     end,
   },
