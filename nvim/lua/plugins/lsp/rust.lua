@@ -1,22 +1,59 @@
-nixInfo.lze.load({
-  {
-    "rustaceanvim",
-    lazy = false,
-    after = function(_)
-      -- require("rustaceanvim")
-      local bufnr = vim.api.nvim_get_current_buf()
-      vim.keymap.set("n", "<leader>lc", function()
-        vim.cmd.RustLsp("codeAction") -- supports rust-analyzer's grouping
-        -- or vim.lsp.buf.codeAction() if you don't want grouping.
-      end, { silent = true, buffer = bufnr, desc = "LSP: Code Action" })
-      vim.keymap.set(
-        "n",
-        "K", -- Override Neovim's built-in hover keymap with rustaceanvim's hover actions
-        function()
-          vim.cmd.RustLsp({ "hover", "actions" })
-        end,
-        { silent = true, buffer = bufnr }
-      )
-    end,
-  },
-})
+return function(on_attach)
+  nixInfo.lze.load({
+    {
+      "rustaceanvim",
+      auto_enable = true,
+      lazy = false,
+      ft = { "rust" },
+    },
+    {
+      "crates.nvim",
+      lazy = true,
+      auto_enable = true,
+      event = { "BufRead Cargo.toml" },
+      after = function(_)
+        require("crates").setup({
+          lsp = {
+            enabled = true,
+            on_attach = on_attach,
+            actions = true,
+            completion = true,
+            hover = true,
+          },
+        })
+      end,
+    },
+    {
+      "cargo.nvim",
+      lazy = true,
+      auto_enable = true,
+      ft = { "rust" },
+      cmd = {
+        "CargoBench",
+        "CargoBuild",
+        "CargoClean",
+        "CargoDoc",
+        "CargoNew",
+        "CargoRun",
+        "CargoRunTerm",
+        "CargoTest",
+        "CargoUpdate",
+        "CargoCheck",
+        "CargoClippy",
+        "CargoAdd",
+        "CargoRemove",
+        "CargoFmt",
+        "CargoFix",
+      },
+      after = function(_)
+        require("cargo").setup({
+          float_window = true,
+          window_width = 0.8,
+          window_height = 0.8,
+          auto_close = true,
+          close_timeout = 5000,
+        })
+      end,
+    },
+  })
+end

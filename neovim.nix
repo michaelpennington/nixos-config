@@ -4,7 +4,38 @@ inputs: {
   lib,
   pkgs,
   ...
-}: {
+}: let
+  cargo-nvim = (
+    pkgs.rustPlatform.buildRustPackage {
+      pname = "cargo.nvim";
+      version = "2b470e7";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "michaelpennington";
+        repo = "cargo.nvim";
+        rev = "c33abc861a87152f0887bc343811a5f9203a9237";
+        hash = "sha256-w/nyQShDDAOci9UjEG6n+XYTs5pEXeOZVOHQvotmFVg=";
+      };
+
+      cargoHash = "sha256-eBSmhaU/ycci2lmGIwwocJGLkmBjfMXQyh18AEqDjx4=";
+
+      doCheck = false;
+      nativeBuildInputs = [pkgs.pkg-config];
+      buildInputs = [pkgs.luajit];
+
+      installPhase = ''
+        mkdir -p $out/target/release
+        mkdir -p $out/lua
+
+        cp target/*/release/libcargo_nvim.so $out/target/release/
+
+        cp -r lua/* $out/lua/
+        cp -r plugin $out/ || true
+        cp -r doc $out/ || true
+      '';
+    }
+  );
+in {
   imports = [wlib.wrapperModules.neovim];
   # NOTE: see the tips and tricks section or the bottom of this file + flake inputs to understand this value
   options.nvim-lib.neovimPlugins = lib.mkOption {
@@ -38,6 +69,8 @@ inputs: {
     lazy = true;
     data = with pkgs.vimPlugins; [
       rustaceanvim
+      crates-nvim
+      cargo-nvim
     ];
     extraPackages = with pkgs; [
       rust-analyzer
