@@ -10,6 +10,7 @@ end)
 
 require("plugins.lsp.lua")
 require("plugins.lsp.nix")
+require("plugins.lsp.rust")
 
 nixInfo.lze.load({
   {

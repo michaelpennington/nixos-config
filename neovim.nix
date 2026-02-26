@@ -33,6 +33,17 @@ inputs: {
     ];
   };
 
+  config.specs.rust = {
+    after = ["general"];
+    lazy = true;
+    data = with pkgs.vimPlugins; [
+      rustaceanvim
+    ];
+    extraPackages = with pkgs; [
+      rust-analyzer
+    ];
+  };
+
   config.specs.lua = {
     after = ["general"];
     lazy = true;
