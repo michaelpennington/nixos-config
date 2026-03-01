@@ -55,6 +55,7 @@ in {
     chromium
     wkhtmltopdf
     # kdePackages.kdenlive
+    nchat
     appimage-run
     file-roller
     freetube

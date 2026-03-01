@@ -39,6 +39,14 @@
       url = "github:BirdeeHub/lzextras";
       flake = false;
     };
+    plugins-kanagawa-paper-nvim = {
+      url = "github:michaelpennington/kanagawa-paper.nvim";
+      flake = false;
+    };
+    cargo-nvim = {
+      url = "github:michaelpennington/cargo.nvim";
+      flake = false;
+    };
   };
 
   outputs = {

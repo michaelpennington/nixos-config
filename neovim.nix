@@ -10,12 +10,7 @@ inputs: {
       pname = "cargo.nvim";
       version = "2b470e7";
 
-      src = pkgs.fetchFromGitHub {
-        owner = "michaelpennington";
-        repo = "cargo.nvim";
-        rev = "c33abc861a87152f0887bc343811a5f9203a9237";
-        hash = "sha256-w/nyQShDDAOci9UjEG6n+XYTs5pEXeOZVOHQvotmFVg=";
-      };
+      src = inputs.cargo-nvim;
 
       cargoHash = "sha256-eBSmhaU/ycci2lmGIwwocJGLkmBjfMXQyh18AEqDjx4=";
 
@@ -137,8 +132,11 @@ in {
   };
 
   config.specs.colorscheme = {
-    data = with pkgs.vimPlugins; [
-      kanagawa-paper-nvim
+    data = [
+      {
+        data = config.nvim-lib.neovimPlugins.kanagawa-paper-nvim;
+        name = "kanagawa-paper.nvim";
+      }
     ];
     lazy = true;
   };
