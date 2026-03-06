@@ -33,6 +33,7 @@ vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 vim.o.completeopt = "menu,preview,noselect"
 vim.o.termguicolors = true
+vim.o.nrformats = "bin,hex,alpha"
 
 vim.g.netrw_liststyle = 0
 vim.g.netrw_banner = 0

@@ -84,6 +84,17 @@ in {
     ];
   };
 
+  config.specs.cCpp = {
+    after = ["general"];
+    lazy = true;
+    extraPackages = with pkgs; [
+      clang-tools
+    ];
+    data = with pkgs.vimPlugins; [
+      clangd_extensions-nvim
+    ];
+  };
+
   config.specs.general = {
     after = ["lze"];
     lazy = true;
@@ -124,6 +135,7 @@ in {
       oil-git-status-nvim
       oil-lsp-diagnostics-nvim
       oil-nvim
+      otter-nvim
       smart-splits-nvim
       snacks-nvim
       treesitter-modules-nvim

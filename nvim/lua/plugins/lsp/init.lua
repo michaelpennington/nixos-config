@@ -219,4 +219,11 @@ nixInfo.lze.load({
     auto_enable = true,
     dep_of = { "cmp-cmdline" },
   },
+  {
+    "otter.nvim",
+    on_plugin = { "nvim-treesitter" },
+    after = function(_)
+      require("otter").setup({})
+    end,
+  },
 })
