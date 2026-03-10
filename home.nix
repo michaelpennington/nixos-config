@@ -78,7 +78,7 @@ in {
     fstl
     lilypond-with-fonts
     libreoffice-fresh
-    inputs.wezterm.packages."${pkgs.stdenv.hostPlatform.system}".default
+    wezterm
     jdk
     # krita
     lazygit
@@ -172,7 +172,7 @@ in {
     systemd.enable = true;
     wrapperFeatures.gtk = true;
     config = let
-      wezterm = lib.meta.getExe inputs.wezterm.packages."${pkgs.stdenv.hostPlatform.system}".default;
+      wezterm = lib.meta.getExe pkgs.wezterm;
       swayLauncherDesktop = lib.meta.getExe pkgs.sway-launcher-desktop;
     in {
       bars = [];

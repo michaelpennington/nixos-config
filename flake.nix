@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    rust-overlay.url = "github:oxalica/rust-overlay";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     nix-wrapper-modules = {
       url = "github:BirdeeHub/nix-wrapper-modules";
@@ -12,11 +11,6 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    wezterm = {
-      url = "github:wez/wezterm/main?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
     };
     alejandra = {
       url = "github:kamadorueda/alejandra/3.1.0";
