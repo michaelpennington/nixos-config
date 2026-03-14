@@ -41,6 +41,7 @@ in {
     aria2
     ventoy
     # musescore
+    termscp
     yt-dlp
     megasync
     polkit_gnome
