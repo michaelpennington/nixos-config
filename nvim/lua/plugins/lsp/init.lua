@@ -198,6 +198,7 @@ nixInfo.lze.load({
   },
   {
     "nvim-lint",
+    enabled = false,
     auto_enable = true,
     event = "FileType",
     after = function(_)
