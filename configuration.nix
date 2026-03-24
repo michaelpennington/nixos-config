@@ -10,13 +10,12 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    # inputs.nixvim.nixosModules.nixvim
     inputs.ucodenix.nixosModules.default
-    # inputs.nix-minecraft.nixosModules.minecraft-servers
+    inputs.nix-minecraft.nixosModules.minecraft-servers
     inputs.probe-rs-rules.nixosModules.x86_64-linux.default
   ];
 
-  # nixpkgs.overlays = [inputs.nix-minecraft.overlay];
+  nixpkgs.overlays = [inputs.nix-minecraft.overlay];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
@@ -197,38 +196,39 @@
       enable = true;
     };
     gnome.gnome-keyring.enable = true;
-    # minecraft-servers = {
-    #   enable = true;
-    #   eula = true;
-    #
-    #   servers = {
-    #     solo_world = let
-    #       modpack = pkgs.fetchPackwizModpack {
-    #         url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-    #         packHash = "sha256-wTsTRRM8JwOaOyRqE6+uhvnSSFM4NU38iIpbtGK/Ozo=";
-    #       };
-    #       mcVersion = modpack.manifest.versions.minecraft;
-    #       fabricVersion = modpack.manifest.versions.fabric;
-    #       serverVersion = lib.replaceStrings ["."] ["_"] "fabric-${mcVersion}";
-    #     in {
-    #       enable = true;
-    #       package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = fabricVersion;};
-    #       autoStart = false;
-    #       symlinks = {
-    #         "mods" = "${modpack}/mods";
-    #       };
-    #       serverProperties = {
-    #         # level-name = "Survival World";
-    #         difficulty = "hard";
-    #         pause-when-empty-seconds = -1;
-    #       };
-    #       files = {
-    #         "config" = "${modpack}/config";
-    #       };
-    #       jvmOpts = "-Xms8G -Xmx12G -XX:+UseZGC -XX:+ZGenerational -XX:SoftMaxHeapSize=10g -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:+PerfDisableSharedMem -XX:+UseDynamicNumberOfGCThreads";
-    #     };
-    #   };
-    # };
+    minecraft-servers = {
+      enable = true;
+      eula = true;
+
+      servers = {
+        solo_world = let
+          modpack = pkgs.fetchPackwizModpack {
+            url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
+            packHash = "sha256-2H8+fcj2keIkxo6LnCZZpf/Ph0AOBIJAst4rlkqxCJc=";
+          };
+          mcVersion = modpack.manifest.versions.minecraft;
+          fabricVersion = modpack.manifest.versions.fabric;
+          serverVersion = lib.replaceStrings ["."] ["_"] "fabric-${mcVersion}";
+        in {
+          enable = true;
+          package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = fabricVersion;};
+          autoStart = false;
+          symlinks = {
+            "mods" = "${modpack}/mods";
+          };
+          serverProperties = {
+            # level-name = "Survival World";
+            difficulty = "hard";
+            pause-when-empty-seconds = -1;
+            level-seed = 1698939616;
+          };
+          files = {
+            "config" = "${modpack}/config";
+          };
+          jvmOpts = "-Xms8G -Xmx12G -XX:+UseZGC -XX:+ZGenerational -XX:SoftMaxHeapSize=10g -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:+PerfDisableSharedMem -XX:+UseDynamicNumberOfGCThreads";
+        };
+      };
+    };
   };
 
   users = {
@@ -317,7 +317,7 @@
     podman
     gcc
     gh
-    # packwiz
+    packwiz
     ripgrep
     black
     isort
@@ -326,6 +326,7 @@
     prettier
     gnumake
     usbutils
+    prismlauncher
     stow
     vscode-extensions.vadimcn.vscode-lldb
     w3m

@@ -8,6 +8,10 @@
       url = "github:BirdeeHub/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
