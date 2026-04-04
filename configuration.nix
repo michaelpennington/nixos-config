@@ -307,7 +307,7 @@
     bat
     file
     zip
-    nodePackages.js-beautify
+    js-beautify
     unzip
     xmlstarlet
     bottom

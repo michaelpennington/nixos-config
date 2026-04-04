@@ -51,6 +51,18 @@ in {
     }
   ];
 
+  config.specs.agda = {
+    after = ["general"];
+    data = with pkgs.vimPlugins; [
+      cornelis
+    ];
+    extraPackages = with pkgs; [
+      (agda.withPackages
+        (p: [p.standard-library]))
+      cornelis
+    ];
+  };
+
   config.specs.nix = {
     data = null;
     extraPackages = with pkgs; [

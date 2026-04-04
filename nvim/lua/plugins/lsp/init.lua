@@ -61,6 +61,7 @@ end
 
 require("plugins.lsp.lua")
 require("plugins.lsp.nix")
+require("plugins.lsp.agda")
 require("plugins.lsp.rust")(lsp_on_attach)
 
 nixInfo.lze.load({
