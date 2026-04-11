@@ -204,7 +204,7 @@
         solo_world = let
           modpack = pkgs.fetchPackwizModpack {
             url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-            packHash = "sha256-2H8+fcj2keIkxo6LnCZZpf/Ph0AOBIJAst4rlkqxCJc=";
+            packHash = "sha256-qgDRd0hAchYDA4MW1F3a1tqUP3wHfY7iHGSVaqtESlQ=";
           };
           mcVersion = modpack.manifest.versions.minecraft;
           fabricVersion = modpack.manifest.versions.fabric;
@@ -291,7 +291,6 @@
 
   environment.systemPackages = with pkgs; [
     inputs.alejandra.defaultPackage.${stdenv.hostPlatform.system}
-    inputs.nixd.packages.${stdenv.hostPlatform.system}.default
     lm_sensors
     amdgpu_top
     taplo

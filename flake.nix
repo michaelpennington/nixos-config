@@ -21,10 +21,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ucodenix.url = "github:e-tho/ucodenix";
-    nixd = {
-      url = "github:nix-community/nixd";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     probe-rs-rules = {
       url = "github:jneem/probe-rs-rules";
       inputs.nixpkgs.follows = "nixpkgs";
