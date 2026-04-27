@@ -127,6 +127,7 @@ in {
     firefox = {
       enable = true;
       languagePacks = ["en-US"];
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
     };
     home-manager.enable = true;
     waybar = {
