@@ -370,6 +370,7 @@
     fira-code
     fira-code-symbols
     julia-mono
+    source-code-pro
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-color-emoji
