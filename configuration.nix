@@ -204,7 +204,7 @@
         solo_world = let
           modpack = pkgs.fetchPackwizModpack {
             url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-            packHash = "sha256-xGgpsDvKanlpnQ7uP5UT9ZrqmTPLa9OMo4FF1MaHSzs=";
+            packHash = "sha256-KUx9qEiOZF4ZBpNVrqkI1KZDurE/Ro7U6L+fqmaYcgI=";
           };
           mcVersion = modpack.manifest.versions.minecraft;
           fabricVersion = modpack.manifest.versions.fabric;
@@ -369,6 +369,7 @@
     fantasque-sans-mono
     fira-code
     fira-code-symbols
+    julia-mono
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-color-emoji

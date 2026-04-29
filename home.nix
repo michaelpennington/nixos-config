@@ -30,6 +30,7 @@ in {
       ];
     })
     alsa-utils
+    emacs-pgtk
     arduino-ide
     gimp
     # azure-cli
