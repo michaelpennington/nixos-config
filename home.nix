@@ -6,14 +6,10 @@
   ...
 }: let
   module = inputs.nixpkgs.lib.modules.importApply ./neovim.nix inputs;
+
+  evaluated = inputs.nix-wrapper-modules.lib.evalModule module;
 in {
-  imports = [
-    (inputs.nix-wrapper-modules.lib.mkInstallModule {
-      name = "neovim";
-      loc = ["home" "packages"];
-      value = module;
-    })
-  ];
+  imports = [evaluated.config.install];
 
   home.username = "mpennington";
   home.homeDirectory = "/home/mpennington";

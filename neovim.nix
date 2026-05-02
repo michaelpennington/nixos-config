@@ -43,6 +43,8 @@ in {
 
   config.settings.config_directory = "/home/mpennington/nixos-config/nvim";
 
+  config.install.optionLocation = ["wrappers" "neovim"];
+
   config.specs.lze = [
     config.nvim-lib.neovimPlugins.lze
     {

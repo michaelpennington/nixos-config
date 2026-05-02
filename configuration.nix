@@ -19,7 +19,7 @@
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
-    "ventoy-1.1.10"
+    "ventoy-1.1.12"
   ];
   # Perform garbage collection weekly to maintain low disk usage
 
@@ -204,7 +204,7 @@
         solo_world = let
           modpack = pkgs.fetchPackwizModpack {
             url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-            packHash = "sha256-KUx9qEiOZF4ZBpNVrqkI1KZDurE/Ro7U6L+fqmaYcgI=";
+            packHash = "sha256-2ApaRvc38+7m1r2xGLEfsvXW7YMsOKkyLmwkbIrznKQ=";
           };
           mcVersion = modpack.manifest.versions.minecraft;
           fabricVersion = modpack.manifest.versions.fabric;
