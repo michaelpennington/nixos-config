@@ -204,7 +204,7 @@
         solo_world = let
           modpack = pkgs.fetchPackwizModpack {
             url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-            packHash = "sha256-2ApaRvc38+7m1r2xGLEfsvXW7YMsOKkyLmwkbIrznKQ=";
+            packHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
           };
           mcVersion = modpack.manifest.versions.minecraft;
           fabricVersion = modpack.manifest.versions.fabric;
@@ -220,7 +220,7 @@
             # level-name = "Survival World";
             difficulty = "hard";
             pause-when-empty-seconds = -1;
-            level-seed = 1698939616;
+            level-seed = 5028248135;
           };
           files = {
             "config" = "${modpack}/config";
