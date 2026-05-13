@@ -204,15 +204,19 @@
         solo_world = let
           modpack = pkgs.fetchPackwizModpack {
             url = "https://github.com/michaelpennington/server_mods/raw/refs/heads/main/pack.toml";
-            packHash = "sha256-28gjNM9t8E84JEMikdRgq7Nk9vKui4VpYaakqISDiiM=";
+            packHash = "sha256-/MfWEuhCzfBn/XbXVB/k2Em4XvM8SmnT71CKFfu3U+0=";
           };
           mcVersion = modpack.manifest.versions.minecraft;
           fabricVersion = modpack.manifest.versions.fabric;
           serverVersion = lib.replaceStrings ["."] ["_"] "fabric-${mcVersion}";
         in {
           enable = true;
-          package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = fabricVersion;};
+          package = pkgs.fabricServers.${serverVersion}.override {
+            loaderVersion = fabricVersion;
+            jre_headless = pkgs.jdk25_headless;
+          };
           autoStart = false;
+          restart = "no";
           symlinks = {
             "mods" = "${modpack}/mods";
           };
@@ -220,7 +224,7 @@
             # level-name = "Survival World";
             difficulty = "hard";
             pause-when-empty-seconds = -1;
-            level-seed = 5028248135;
+            level-seed = 7137642459428857969;
           };
           files = {
             "config" = "${modpack}/config";

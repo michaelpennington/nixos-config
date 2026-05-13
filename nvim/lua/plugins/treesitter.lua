@@ -2,6 +2,16 @@ nixInfo.lze.load({
   {
     "nvim-treesitter",
     lazy = false,
+    after = function()
+      vim.filetype.add({
+        extension = {
+          fst = "fstar",
+          fsti = "fstar",
+        },
+      })
+
+      vim.treesitter.language.register("fstar", "fstar")
+    end,
   },
   {
     "nvim-treesitter-textobjects",

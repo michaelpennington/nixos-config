@@ -30,6 +30,15 @@ inputs: {
       '';
     }
   );
+  # fstar-grammar-plugin = pkgs.runCommand "fstar-grammar-plugin" {} ''
+  #   mkdir -p $out/parser
+  #   mkdir -p $out/queries/fstar
+  #   ln -s ${pkgs.tree-sitter-grammars.tree-sitter-fstar}/parser $out/parser/fstar.so
+  #
+  #   if [ -d "${pkgs.tree-sitter-grammars.tree-sitter-fstar}/queries" ]; then
+  #     cp -r ${pkgs.tree-sitter-grammars.tree-sitter-fstar}/queries/* $out/queries/fstar/
+  #   fi
+  # '';
 in {
   imports = [wlib.wrapperModules.neovim];
   # NOTE: see the tips and tricks section or the bottom of this file + flake inputs to understand this value
@@ -128,6 +137,7 @@ in {
       conform-nvim
       fidget-nvim
       friendly-snippets
+      # fstar-grammar-plugin
       gitsigns-nvim
       lualine-nvim
       mini-ai
@@ -145,6 +155,8 @@ in {
       nvim-treesitter
       nvim-treesitter-textobjects
       nvim-treesitter.withAllGrammars
+      (nvim-treesitter.withPlugins
+        (_: [pkgs.tree-sitter-grammars.tree-sitter-fstar]))
       nvim-web-devicons
       oil-git-status-nvim
       oil-lsp-diagnostics-nvim
