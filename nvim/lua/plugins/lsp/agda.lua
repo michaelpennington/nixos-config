@@ -4,7 +4,9 @@ nixInfo.lze.load({
     auto_enable = true,
     lazy = true,
     ft = { "agda" },
-    before = function() end,
+    before = function()
+      vim.g.cornelis_agda_prefix = "\\"
+    end,
     after = function() end,
   },
 })
