@@ -8,6 +8,10 @@
   module = inputs.nixpkgs.lib.modules.importApply ./neovim.nix inputs;
 
   evaluated = inputs.nix-wrapper-modules.lib.evalModule module;
+  factorio = pkgs.factorio.override {
+    username = "mpennington";
+    token = "c0e189d9a31587e4f3a6aec0953ea9";
+  };
 in {
   imports = [evaluated.config.install];
 
@@ -31,7 +35,9 @@ in {
     gimp
     # azure-cli
     protonup-rs
+
     # azure-storage-azcopy
+    factorio
     wl-clipboard
     sov
     aoc-cli

@@ -67,10 +67,10 @@ in {
     data = with pkgs.vimPlugins; [
       cornelis
     ];
-    extraPackages = with pkgs; [
-      (agda.withPackages
+    extraPackages = let
+    in [
+      (inputs.nixpkgs-stable.legacyPackages."x86_64-linux".agda.withPackages
         (p: [p.standard-library]))
-      cornelis
     ];
   };
 

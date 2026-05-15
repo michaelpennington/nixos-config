@@ -1,3 +1,5 @@
+vim.g.cornelis_agda_prefix = "\\"
+
 nixInfo.lze.load({
   {
     "cornelis",
