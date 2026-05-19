@@ -22,6 +22,8 @@ in {
 
   wrappers.neovim.enable = true;
 
+  nixpkgs.config.allowUnfree = true;
+
   home.packages = with pkgs; [
     # extractpdfmark
     (mpv.override {
@@ -31,6 +33,7 @@ in {
     })
     alsa-utils
     emacs-pgtk
+    inputs.pianoteq.packages.${pkgs.system}.default
     arduino-ide
     gimp
     # azure-cli
