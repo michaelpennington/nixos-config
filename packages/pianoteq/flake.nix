@@ -14,7 +14,10 @@
   in {
     packages = forAllSystems (
       system: let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
 
         archDir =
           if system == "x86_64-linux"
@@ -43,8 +46,6 @@
 
           # Tell Nix's unpackPhase to unpack into the current directory
           # since the archive lacks a single top-level wrapper folder.
-          sourceRoot = ".";
-
           nativeBuildInputs = with pkgs; [
             autoPatchelfHook
           ];

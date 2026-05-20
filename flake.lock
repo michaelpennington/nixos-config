@@ -135,16 +135,36 @@
         ]
       },
       "locked": {
-        "lastModified": 1779143091,
-        "narHash": "sha256-qxiUVquHM09KOV1aD4We9q0ooPWO4qOc0v9J9NDWSAo=",
+        "lastModified": 1779213149,
+        "narHash": "sha256-Cf+p/T4Z3n9Sw0TiR3kQaIwQI+/hfvLJcoTzeq6yS3E=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "736c2084ea750a049ecdbdd7ff5817d2eeeef444",
+        "rev": "bd868f769a69d3b6091a1da68a75cb83a181033c",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "musnix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777848538,
+        "narHash": "sha256-Dj51C0NWsglqRrCpdmMr2nFiYacFOid1Tor4H9yG2HY=",
+        "owner": "musnix",
+        "repo": "musnix",
+        "rev": "8548782f0d1d0928daa3fffde8a008f72219a3f3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "musnix",
+        "repo": "musnix",
         "type": "github"
       }
     },
@@ -177,11 +197,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779145538,
-        "narHash": "sha256-j2RQqBLYhPuddU6C8n5hGKboXq1tDLCZ7bWe5/LgTHM=",
+        "lastModified": 1779230126,
+        "narHash": "sha256-4XXww17gSEQys+RFe2nlFS6eFl6KIChdW7hy5MlZyYE=",
         "owner": "BirdeeHub",
         "repo": "nix-wrapper-modules",
-        "rev": "597b35c93dd0ab0ae38758e3193582b2fd259aa1",
+        "rev": "c2b76d39f5db070fe947e78dfc7d034874bcaf03",
         "type": "github"
       },
       "original": {
@@ -221,6 +241,22 @@
         "repo": "nixpkgs",
         "type": "github"
       }
+    },
+    "pianoteq": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./packages/pianoteq",
+        "type": "path"
+      },
+      "original": {
+        "path": "./packages/pianoteq",
+        "type": "path"
+      },
+      "parent": []
     },
     "plugins-kanagawa-paper-nvim": {
       "flake": false,
@@ -296,10 +332,12 @@
         "alejandra": "alejandra",
         "cargo-nvim": "cargo-nvim",
         "home-manager": "home-manager",
+        "musnix": "musnix",
         "nix-minecraft": "nix-minecraft",
         "nix-wrapper-modules": "nix-wrapper-modules",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
+        "pianoteq": "pianoteq",
         "plugins-kanagawa-paper-nvim": "plugins-kanagawa-paper-nvim",
         "plugins-lze": "plugins-lze",
         "plugins-lzextras": "plugins-lzextras",

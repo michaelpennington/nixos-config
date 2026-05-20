@@ -13,6 +13,7 @@
     inputs.ucodenix.nixosModules.default
     inputs.nix-minecraft.nixosModules.minecraft-servers
     inputs.probe-rs-rules.nixosModules.x86_64-linux.default
+    inputs.musnix.nixosModules.musnix
   ];
 
   nixpkgs.overlays = [inputs.nix-minecraft.overlay];
@@ -80,6 +81,7 @@
       "amd_pstate=guided"
       "microcode.amd_sha_check=off"
       "acpi_enforce_resources=lax"
+      "usbcore.autosuspend=-1"
       #       "amd_iommu=on"
       # "iommu=pt"
       # "vfio-pci.ids=1002:73bf"
@@ -88,12 +90,9 @@
       options it87 force_id=0x8628 ignore_resource_conflict=1
     '';
     kernel.sysctl = {
-      "vm.swappiness" = 10;
-
       "vm.vfs_cache_pressure" = 50;
     };
   };
-  powerManagement.cpuFreqGovernor = "schedutil";
   time.hardwareClockInLocalTime = true;
 
   virtualisation.docker.enable = true;
@@ -233,6 +232,10 @@
         };
       };
     };
+  };
+  musnix = {
+    enable = true;
+    kernel.realtime = true;
   };
 
   users = {

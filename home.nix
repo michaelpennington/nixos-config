@@ -22,8 +22,6 @@ in {
 
   wrappers.neovim.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
-
   home.packages = with pkgs; [
     # extractpdfmark
     (mpv.override {
@@ -32,6 +30,7 @@ in {
       ];
     })
     alsa-utils
+    alsa-scarlett-gui
     emacs-pgtk
     inputs.pianoteq.packages.${pkgs.system}.default
     arduino-ide
@@ -42,6 +41,7 @@ in {
     # azure-storage-azcopy
     factorio
     wl-clipboard
+    qpwgraph
     sov
     aoc-cli
     aria2
