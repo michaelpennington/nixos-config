@@ -67,7 +67,7 @@ in {
     data = with pkgs.vimPlugins; [
       cornelis
     ];
-    extraPackages = let
+    runtimePkgs = let
     in [
       (inputs.nixpkgs-stable.legacyPackages."x86_64-linux".agda.withPackages
         (p: [p.standard-library]))
@@ -76,7 +76,7 @@ in {
 
   config.specs.nix = {
     data = null;
-    extraPackages = with pkgs; [
+    runtimePkgs = with pkgs; [
       alejandra
       nixd
     ];
@@ -90,7 +90,7 @@ in {
       crates-nvim
       cargo-nvim
     ];
-    extraPackages = with pkgs; [
+    runtimePkgs = with pkgs; [
       rust-analyzer
     ];
   };
@@ -101,7 +101,7 @@ in {
     data = with pkgs.vimPlugins; [
       lazydev-nvim
     ];
-    extraPackages = with pkgs; [
+    runtimePkgs = with pkgs; [
       lua-language-server
       stylua
     ];
@@ -110,7 +110,7 @@ in {
   config.specs.cCpp = {
     after = ["general"];
     lazy = true;
-    extraPackages = with pkgs; [
+    runtimePkgs = with pkgs; [
       clang-tools
     ];
     data = with pkgs.vimPlugins; [
@@ -122,7 +122,7 @@ in {
     after = ["lze"];
     lazy = true;
 
-    extraPackages = with pkgs; [
+    runtimePkgs = with pkgs; [
       lazygit
       tree-sitter
       codespell
@@ -198,16 +198,16 @@ in {
     # config.runtimeDeps = lib.mkDefault (parentSpec.runtimeDeps or false);
     # config.pluginDeps = lib.mkDefault (parentSpec.pluginDeps or false);
     # or something more interesting like:
-    # add an extraPackages field to the specs themselves
-    options.extraPackages = lib.mkOption {
+    # add an runtimePkgs field to the specs themselves
+    options.runtimePkgs = lib.mkOption {
       type = lib.types.listOf wlib.types.stringable;
       default = [];
-      description = "a extraPackages spec field to put packages to suffix to the PATH";
+      description = "a runtimePkgs spec field to put packages to suffix to the PATH";
     };
     # You could do this too
     # config.before = lib.mkDefault [ "INIT_MAIN" ];
   };
-  config.extraPackages = config.specCollect (acc: v: acc ++ (v.extraPackages or [])) [];
+  config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.runtimePkgs or [])) [];
 
   # Inform our lua of which top level specs are enabled
   options.settings.cats = lib.mkOption {

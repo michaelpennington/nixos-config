@@ -56,11 +56,11 @@
             freetype
             libGL
             stdenv.cc.cc.lib
-            xorg.libX11
-            xorg.libXext
-            xorg.libXcursor
-            xorg.libXinerama
-            xorg.libXrandr
+            libX11
+            libXext
+            libXcursor
+            libXinerama
+            libXrandr
           ];
 
           dontConfigure = true;

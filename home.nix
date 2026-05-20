@@ -32,7 +32,7 @@ in {
     alsa-utils
     alsa-scarlett-gui
     emacs-pgtk
-    inputs.pianoteq.packages.${pkgs.system}.default
+    inputs.pianoteq.packages.${pkgs.stdenv.hostPlatform.system}.default
     arduino-ide
     gimp
     # azure-cli
@@ -117,7 +117,7 @@ in {
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks."*" = {
+      settings."*" = {
         forwardAgent = false;
         addKeysToAgent = "no";
         compression = false;
