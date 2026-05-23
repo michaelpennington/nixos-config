@@ -12,6 +12,57 @@
     username = "mpennington";
     token = "c0e189d9a31587e4f3a6aec0953ea9";
   };
+
+  latest-scarlett2-firmware = pkgs.stdenv.mkDerivation rec {
+    pname = "scarlett2-firmware";
+    version = "1.1";
+    src = pkgs.fetchFromGitHub {
+      owner = "geoffreybennett";
+      repo = "scarlett2-firmware";
+      rev = "${version}";
+      sha256 = "sha256-IrhLFBXymiVGYenYP+v/IRWJqMIakWWQNaorHzPv/LM="; # Replace with actual hash
+    };
+    dontBuild = true;
+    installPhase = ''
+      mkdir -p $out/lib/firmware/scarlett2
+      cp firmware/*.bin $out/lib/firmware/scarlett2/
+    '';
+  };
+  latest-alsa-scarlett-gui = pkgs.alsa-scarlett-gui.overrideAttrs (oldAttrs: rec {
+    version = "1.0beta9";
+    src = pkgs.fetchFromGitHub {
+      owner = "geoffreybennett";
+      repo = "alsa-scarlett-gui";
+      rev = "${version}";
+      sha256 = "sha256-PAQj8Jamu2MY1wGLnaWnvm9OfsXE0YTSDhfiaQLajB8=";
+    };
+    postPatch = ''
+      substituteInPlace scarlett2-firmware.h \
+        --replace-fail '"/usr/lib/firmware/scarlett2"' '"${latest-scarlett2-firmware}/lib/firmware/scarlett2"'
+    '';
+  });
+  latest-scarlett2-cli = pkgs.stdenv.mkDerivation rec {
+    pname = "scarlett2-cli";
+    version = "1.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "geoffreybennett";
+      repo = "scarlett2";
+      rev = "${version}";
+      sha256 = "sha256-GfWfIOQfH5SoBdExIT1p/OHXJG2pwzTW/RS8Rs4QSGQ=";
+    };
+
+    nativeBuildInputs = [pkgs.pkg-config];
+    buildInputs = [pkgs.alsa-lib pkgs.openssl];
+    postPatch = ''
+      substituteInPlace main.c \
+        --replace-fail '"/usr/lib/firmware/scarlett2"' '"${latest-scarlett2-firmware}/lib/firmware/scarlett2"'
+    '';
+
+    installPhase = ''
+      mkdir -p $out/bin
+      cp scarlett2 $out/bin
+    '';
+  };
 in {
   imports = [evaluated.config.install];
 
@@ -30,7 +81,9 @@ in {
       ];
     })
     alsa-utils
-    alsa-scarlett-gui
+    latest-alsa-scarlett-gui
+    latest-scarlett2-firmware
+    latest-scarlett2-cli
     emacs-pgtk
     inputs.pianoteq.packages.${pkgs.stdenv.hostPlatform.system}.default
     arduino-ide
@@ -42,6 +95,7 @@ in {
     factorio
     wl-clipboard
     qpwgraph
+    ardour
     sov
     aoc-cli
     aria2
