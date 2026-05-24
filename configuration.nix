@@ -433,22 +433,24 @@
 
   xdg.portal = {
     enable = true;
+    wlr.enable = true;
+
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
     config = {
-      common = {
-        default = [
+      sway = {
+        default = lib.mkForce [
+          "wlr"
           "gtk"
         ];
         "org.freedesktop.impl.portal.Secret" = [
           "gnome-keyring"
         ];
-        extraPortals = with pkgs; [
-          xdg-desktop-portal-gtk
-        ];
       };
     };
   };
 
+  security.rtkit.enable = true;
   security.polkit = {
     enable = true;
     extraConfig = ''

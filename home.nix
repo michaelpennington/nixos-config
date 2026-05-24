@@ -124,9 +124,13 @@ in {
     librecad
     ffmpeg
     nodejs
+    antigravity
     # freecad
     baobab
+    v4l-utils
+    obs-studio
     super-slicer
+    gemini-cli
     gtklp
     # openscad
     spotdl
@@ -243,6 +247,8 @@ in {
       menu = "${wezterm} start --class \"launcher\" -- ${swayLauncherDesktop}";
       startup = [
         {command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
+        {command = "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP";}
+        {command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway";}
       ];
       keybindings = let
         modifier = config.wayland.windowManager.sway.config.modifier;
