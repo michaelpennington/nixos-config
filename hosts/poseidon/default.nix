@@ -15,11 +15,15 @@
     ../../modules/nixos/desktop.nix
     ../../modules/nixos/audio.nix
     ../../modules/nixos/gaming.nix
+    ../../modules/nixos/dev.nix
   ];
 
   networking.hostName = "poseidon";
 
-  nixpkgs.overlays = [inputs.nix-minecraft.overlay];
+  nixpkgs.overlays = [
+    inputs.nix-minecraft.overlay
+    inputs.self.overlays.default
+  ];
   nixpkgs.config.allowUnfree = true;
 
   boot = {
@@ -60,12 +64,6 @@
   services.ucodenix = {
     enable = true;
     cpuModelId = "00A60F12";
-  };
-
-  # MySQL is machine specific? Or base? I'll keep it here for now as it's a specific service.
-  services.mysql = {
-    enable = true;
-    package = pkgs.mariadb;
   };
 
   services.udev.extraRules = ''
