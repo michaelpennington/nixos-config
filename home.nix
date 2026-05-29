@@ -8,6 +8,58 @@
   module = inputs.nixpkgs.lib.modules.importApply ./neovim.nix inputs;
 
   evaluated = inputs.nix-wrapper-modules.lib.evalModule module;
+  pianoteqPkg = inputs.pianoteq.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+  # Create the wrapper script
+  pianoteq-routed = pkgs.writeShellApplication {
+    name = "pianoteq"; # Name it exactly what you want to type in the terminal/launcher
+    runtimeInputs = [pkgs.pipewire]; # Ensures pw-link is available in the script
+    text = ''
+      # 1. Dynamically find the binary from your flake to avoid hardcoding the exact name
+      PTQ_BIN=$(find ${pianoteqPkg}/bin -type f -executable | head -n 1)
+
+      # 2. Launch Pianoteq in the background and capture its Process ID
+      PIPEWIRE_LATENCY="128/48000" PIPEWIRE_QUANTUM="128/48000" "$PTQ_BIN" "$@" &
+      PID=$!
+
+      PTQ_NODE="alsa_playback.pianoteq9"
+      SCARLETT_NODE="alsa_output.usb-Focusrite_Scarlett_4i4_4th_Gen_S4G55AV578878D-00.pro-output-0"
+
+      # 3. Wait for Pianoteq's audio nodes to appear in PipeWire
+      for _ in {1..20}; do
+        if pw-link -o | grep -q "^$PTQ_NODE"; then
+          break
+        fi
+        sleep 0.5
+      done
+
+      # Give WirePlumber exactly 1 second to apply its default routing so we can undo it
+      sleep 1
+
+      # 4. Get Pianoteq's exact output port names (usually playback_FL and FR, or playback_1 and 2)
+      mapfile -t PTQ_PORTS < <(pw-link -o | grep "^$PTQ_NODE")
+
+      if [ ''${#PTQ_PORTS[@]} -ge 2 ]; then
+        LEFT_OUT="''${PTQ_PORTS[0]}"
+        RIGHT_OUT="''${PTQ_PORTS[1]}"
+
+        # 5. Sever the default connections
+        # (Silently fails if they aren't connected, which is perfectly fine)
+        pw-link -d "$LEFT_OUT" "$SCARLETT_NODE:playback_AUX0" 2>/dev/null || true
+        pw-link -d "$RIGHT_OUT" "$SCARLETT_NODE:playback_AUX1" 2>/dev/null || true
+        # Covering the AUX1/AUX2 offset you mentioned earlier just in case:
+        pw-link -d "$LEFT_OUT" "$SCARLETT_NODE:playback_AUX1" 2>/dev/null || true
+        pw-link -d "$RIGHT_OUT" "$SCARLETT_NODE:playback_AUX2" 2>/dev/null || true
+
+        # 6. Force the connections we actually want
+        pw-link "$LEFT_OUT" "$SCARLETT_NODE:playback_AUX2"
+        pw-link "$RIGHT_OUT" "$SCARLETT_NODE:playback_AUX3"
+      fi
+
+      # 7. Keep the script alive so the terminal waits until you actually close Pianoteq
+      wait $PID
+    '';
+  };
   factorio = pkgs.factorio.override {
     username = "mpennington";
     token = "c0e189d9a31587e4f3a6aec0953ea9";
@@ -85,7 +137,7 @@ in {
     latest-scarlett2-firmware
     latest-scarlett2-cli
     emacs-pgtk
-    inputs.pianoteq.packages.${pkgs.stdenv.hostPlatform.system}.default
+    pianoteq-routed
     arduino-ide
     gimp
     # azure-cli
@@ -111,6 +163,7 @@ in {
     # megacli
     mesa-demos
     vulkan-tools
+    terraform
     yo
     haskell.compiler.ghc912
     chromium
@@ -129,6 +182,7 @@ in {
     baobab
     v4l-utils
     obs-studio
+    tor-browser
     super-slicer
     gemini-cli
     gtklp
@@ -153,7 +207,6 @@ in {
     playerctl
     spotify-player
     sway-launcher-desktop
-    swaynotificationcenter
     direnv
     vlc
     wlogout
@@ -234,7 +287,7 @@ in {
     enable = true;
     checkConfig = false;
     extraConfig = builtins.readFile ./sway_config;
-    package = null;
+    package = inputs.nixpkgs-stable.legacyPackages."x86_64-linux".sway;
     systemd.enable = true;
     wrapperFeatures.gtk = true;
     config = let

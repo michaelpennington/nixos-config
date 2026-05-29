@@ -14,8 +14,6 @@ for_window [class="roco"] floating enable
 
 seat seat0 hide_cursor 10000
 # seat seat0 xcursor_theme phinger-cursors 24
-#
-# exec "/usr/libexec/polkit-gnome-authentication-agent-1"
 
 ### Output configuration
 #
@@ -70,9 +68,7 @@ input type:touchpad {
 # bindsym Mod4+Shift+b exec /home/mpennington/.local/bin/switch_output.fish
 # bindsym Mod4+Shift+t exec /home/mpennington/.local/bin/toggle_touchpad.fish
 
-    exec swaync
 
-    bindsym Mod4+Shift+n exec swaync-client -t -sw
 
 output HEADLESS-1 {
     mode 1920x1080@60Hz

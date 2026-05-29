@@ -151,7 +151,7 @@
           environment_switcher.include_tty_shell = true;
         };
       };
-      sessionPackages = [pkgs.sway];
+      sessionPackages = [inputs.nixpkgs-stable.legacyPackages."x86_64-linux".sway];
     };
     fstrim.enable = true;
     udev = {
@@ -304,6 +304,7 @@
     taskwarrior3
     linuxPackages.zenpower
     radeontop
+    colmena
     lz4
     pciutils
     wineWow64Packages.waylandFull
@@ -391,6 +392,7 @@
     };
     sway = {
       enable = true;
+      package = inputs.nixpkgs-stable.legacyPackages."x86_64-linux".sway;
     };
     steam = {
       enable = true;
