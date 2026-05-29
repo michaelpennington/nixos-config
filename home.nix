@@ -287,7 +287,7 @@ in {
     enable = true;
     checkConfig = false;
     extraConfig = builtins.readFile ./sway_config;
-    package = inputs.nixpkgs-stable.legacyPackages."x86_64-linux".sway;
+    package = null;
     systemd.enable = true;
     wrapperFeatures.gtk = true;
     config = let

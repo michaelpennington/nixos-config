@@ -67,7 +67,7 @@
     };
     loader.systemd-boot = {
       enable = true;
-      configurationLimit = 10;
+      # configurationLimit = 10;
       extraEntries = {
         "lfs.conf" = ''
           title LFS
@@ -151,7 +151,7 @@
           environment_switcher.include_tty_shell = true;
         };
       };
-      sessionPackages = [inputs.nixpkgs-stable.legacyPackages."x86_64-linux".sway];
+      sessionPackages = [pkgs.sway];
     };
     fstrim.enable = true;
     udev = {
@@ -392,7 +392,6 @@
     };
     sway = {
       enable = true;
-      package = inputs.nixpkgs-stable.legacyPackages."x86_64-linux".sway;
     };
     steam = {
       enable = true;
