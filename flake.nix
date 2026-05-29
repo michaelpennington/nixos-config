@@ -24,10 +24,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    alejandra = {
-      url = "github:kamadorueda/alejandra/3.1.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     ucodenix.url = "github:e-tho/ucodenix";
     probe-rs-rules = {
       url = "github:jneem/probe-rs-rules";
@@ -72,6 +68,6 @@
       ];
     };
 
-    formatter.x86_64-linux = inputs.alejandra.defaultPackage."x86_64-linux";
+    formatter.x86_64-linux = nixpkgs.legacyPackages."x86_64-linux".alejandra;
   };
 }

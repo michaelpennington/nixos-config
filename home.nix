@@ -133,12 +133,15 @@ in {
       ];
     })
     alsa-utils
+    alejandra
+    taplo
+    colmena
+    packwiz
     latest-alsa-scarlett-gui
     latest-scarlett2-firmware
     latest-scarlett2-cli
     emacs-pgtk
     pianoteq-routed
-    arduino-ide
     gimp
     # azure-cli
     protonup-rs
@@ -151,21 +154,17 @@ in {
     sov
     aoc-cli
     aria2
-    ventoy
+    taskwarrior3
     # musescore
     termscp
     yt-dlp
     megasync
     polkit_gnome
-    texlive.combined.scheme-full
     flatpak
     aha
     # megacli
     mesa-demos
     vulkan-tools
-    terraform
-    yo
-    haskell.compiler.ghc912
     chromium
     wkhtmltopdf
     # kdePackages.kdenlive
@@ -174,31 +173,22 @@ in {
     file-roller
     freetube
     libmtp
-    librecad
     ffmpeg
-    nodejs
-    antigravity
     # freecad
     baobab
     v4l-utils
     obs-studio
     tor-browser
-    super-slicer
     gemini-cli
     gtklp
     # openscad
     spotdl
     slurp
-    blender
     grim
     imv
-    kicad
-    inkscape
-    fstl
     lilypond-with-fonts
     libreoffice-fresh
     wezterm
-    jdk
     # krita
     lazygit
     qbittorrent
