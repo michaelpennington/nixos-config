@@ -5,6 +5,25 @@
   lib,
   ...
 }: {
+  # Custom Systemd Services
+  systemd.user.services.bg = {
+    Unit = {
+      Description = "Set wallpaper to bing image of the day";
+      BindsTo = ["sway-session.target"];
+    };
+    Service = {
+      Type = "oneshot";
+      WorkingDirectory = "${config.home.homeDirectory}/Pictures/Wallpapers/";
+      ExecStart = [
+        "${lib.meta.getExe pkgs.bingpot}"
+        "${pkgs.sway}/bin/swaymsg output \"*\" bg ${config.home.homeDirectory}/Pictures/Wallpapers/wallpaper.jpg fill"
+      ];
+    };
+    Install = {
+      WantedBy = ["sway-session.target"];
+    };
+  };
+
   # Graphical User Interface Packages
   home.packages = with pkgs; [
     wl-clipboard
@@ -16,8 +35,6 @@
     sway-launcher-desktop
     wlogout
     wob
-    zathura
-    wezterm
     slurp
     grim
     imv
@@ -31,6 +48,31 @@
       targets = ["sway-session.target"];
     };
   };
+
+  xdg.configFile."waybar/config".source = ./configs/waybar/config;
+  xdg.configFile."waybar/style.css".source = ./configs/waybar/style.css;
+
+  # Document Viewer
+  programs.zathura = {
+    enable = true;
+    extraConfig = ''
+      map [normal] J scroll down
+      map [normal] K scroll up
+      map [normal] j navigate next
+      map [normal] k navigate previous
+      map [fullscreen] J scroll down
+      map [fullscreen] K scroll up
+      map [fullscreen] j navigate next
+      map [fullscreen] k navigate previous
+    '';
+  };
+
+  # Terminal Emulator
+  programs.wezterm = {
+    enable = true;
+    extraConfig = builtins.readFile ./configs/wezterm/wezterm.lua;
+  };
+  xdg.configFile."wezterm/colors".source = ./configs/wezterm/colors;
 
   # Idle and Power Management
   services.swayidle = let

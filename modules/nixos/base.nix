@@ -88,7 +88,6 @@
     lm_sensors
     lz4
     pciutils
-    bat
     file
     zip
     unzip
