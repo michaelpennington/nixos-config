@@ -1,15 +1,21 @@
 {
-  description = "A simple NixOS flake";
+  description = "A modular NixOS configuration with Haumea";
 
+  # External dependencies and flake inputs
   inputs = {
+    # Core NixOS packages and stable fallback
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
-    musnix = {
-      url = "github:musnix/musnix";
+
+    # haumea: For modular filesystem-based flake organization
+    haumea = {
+      url = "github:nix-community/haumea/v0.2.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    pianoteq = {
-      url = "path:./packages/pianoteq";
+
+    # System-level modules and utilities
+    musnix = {
+      url = "github:musnix/musnix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-wrapper-modules = {
@@ -24,15 +30,19 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    alejandra = {
-      url = "github:kamadorueda/alejandra/3.1.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     ucodenix.url = "github:e-tho/ucodenix";
     probe-rs-rules = {
       url = "github:jneem/probe-rs-rules";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Custom local packages
+    pianoteq = {
+      url = "path:./packages/pianoteq";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Neovim plugins and related tools
     plugins-lze = {
       url = "github:birdeehub/lze";
       flake = false;
@@ -51,27 +61,13 @@
     };
   };
 
-  outputs = {
-    nixpkgs,
-    home-manager,
-    ...
-  } @ inputs: {
-    nixosConfigurations.poseidon = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
-      modules = [
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = {inherit inputs;};
-
-          home-manager.users.mpennington = import ./home.nix;
-        }
-      ];
+  # Flake outputs generated using haumea to load the ./outputs directory
+  outputs = inputs:
+    inputs.haumea.lib.load {
+      src = ./outputs;
+      inputs = {
+        inherit inputs;
+        inherit (inputs.nixpkgs) lib;
+      };
     };
-
-    formatter.x86_64-linux = inputs.alejandra.defaultPackage."x86_64-linux";
-  };
 }

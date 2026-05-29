@@ -5,15 +5,13 @@ inputs: {
   pkgs,
   ...
 }: let
+  # Build cargo.nvim from source using Nix's Rust platform
   cargo-nvim = (
     pkgs.rustPlatform.buildRustPackage {
       pname = "cargo.nvim";
       version = "2b470e7";
-
       src = inputs.cargo-nvim;
-
       cargoHash = "sha256-eBSmhaU/ycci2lmGIwwocJGLkmBjfMXQyh18AEqDjx4=";
-
       doCheck = false;
       nativeBuildInputs = [pkgs.pkg-config];
       buildInputs = [pkgs.luajit];
@@ -21,39 +19,32 @@ inputs: {
       installPhase = ''
         mkdir -p $out/target/release
         mkdir -p $out/lua
-
         cp target/*/release/libcargo_nvim.so $out/target/release/
-
         cp -r lua/* $out/lua/
         cp -r plugin $out/ || true
         cp -r doc $out/ || true
       '';
     }
   );
-  # fstar-grammar-plugin = pkgs.runCommand "fstar-grammar-plugin" {} ''
-  #   mkdir -p $out/parser
-  #   mkdir -p $out/queries/fstar
-  #   ln -s ${pkgs.tree-sitter-grammars.tree-sitter-fstar}/parser $out/parser/fstar.so
-  #
-  #   if [ -d "${pkgs.tree-sitter-grammars.tree-sitter-fstar}/queries" ]; then
-  #     cp -r ${pkgs.tree-sitter-grammars.tree-sitter-fstar}/queries/* $out/queries/fstar/
-  #   fi
-  # '';
 in {
+  # Import the Neovim wrapper module from nix-wrapper-modules
   imports = [wlib.wrapperModules.neovim];
-  # NOTE: see the tips and tricks section or the bottom of this file + flake inputs to understand this value
+
+  # Neovim Plugin Management Options
   options.nvim-lib.neovimPlugins = lib.mkOption {
     readOnly = true;
     type = lib.types.attrsOf wlib.types.stringable;
-    # Makes plugins autobuilt from our inputs available with
-    # `config.nvim-lib.neovimPlugins.<name_without_prefix>`
+    # Automatically convert flake inputs prefixed with 'plugins-' into Neovim plugins
     default = config.nvim-lib.pluginsFromPrefix "plugins-" inputs;
   };
 
+  # Main configuration directory for Lua files
   config.settings.config_directory = "/home/mpennington/nixos-config/nvim";
 
+  # Integration with Home Manager
   config.install.optionLocation = ["wrappers" "neovim"];
 
+  # Plugin Specification (Specs) - Grouped by language/functionality
   config.specs.lze = [
     config.nvim-lib.neovimPlugins.lze
     {
@@ -62,6 +53,7 @@ in {
     }
   ];
 
+  # Agda support
   config.specs.agda = {
     after = ["general"];
     data = with pkgs.vimPlugins; [
@@ -74,6 +66,7 @@ in {
     ];
   };
 
+  # Nix development
   config.specs.nix = {
     data = null;
     runtimePkgs = with pkgs; [
@@ -82,6 +75,7 @@ in {
     ];
   };
 
+  # Rust development
   config.specs.rust = {
     after = ["general"];
     lazy = true;
@@ -95,6 +89,7 @@ in {
     ];
   };
 
+  # Lua development
   config.specs.lua = {
     after = ["general"];
     lazy = true;
@@ -107,6 +102,7 @@ in {
     ];
   };
 
+  # C/C++ development
   config.specs.cCpp = {
     after = ["general"];
     lazy = true;
@@ -118,6 +114,7 @@ in {
     ];
   };
 
+  # General editor functionality and UI
   config.specs.general = {
     after = ["lze"];
     lazy = true;
@@ -137,7 +134,6 @@ in {
       conform-nvim
       fidget-nvim
       friendly-snippets
-      # fstar-grammar-plugin
       gitsigns-nvim
       lualine-nvim
       mini-ai
@@ -169,6 +165,7 @@ in {
     ];
   };
 
+  # Colorscheme specification
   config.specs.colorscheme = {
     data = [
       {
@@ -179,33 +176,16 @@ in {
     lazy = true;
   };
 
+  # Internal Logic: Collect and expose runtime packages
   config.specMods = {
-    # When this module is ran in an inner list,
-    # this will contain `config` of the parent spec
-    parentSpec ? null,
-    # and this will contain `options`
-    # otherwise they will be `null`
-    parentOpts ? null,
-    parentName ? null,
-    # and then config from this one, as normal
     config,
-    # and the other module arguments.
     ...
   }: {
-    # you could use this to change defaults for the specs
-    # config.collateGrammars = lib.mkDefault (parentSpec.collateGrammars or false);
-    # config.autoconfig = lib.mkDefault (parentSpec.autoconfig or false);
-    # config.runtimeDeps = lib.mkDefault (parentSpec.runtimeDeps or false);
-    # config.pluginDeps = lib.mkDefault (parentSpec.pluginDeps or false);
-    # or something more interesting like:
-    # add an runtimePkgs field to the specs themselves
     options.runtimePkgs = lib.mkOption {
       type = lib.types.listOf wlib.types.stringable;
       default = [];
       description = "a runtimePkgs spec field to put packages to suffix to the PATH";
     };
-    # You could do this too
-    # config.before = lib.mkDefault [ "INIT_MAIN" ];
   };
   config.runtimePkgs = config.specCollect (acc: v: acc ++ (v.runtimePkgs or [])) [];
 
@@ -216,7 +196,7 @@ in {
     default = builtins.mapAttrs (_: v: v.enable) config.specs;
   };
 
-  # build plugins from inputs set
+  # Helper function to build plugins from inputs
   options.nvim-lib.pluginsFromPrefix = lib.mkOption {
     type = lib.types.raw;
     readOnly = true;

@@ -1,0 +1,19 @@
+fish_color_normal 545464 normal
+fish_color_command 597B75 cyan
+fish_color_keyword B35B79 brmagenta
+fish_color_quote 836F4A yellow
+fish_color_redirection 545464 normal
+fish_color_end E98A00 brred
+fish_color_error D7474B red
+fish_color_param 624C83 magenta
+fish_color_comment 8A8980 brblack
+fish_color_selection --background=B5CBD2 brcyan
+fish_color_search_match --background=B5CBD2 brcyan
+fish_color_operator 6E915F green
+fish_color_escape B35B79 brmagenta
+fish_color_autosuggestion 8A8980 brblack
+
+fish_pager_color_progress 8A8980 brblack
+fish_pager_color_prefix 597B75 cyan
+fish_pager_color_completion 545464 normal
+fish_pager_color_description 8A8980 brblack
