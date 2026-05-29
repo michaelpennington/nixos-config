@@ -1,9 +1,13 @@
 {
-  description = "A simple NixOS flake";
+  description = "A modular NixOS configuration with Haumea";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    haumea = {
+      url = "github:nix-community/haumea/v0.2.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     musnix = {
       url = "github:musnix/musnix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,27 +51,12 @@
     };
   };
 
-  outputs = {
-    nixpkgs,
-    home-manager,
-    ...
-  } @ inputs: {
-    nixosConfigurations.poseidon = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
-      modules = [
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = {inherit inputs;};
-
-          home-manager.users.mpennington = import ./home.nix;
-        }
-      ];
+  outputs = inputs:
+    inputs.haumea.lib.load {
+      src = ./outputs;
+      inputs = {
+        inherit inputs;
+        inherit (inputs.nixpkgs) lib;
+      };
     };
-
-    formatter.x86_64-linux = nixpkgs.legacyPackages."x86_64-linux".alejandra;
-  };
 }
