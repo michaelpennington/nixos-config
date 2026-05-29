@@ -5,52 +5,64 @@
   lib,
   ...
 }: {
+  # User Application Suites
   home.packages = with pkgs; [
+    # Media & Entertainment
     (mpv.override {
       scripts = [
         mpvScripts.eisa01.simplebookmark
       ];
     })
+    freetube
+    vlc
+    spotdl
+    pianoteq-routed
+    ardour
+
+    # Internet & Communication
+    chromium
+    tor-browser
+    zoom-us
+
+    # Development & System Tools
     alsa-utils
     alejandra
     taplo
     colmena
     packwiz
+    gemini-cli
+    aoc-cli
+    mesa-demos
+    vulkan-tools
+    aha
+    appimage-run
+    file-roller
+    baobab
+
+    # Hardware & Driver Specific Tools
     latest-alsa-scarlett-gui
     latest-scarlett2-firmware
     latest-scarlett2-cli
-    emacs-pgtk
-    pianoteq-routed
-    gimp
-    protonup-rs
-    ardour
-    aoc-cli
-    flatpak
-    aha
-    mesa-demos
-    vulkan-tools
-    chromium
-    wkhtmltopdf
-    appimage-run
-    file-roller
-    freetube
     libmtp
-    ffmpeg
-    baobab
     v4l-utils
-    obs-studio
-    tor-browser
-    gemini-cli
     gtklp
-    spotdl
+
+    # Productivity & Creative
+    emacs-pgtk
+    gimp
+    obs-studio
     lilypond-with-fonts
     libreoffice-fresh
-    qbittorrent
     nautilus
-    vlc
-    zoom-us
+
+    # Miscellaneous
+    protonup-rs # Steam/Proton management
+    flatpak
+    wkhtmltopdf
+    qbittorrent
   ];
 
+  # Browser Configuration
   programs.firefox = {
     enable = true;
     languagePacks = ["en-US"];

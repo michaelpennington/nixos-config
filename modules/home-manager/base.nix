@@ -5,6 +5,7 @@
   lib,
   ...
 }: {
+  # Base User Packages (CLI Tools)
   home.packages = with pkgs; [
     direnv
     zoxide
@@ -16,10 +17,11 @@
     lazygit
     spotify-player
     termscp
-    # add other base CLI tools here
   ];
 
+  # Core User Programs
   programs = {
+    # Shell prompt customization
     starship = {
       enable = true;
       settings = {
@@ -28,6 +30,8 @@
         time.style = ''#cfae71'';
       };
     };
+
+    # SSH client configuration
     ssh = {
       enable = true;
       enableDefaultConfig = false;
@@ -44,9 +48,13 @@
         controlPersist = "no";
       };
     };
+
     home-manager.enable = true;
   };
 
-  services.lorri.enable = true;
-  services.ssh-agent.enable = true;
+  # User-level Services
+  services = {
+    lorri.enable = true; # Nix shell daemon for direnv
+    ssh-agent.enable = true;
+  };
 }

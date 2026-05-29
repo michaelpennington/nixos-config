@@ -1,19 +1,21 @@
 {
   description = "A modular NixOS configuration with Haumea";
 
+  # External dependencies and flake inputs
   inputs = {
+    # Core NixOS packages and stable fallback
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+
+    # haumea: For modular filesystem-based flake organization
     haumea = {
       url = "github:nix-community/haumea/v0.2.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # System-level modules and utilities
     musnix = {
       url = "github:musnix/musnix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    pianoteq = {
-      url = "path:./packages/pianoteq";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-wrapper-modules = {
@@ -33,6 +35,14 @@
       url = "github:jneem/probe-rs-rules";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Custom local packages
+    pianoteq = {
+      url = "path:./packages/pianoteq";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Neovim plugins and related tools
     plugins-lze = {
       url = "github:birdeehub/lze";
       flake = false;
@@ -51,6 +61,7 @@
     };
   };
 
+  # Flake outputs generated using haumea to load the ./outputs directory
   outputs = inputs:
     inputs.haumea.lib.load {
       src = ./outputs;
