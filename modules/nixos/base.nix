@@ -124,7 +124,12 @@
       openFirewall = true;
     };
 
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+      settings = {
+        IPQoS = "none";
+      };
+    };
   };
 
   # Virtualization

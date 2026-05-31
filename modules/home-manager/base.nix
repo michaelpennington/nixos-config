@@ -52,27 +52,6 @@
       };
 
       functions = {
-        clone = {
-          description = "cd $BUILD_BASE && git clone $FREECAD_REPO && cd FreeCAD && git submodule update --init --recursive";
-          body = "cd $BUILD_BASE && git clone $FREECAD_REPO && cd FreeCAD && git submodule update --init --recursive $argv";
-        };
-        compile = {
-          description = "cmake --build $BUILD_BASE/build";
-          body = "cmake --build $BUILD_BASE/build $argv";
-        };
-        config_freecad = {
-          # Renamed from 'config' to avoid collision with builtin fish config command
-          description = "mkdir -p $BUILD_BASE/build && cd $BUILD_BASE/build && cmake -GNinja -DFREECAD_USE_PYBIND11=ON -DCMAKE_INSTALL_PREFIX=/usr/local $BUILD_BASE/FreeCAD";
-          body = "mkdir -p $BUILD_BASE/build && cd $BUILD_BASE/build && cmake -GNinja -DFREECAD_USE_PYBIND11=ON -DCMAKE_INSTALL_PREFIX=/usr/local $BUILD_BASE/FreeCAD $argv";
-        };
-        pull = {
-          description = "cd $BUILD_BASE/FreeCAD && git pull && git submodule update --init --recursive";
-          body = "cd $BUILD_BASE/FreeCAD && git pull && git submodule update --init --recursive $argv";
-        };
-        freecad = {
-          description = "Run FreeCAD from build directory";
-          body = "$BUILD_BASE/build/bin/FreeCAD -P $PYLIB0/lib -P $PYLIB0/lib/python3.12/site-packages $argv";
-        };
         fish_greeting = {
           body = ''
             echo Good (print_tod), (set_color magenta)$USER(set_color normal)! Welcome to (set_color red)$hostname(set_color normal).\n
@@ -94,142 +73,10 @@
             end
           '';
         };
-        cluse = {
-          body = ''
-            set -gx CC /usr/bin/clang
-            set -gx CXX /usr/bin/clang++
-            set -gx LD /usr/bin/ld.lld
-            set -gx CC_LD /usr/bin/ld.lld
-            set -gx CXX_LD /usr/bin/ld.lld
-          '';
-        };
-        export-esp = {
-          body = ''
-            set -gx LIBCLANG_PATH "${config.home.homeDirectory}/.espressif/tools/xtensa-esp32-elf-clang/esp-15.0.0-20221201-x86_64-unknown-linux-gnu/esp-clang/lib"
-            set -e CC
-            set -e CXX
-            set -e CC_LD
-            set -e LD
-            set -e CXX_LD
-            fish_add_path -P ${config.home.homeDirectory}/.espressif/tools/riscv32-esp-elf/esp-2021r2-patch5-8_4_0/riscv32-esp-elf/bin
-            fish_add_path -P ${config.home.homeDirectory}/.espressif/tools/xtensa-esp32s2-elf/esp-2021r2-patch5-8_4_0/xtensa-esp32s2-elf/bin
-            fish_add_path -P ${config.home.homeDirectory}/.espressif/tools/xtensa-esp32s3-elf/esp-2021r2-patch5-8_4_0/xtensa-esp32s3-elf/bin
-            fish_add_path -P ${config.home.homeDirectory}/.espressif/tools/xtensa-esp32-elf/esp-2021r2-patch5-8_4_0/xtensa-esp32-elf/bin
-          '';
-        };
-        getpks = {
-          body = ''
-            set -l pks (cat $argv[1] | string split -n '\n' | string match -v -r '#.*')
-            set -l sys_pks (cat /var/lib/portage/world | string split -n '\n')
-
-            for pk in $pks
-              if not contains $pk $sys_pks
-                echo $pk
-              end
-            end
-          '';
-        };
-        gupd = {
-          body = ''
-            set -l timefile "${config.home.homeDirectory}/.cache/gupd/last-update"
-
-            read -p 'gcolor y "Update repositories?" w " [" g "a" w "/" m "g" w "/" r "N" w "] "' var
-            switch $var
-              case 'a' 'A' 'y' 'Y'
-                set -l now (date '+%s')
-                if test -e "$timefile"
-                  set old_time (cat "$timefile")
-                  if test (math "$old_time + 86400") -gt $now
-                    set remaining (math "$old_time + 86400 - $now")
-                    remaining $remaining | read -l amt unit
-                    gcolor -n r "[Error] " "E81" "Please wait " "FFF" "$amt" "E81" " $unit to sync gentoo repo."
-                    return 1
-                  end
-                end
-                gcolor -n g "Will update all repos"
-                command sudo emaint sync -A || return 1
-                echo "$now" > "$timefile"
-              case 'g' 'G'
-                set repos (
-                  cat "/etc/portage/repos.conf/eselect-repo.conf" \
-                    | string match -ae '[' \
-                    | string sub -s '2' -e '-1' \
-                    | string match -v '*local*'
-                )
-                for repo in $repos
-                  command sudo emaint sync -r $repo || return 1
-                end
-            end
-            command sudo emerge -avuDN @world
-          '';
-        };
-        remaining = {
-          body = ''
-            set -l sec $argv[1]
-            if test $sec -eq 1
-              echo "1 second"
-            else if test $sec -lt 60
-              echo "$sec seconds"
-            else if test $sec -lt 120
-              echo "1 minute"
-            else if test $sec -lt 3600
-              set mins (math -s0 "$sec / 60")
-              echo "$mins minutes"
-            else if test $sec -lt 7200
-              echo "1 hour"
-            else
-              set hrs (math -s0 "$sec / 3600")
-              echo "$hrs hours"
-            end
-          '';
-        };
-        gcolor = {
-          body = ''
-            set -l fst $argv[1]
-            if test "$fst" = "-n"
-              set ind 2
-            else
-              set ind 1
-            end
-
-            set -l len (count $argv)
-            while test $ind -le $len
-            set_color normal
-              switch $argv[$ind]
-                case 'd'
-                  set_color black
-                case 'r'
-                  set_color red
-                case 'g'
-                  set_color green
-                case 'y'
-                  set_color yellow
-                case 'b'
-                  set_color blue
-                case 'm'
-                  set_color magenta
-                case 'c'
-                  set_color cyan
-                case 'w'
-                  set_color white
-              end
-              if string match -q -r '^[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$' $argv[$ind]
-                set_color $argv[$ind]
-              end
-              echo -n $argv[(math $ind + 1)]
-              set_color normal
-              set ind (math $ind + 2)
-            end
-            
-            if test "$fst" = "-n"
-              echo ""
-            end
-          '';
-        };
         sudo = {
           body = ''
             set -l fish_path (command -v fish)
-            env SHELL=$fish_path command sudo -sE $argv
+            env SHELL=$(command -v fish) $(command -v sudo) -sE $argv
           '';
         };
         switch_audio = {
@@ -315,18 +162,7 @@
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      settings."*" = {
-        forwardAgent = false;
-        addKeysToAgent = "no";
-        compression = false;
-        serverAliveInterval = 0;
-        serverAliveCountMax = 3;
-        hashKnownHosts = false;
-        userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
-      };
+      settings."*" = {};
     };
 
     home-manager.enable = true;
