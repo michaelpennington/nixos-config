@@ -5,6 +5,10 @@
   lib,
   ...
 }: {
+  imports = [
+    inputs.agenix.nixosModules.default
+  ];
+
   # Networking and Localization
   networking.networkmanager.enable = true;
 
@@ -34,6 +38,15 @@
           "adbuser"
           "plugdev"
           "docker"
+        ];
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKYV32D/BCBriokwRoRWDY4atdvgI3qXqfbfMqEg2MYp mpennington@poseidon"
+        ];
+      };
+
+      root = {
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKYV32D/BCBriokwRoRWDY4atdvgI3qXqfbfMqEg2MYp mpennington@poseidon"
         ];
       };
 
@@ -85,6 +98,7 @@
 
   # Essential System Packages
   environment.systemPackages = with pkgs; [
+    inputs.agenix.packages."${pkgs.system}".default
     lm_sensors
     lz4
     pciutils
@@ -94,6 +108,7 @@
     bottom
     eza
     fd
+    git
     screen
     ripgrep
     parallel

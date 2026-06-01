@@ -29,6 +29,12 @@
   # Laptop Power Management
   services.power-profiles-daemon.enable = true;
 
+  age.secrets."hermes-ssh" = {
+    file = ../../secrets/hermes-ssh.age;
+    owner = "mpennington";
+    mode = "0400";
+  };
+
   # Bootloader configuration (matching poseidon's simple systemd-boot for now)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

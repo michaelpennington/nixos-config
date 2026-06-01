@@ -30,6 +30,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ucodenix.url = "github:e-tho/ucodenix";
     probe-rs-rules = {
       url = "github:jneem/probe-rs-rules";

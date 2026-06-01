@@ -39,7 +39,7 @@ in {
   };
 
   # Main configuration directory for Lua files
-  config.settings.config_directory = "/home/mpennington/nixos-config/nvim";
+  config.settings.config_directory = ../nvim;
 
   # Integration with Home Manager
   config.install.optionLocation = ["wrappers" "neovim"];

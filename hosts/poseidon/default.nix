@@ -79,6 +79,12 @@
     cpuModelId = "00A60F12";
   };
 
+  age.secrets."hermes-ssh" = {
+    file = ../../secrets/hermes-ssh.age;
+    owner = "mpennington";
+    mode = "0400";
+  };
+
   # Udev rules for hardware-specific behavior
   services.udev.extraRules = ''
     # Set 'none' (noop) scheduler for all NVMe devices

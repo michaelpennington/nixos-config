@@ -59,7 +59,7 @@ nixInfo.lze.load({
             {
               pane = 2,
               section = "terminal",
-              cmd = "/home/mpennington/nixos-config/nvim/rectangle",
+              cmd = nixInfo(vim.fn.stdpath("config"), "settings", "config_directory") .. "/rectangle",
               height = 5,
               padding = 1,
             },

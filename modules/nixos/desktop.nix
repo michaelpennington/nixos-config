@@ -46,8 +46,8 @@
   # Core Desktop Programs
   programs = {
     corectrl.enable = true; # AMD GPU/CPU performance control
-    sway.enable = true;     # Tiling Wayland compositor
-    fish.enable = true;     # Modern user shell
+    sway.enable = true; # Tiling Wayland compositor
+    fish.enable = true; # Modern user shell
     git.enable = true;
     tmux.enable = true;
   };

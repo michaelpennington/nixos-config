@@ -163,6 +163,7 @@
       enable = true;
       enableDefaultConfig = false;
       settings."*" = {};
+      includes = [ "/run/agenix/hermes-ssh" ];
     };
 
     home-manager.enable = true;
