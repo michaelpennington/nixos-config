@@ -14,7 +14,7 @@
     nchat
     lazygit
     spotify-player
-    termscp
+    inputs.nixpkgs-stable.legacyPackages."x86_64-linux".termscp
   ];
 
   # Core User Programs
@@ -163,7 +163,7 @@
       enable = true;
       enableDefaultConfig = false;
       settings."*" = {};
-      includes = [ "/run/agenix/hermes-ssh" ];
+      includes = ["/run/agenix/hermes-ssh"];
     };
 
     home-manager.enable = true;
