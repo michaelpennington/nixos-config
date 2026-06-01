@@ -177,10 +177,7 @@ in {
   };
 
   # Internal Logic: Collect and expose runtime packages
-  config.specMods = {
-    config,
-    ...
-  }: {
+  config.specMods = {config, ...}: {
     options.runtimePkgs = lib.mkOption {
       type = lib.types.listOf wlib.types.stringable;
       default = [];

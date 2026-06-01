@@ -16,8 +16,8 @@ rustPlatform.buildRustPackage rec {
 
   cargoHash = "sha256-SR1wa8E0bNBxIuDvvY2fmfOXzIUb3IL6DRqPSWL2t9E=";
 
-  nativeBuildInputs = [ pkg-config ];
-  buildInputs = [ openssl ];
+  nativeBuildInputs = [pkg-config];
+  buildInputs = [openssl];
 
   meta = with lib; {
     description = "Simple command line utility and Rust library to download Bing images of the day programmatically.";

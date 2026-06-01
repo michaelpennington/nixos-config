@@ -162,7 +162,7 @@
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      settings."*" = {};
+      settings."*" = {AddKeysToAgent = "yes";};
       includes = ["/run/agenix/hermes-ssh"];
     };
 

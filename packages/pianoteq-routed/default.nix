@@ -1,8 +1,11 @@
-{ writeShellApplication, pipewire, pianoteq }:
-
+{
+  writeShellApplication,
+  pipewire,
+  pianoteq,
+}:
 writeShellApplication {
   name = "pianoteq";
-  runtimeInputs = [ pipewire ];
+  runtimeInputs = [pipewire];
   text = ''
     PTQ_BIN=$(find ${pianoteq}/bin -type f -executable | head -n 1)
     PIPEWIRE_LATENCY="128/48000" PIPEWIRE_QUANTUM="128/48000" "$PTQ_BIN" "$@" &

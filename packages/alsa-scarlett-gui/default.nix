@@ -1,5 +1,8 @@
-{ alsa-scarlett-gui, fetchFromGitHub, latest-scarlett2-firmware }:
-
+{
+  alsa-scarlett-gui,
+  fetchFromGitHub,
+  latest-scarlett2-firmware,
+}:
 alsa-scarlett-gui.overrideAttrs (oldAttrs: rec {
   version = "1.0beta9";
   src = fetchFromGitHub {

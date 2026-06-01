@@ -98,7 +98,7 @@
 
   # Essential System Packages
   environment.systemPackages = with pkgs; [
-    inputs.agenix.packages."${pkgs.system}".default
+    inputs.agenix.packages."${pkgs.stdenv.hostPlatform.system}".default
     lm_sensors
     lz4
     pciutils
