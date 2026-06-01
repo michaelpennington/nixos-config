@@ -19,10 +19,34 @@
     ../../modules/nixos/audio.nix
     ../../modules/nixos/gaming.nix
     ../../modules/nixos/dev.nix
+    ../../modules/nixos/wireguard.nix
   ];
 
   # Basic networking configuration
   networking.hostName = "poseidon";
+
+  age.secrets."hermes-ip" = {
+    file = ../../secrets/hermes-ip.age;
+    owner = "root";
+    mode = "0400";
+  };
+
+  my.wireguard = let
+    wgKeys = import ../wireguard-keys.nix;
+  in {
+    enable = true;
+    ip = "10.100.0.3/24";
+    hubEndpointFile = config.age.secrets."hermes-ip".path;
+    hubPublicKey = wgKeys.hermes;
+    peers = [
+      {
+        # Hermes (Hub)
+        publicKey = wgKeys.hermes;
+        allowedIPs = ["10.100.0.0/24"];
+        persistentKeepalive = 25;
+      }
+    ];
+  };
 
   # Package management and overlays
   nixpkgs.overlays = [

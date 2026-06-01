@@ -11,6 +11,7 @@
     taskwarrior3
     yt-dlp
     megasync
+    wireguard-tools
     nchat
     lazygit
     spotify-player
