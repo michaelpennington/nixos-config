@@ -7,7 +7,10 @@
 }: {
   # Desktop Hardware Support
   hardware = {
-    graphics.enable = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
     probe-rs.enable = true;
   };
 

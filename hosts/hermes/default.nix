@@ -40,5 +40,29 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
+  # Enable basic Nginx web server
+  services.nginx = {
+    enable = true;
+
+    # Example basic virtual host configuration
+    virtualHosts."default" = {
+      default = true;
+      root = pkgs.writeTextDir "index.html" "<h1>Hello from Hermes!</h1>";
+      locations."/" = {
+        index = "index.html";
+      };
+      locations."/guacamole/" = {
+        proxyPass = "http://10.100.0.3:8080/guacamole/";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_buffering off;
+        '';
+      };
+    };
+  };
+
+  # Open HTTP and HTTPS ports in the firewall
+  networking.firewall.allowedTCPPorts = [80 443];
+
   system.stateVersion = "24.05";
 }

@@ -46,6 +46,7 @@ in {
     };
 
     networking.firewall.allowedUDPPorts = [cfg.port];
+    networking.firewall.trustedInterfaces = [ "wg0" ];
 
     networking.wireguard.interfaces = {
       wg0 = {

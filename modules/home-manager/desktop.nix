@@ -3,6 +3,7 @@
   pkgs,
   inputs,
   lib,
+  osConfig,
   ...
 }: {
   # Custom Systemd Services
@@ -35,6 +36,7 @@
     sway-launcher-desktop
     wlogout
     wob
+    wayvnc
     slurp
     grim
     imv
@@ -116,8 +118,17 @@
       terminal = "${wezterm}";
       menu = "${wezterm} start --class \"launcher\" -- ${swayLauncherDesktop}";
 
-      startup = [
+      startup = let
+        # Map hostnames to Wireguard IPs for wayvnc binding
+        wgIp =
+          if osConfig.networking.hostName == "poseidon"
+          then "10.100.0.3"
+          else if osConfig.networking.hostName == "artemis"
+          then "10.100.0.2"
+          else "127.0.0.1";
+      in [
         {command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
+        {command = "exec ${pkgs.wayvnc}/bin/wayvnc ${wgIp}";}
       ];
 
       # Custom Keybindings

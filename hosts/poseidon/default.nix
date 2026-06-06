@@ -20,10 +20,16 @@
     ../../modules/nixos/gaming.nix
     ../../modules/nixos/dev.nix
     ../../modules/nixos/wireguard.nix
+    ../../modules/nixos/guacamole.nix
   ];
 
   # Basic networking configuration
   networking.hostName = "poseidon";
+
+  my.guacamole = {
+    enable = true;
+    bindIp = "10.100.0.3";
+  };
 
   age.secrets."hermes-ip" = {
     file = ../../secrets/hermes-ip.age;
