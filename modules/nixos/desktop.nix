@@ -12,6 +12,7 @@
       enable32Bit = true;
     };
     probe-rs.enable = true;
+    keyboard.qmk.enable = true;
   };
 
   # Display and Login Management
