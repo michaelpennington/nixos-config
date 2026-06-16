@@ -59,6 +59,7 @@ local function lsp_on_attach(client, bufnr)
   end
 end
 
+require("plugins.lsp.c")
 require("plugins.lsp.lua")
 require("plugins.lsp.nix")
 require("plugins.lsp.agda")
