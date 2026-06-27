@@ -45,7 +45,7 @@
     latest-scarlett2-cli
     libmtp
     v4l-utils
-    gtklp
+    system-config-printer
 
     # Productivity & Creative
     emacs-pgtk
