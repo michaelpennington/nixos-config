@@ -55,6 +55,9 @@
     libreoffice-fresh
     nautilus
 
+    # Gaming
+    forge-mtg
+
     # Miscellaneous
     protonup-rs # Steam/Proton management
     flatpak
