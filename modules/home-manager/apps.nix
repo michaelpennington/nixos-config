@@ -56,7 +56,18 @@
     nautilus
 
     # Gaming
-    forge-mtg
+    (forge-mtg.overrideMavenAttrs (oldAttrs: rec {
+      version = "2.0.13";
+      src = pkgs.fetchFromGitHub {
+        owner = "Card-Forge";
+        repo = "forge";
+        rev = "forge-${version}";
+        hash = "sha256-BU2RkXE3oMVLlCqebQwidH/ZtHKrrD47PAQhMnF/8pU=";
+      };
+      mvnHash = "sha256-OmjrAwYzvW8ejR3/bUVQhy05vACVTG19Bznpl1SbaYs=";
+
+      installPhase = builtins.replaceStrings ["2.0.12"] ["2.0.13"] oldAttrs.installPhase;
+    }))
 
     # Miscellaneous
     protonup-rs # Steam/Proton management
