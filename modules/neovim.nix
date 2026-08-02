@@ -102,6 +102,20 @@ in {
     ];
   };
 
+  # Typst development
+  config.specs.typst = {
+    after = ["general"];
+    lazy = true;
+    data = with pkgs.vimPlugins; [
+      typst-preview-nvim
+    ];
+    runtimePkgs = with pkgs; [
+      tinymist
+      typst
+      websocat
+    ];
+  };
+
   # C/C++ development
   config.specs.cCpp = {
     after = ["general"];

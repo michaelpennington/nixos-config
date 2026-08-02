@@ -13,6 +13,7 @@ require("plugins.treesitter")
 require("plugins.lsp")
 require("plugins.tools")
 require("plugins.mini")
+require("plugins.typst")
 
 -- Finalize UI
 vim.cmd.colorscheme("kanagawa-paper")
