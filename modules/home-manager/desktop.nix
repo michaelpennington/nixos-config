@@ -33,6 +33,7 @@
     polkit_gnome
     pavucontrol
     playerctl
+    openscad
     sway-launcher-desktop
     wlogout
     wob
