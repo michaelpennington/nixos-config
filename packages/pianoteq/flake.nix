@@ -34,7 +34,7 @@
           src = pkgs.requireFile {
             name = "pianoteq_setup_v924.tar.xz";
             # You will replace this with the actual sha256 after you prefetch the file
-            sha256 = "0ypfhd7syhla6y0xf4w9h4h3nfj2flgsjm73j239jxxvgjcri0l8";
+            sha256 = "1j4n4rmkf8ww32099whs9lg938svzfksdj1gvchia638hh1nmcck";
             message = ''
               Pianoteq 9 requires a proprietary setup archive.
               1. Download 'pianoteq_setup_v924.tar.xz' from your Modartt account.
