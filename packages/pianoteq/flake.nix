@@ -32,14 +32,14 @@
 
           # Ask the user to provide the file manually
           src = pkgs.requireFile {
-            name = "pianoteq_setup_v921.tar.xz";
+            name = "pianoteq_setup_v924.tar.xz";
             # You will replace this with the actual sha256 after you prefetch the file
             sha256 = "0ypfhd7syhla6y0xf4w9h4h3nfj2flgsjm73j239jxxvgjcri0l8";
             message = ''
               Pianoteq 9 requires a proprietary setup archive.
-              1. Download 'pianoteq_setup_v912.tar.xz' from your Modartt account.
+              1. Download 'pianoteq_setup_v924.tar.xz' from your Modartt account.
               2. Add it to your Nix store by running:
-                 nix-prefetch-url file:///absolute/path/to/pianoteq_setup_v912.tar.xz
+                 nix-prefetch-url file:///absolute/path/to/pianoteq_setup_v924.tar.xz
               3. Copy the resulting hash and update the 'sha256' field in this flake.nix.
             '';
           };
