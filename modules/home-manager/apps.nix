@@ -52,7 +52,7 @@
     gimp
     obs-studio
     lilypond-with-fonts
-    libreoffice-fresh
+    libreoffice-stable
     nautilus
 
     # Gaming
